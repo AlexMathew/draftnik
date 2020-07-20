@@ -11,15 +11,28 @@ function getElementByXpath(path) {
 const transfersButton = getElementByXpath(
   `//button[contains(text(),'Make Transfers')]`
 );
+const transfersDiv = transfersButton.parentElement;
+
+const saveDiv = document.createElement("div");
+saveDiv.style = "margin-top: 10px";
+const saveButton = document.createElement("button");
+saveButton.classList = transfersButton.classList;
+saveButton.style = "background: blue";
+const saveText = document.createTextNode("Save Draft");
+saveButton.appendChild(saveText);
+saveDiv.appendChild(saveButton);
+transfersDiv.appendChild(saveDiv);
+
 var observer = new MutationObserver(function (mutations) {
   mutations.forEach(function (mutation) {
     if (mutation.attributeName === "disabled") {
-      console.log("Transfers button is", mutation.target.disabled);
+      console.log("Transfers button is", !mutation.target.disabled);
+      saveButton.classList = mutation.target.classList;
     }
   });
 });
 observer.observe(transfersButton, {
-  attributes: true, //configure it to listen to attribute changes
+  attributes: true,
 });
 
 const allPictures = document.getElementsByTagName("picture");
