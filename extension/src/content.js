@@ -1,11 +1,12 @@
-import { getElementByXpath } from "./utils/xpath";
+import { getByXpath } from "./utils/xpath";
+import { getPlayers } from "./utils/players";
 
 console.log("Draftnik.");
 
 MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
 var observer = new MutationObserver(function (mutations) {
-  const transfersButton = getElementByXpath(
+  const transfersButton = getByXpath(
     `//button[contains(text(),'Make Transfers')]`
   );
   if (transfersButton) {
@@ -18,7 +19,7 @@ observer.observe(document, {
 });
 
 function insertSaveButton(transfersButton) {
-  const existingSaveDiv = getElementByXpath(`//div[@class="draftnik"]`);
+  const existingSaveDiv = getByXpath(`//div[@class="draftnik"]`);
   if (!existingSaveDiv) {
     const transfersDiv = transfersButton.parentElement;
     const saveDiv = document.createElement("div");
@@ -26,6 +27,7 @@ function insertSaveButton(transfersButton) {
     saveDiv.style = "margin-top: 10px";
     const saveButton = document.createElement("button");
     saveButton.classList = transfersButton.classList;
+    saveButton.onclick = getPlayers;
     const saveText = document.createTextNode("Save Draft");
     saveButton.appendChild(saveText);
     saveDiv.appendChild(saveButton);

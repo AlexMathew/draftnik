@@ -1,9 +1,13 @@
-export function getElementByXpath(path) {
-  return document.evaluate(
+export function getByXpath(path, multiple = false) {
+  const nodes = document.evaluate(
     path,
     document,
     null,
-    XPathResult.FIRST_ORDERED_NODE_TYPE,
+    multiple
+      ? XPathResult.ORDERED_NODE_ITERATOR_TYPE
+      : XPathResult.FIRST_ORDERED_NODE_TYPE,
     null
-  ).singleNodeValue;
+  );
+
+  return multiple ? nodes : nodes.singleNodeValue;
 }
