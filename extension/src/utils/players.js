@@ -15,10 +15,11 @@ export function getPlayers() {
       players.push(player);
       picture = pictures.iterateNext();
     }
-    console.log(players);
   } catch (e) {
     console.log(e);
   }
+
+  return players;
 }
 
 function getPlayerName(picture) {

@@ -1,5 +1,6 @@
 import { getByXpath } from "./utils/xpath";
 import { getPlayers } from "./utils/players";
+import draftnik from "./api/draftnik";
 
 console.log("Draftnik.");
 
@@ -27,7 +28,7 @@ function insertSaveButton(transfersButton) {
     saveDiv.style = "margin-top: 10px";
     const saveButton = document.createElement("button");
     saveButton.classList = transfersButton.classList;
-    saveButton.onclick = getPlayers;
+    saveButton.onclick = saveDraft;
     const saveText = document.createTextNode("Save Draft");
     saveButton.appendChild(saveText);
     saveDiv.appendChild(saveButton);
@@ -45,4 +46,14 @@ function insertSaveButton(transfersButton) {
       attributes: true,
     });
   }
+}
+
+function saveDraft() {
+  const squad = getPlayers();
+  draftnik
+    .post("/save/", { squad })
+    .then(() => {})
+    .catch((err) => {
+      console.log(err);
+    });
 }
