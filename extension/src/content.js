@@ -27,6 +27,7 @@ function insertSaveButton(transfersButton) {
     saveDiv.classList = "draftnik";
     saveDiv.style = "margin-top: 10px";
     const saveButton = document.createElement("button");
+    saveButton.disabled = transfersButton.disabled;
     saveButton.classList = transfersButton.classList;
     saveButton.onclick = saveDraft;
     const saveText = document.createTextNode("Save Draft");
@@ -37,7 +38,7 @@ function insertSaveButton(transfersButton) {
     var observer = new MutationObserver(function (mutations) {
       mutations.forEach(function (mutation) {
         if (mutation.attributeName === "disabled") {
-          console.log("Transfers button is", !mutation.target.disabled);
+          saveButton.disabled = mutation.target.disabled;
           saveButton.classList = mutation.target.classList;
         }
       });
