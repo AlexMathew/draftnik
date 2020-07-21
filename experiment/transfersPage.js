@@ -42,3 +42,25 @@ pictures.forEach((picture) => {
   console.log(picture.nextSibling.firstChild.textContent);
   console.log(picture.getElementsByTagName("img")[0].src);
 });
+
+function getElementsByXpath(path) {
+  return document.evaluate(
+    path,
+    document,
+    null,
+    XPathResult.ORDERED_NODE_ITERATOR_TYPE,
+    null
+  );
+}
+
+const squadPicturesXpath = `//div[contains(@class, 'Pitch-')]//picture`;
+const pictures = getElementsByXpath(squadPicturesXpath);
+try {
+  let picture = pictures.iterateNext();
+  while (picture) {
+    console.log(picture);
+    picture = pictures.iterateNext();
+  }
+} catch (e) {
+  console.log(e);
+}
