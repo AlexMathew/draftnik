@@ -8,6 +8,8 @@ authors = ["Alex Mathew <alexmathew003@gmail.com>"]
 python = "^3.7"
 djangorestframework = "^3.11.0"
 django = "2.1.9"
+psycopg2-binary = "^2.8.5"
+redis = "^3.5.3"
 
 [tool.poetry.dev-dependencies]
 ipython = "^7.16.1"

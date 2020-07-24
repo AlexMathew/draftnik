@@ -1,0 +1,41 @@
+version: "3"
+
+services:
+  draftnik:
+    container_name: draftnik-webserver
+    hostname: draftnik
+    env_file:
+      - ops/.env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+      - redis
+    command: bash -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
+    restart: on-failure:5
+    volumes:
+      - .:/code
+      - draftnik-ipython:/root/.ipython
+    ports:
+      - "8000:8000"
+
+  db:
+    image: postgres:12-alpine
+    container_name: draftnik-postgres
+    environment:
+      - POSTGRES_USER=draftnik
+      - POSTGRES_PASSWORD=draftnik
+    volumes:
+      - draftnik-data-postgres:/var/lib/postgresql/data
+
+  redis:
+    image: redis
+    container_name: draftnik-redis
+    volumes:
+      - draftnik-data-redis:/data
+
+volumes:
+  draftnik-ipython:
+  draftnik-data-postgres:
+  draftnik-data-redis:
