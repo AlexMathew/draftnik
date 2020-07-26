@@ -4,18 +4,34 @@ from operator import itemgetter
 
 import requests
 
-from draftnik.keys import PLAYER_ID_KEY, TEAM_DATA_KEY
+from draftnik.keys import PLAYER_DATA_KEY, PLAYER_ID_KEY, TEAM_DATA_KEY
 from helpers.instances import redis
 
 
 def store_players(r):
+    FIELDS = [
+        "id",
+        "code",
+        "first_name",
+        "second_name",
+        "web_name",
+        "team",
+        "team_code",
+        "photo",
+    ]
+    field_getter = itemgetter(*FIELDS)
+
+    player_data = {}
     players = iter(r.json()["elements"])
     for player in players:
-        player_id = player.get("id")
-        web_name = player.get("web_name")
-        team_code = player.get("team_code")
+        data = {key: value for key, value in zip(FIELDS, field_getter(player))}
+        player_data[data.get("id")] = data
 
-        redis.set(PLAYER_ID_KEY(web_name, team_code), player_id)
+        redis.set(
+            PLAYER_ID_KEY(data.get("web_name"), data.get("team_code")), data.get("id")
+        )
+
+    redis.set(PLAYER_DATA_KEY, json.dumps(player_data))
 
 
 def store_teams(r):
