@@ -1,5 +1,6 @@
 import json
 from collections import defaultdict
+from operator import itemgetter
 
 import requests
 
@@ -18,21 +19,14 @@ def store_players(r):
 
 
 def store_teams(r):
+    FIELDS = ["id", "code", "name", "short_name"]
+    field_getter = itemgetter(*FIELDS)
+
     team_data = {}
     teams = iter(r.json()["teams"])
     for team in teams:
-        team_id = team.get("id")
-        team_code = team.get("code")
-        name = team.get("name")
-        short_name = team.get("short_name")
-
-        data = {
-            "id": team_id,
-            "code": team_code,
-            "name": name,
-            "short_name": short_name,
-        }
-        team_data[team_id] = data
+        data = {key: value for key, value in zip(FIELDS, field_getter(team))}
+        team_data[data.get("id")] = data
 
     redis.set(TEAM_DATA_KEY, json.dumps(team_data))
 
