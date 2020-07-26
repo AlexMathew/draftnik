@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from draftnik.keys import PLAYER_ID_KEY
 from helpers.instances import redis
+from utils.static import get_player_data, get_team_data
 
 from .models import Draft
 
@@ -46,3 +47,13 @@ class DraftCreateSerializer(serializers.ModelSerializer):
         instance = Draft.objects.create(**fields)
 
         return instance
+
+
+class DraftStaticDataSerializer(serializers.Serializer):
+    players = serializers.ReadOnlyField(default=get_player_data)
+    teams = serializers.ReadOnlyField(default=get_team_data)
+
+
+class DraftResponseSerializer(serializers.Serializer):
+    static = DraftStaticDataSerializer(read_only=True)
+    drafts = DraftSerializer(many=True, read_only=True)

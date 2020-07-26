@@ -3,7 +3,11 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from .models import Draft
-from .serializers import DraftCreateSerializer, DraftSerializer
+from .serializers import (
+    DraftCreateSerializer,
+    DraftResponseSerializer,
+    DraftSerializer
+)
 
 
 class DraftView(
@@ -12,6 +16,8 @@ class DraftView(
     def get_serializer_class(self):
         if self.action in ["create"]:
             return DraftCreateSerializer
+        elif self.action in ["static"]:
+            return DraftResponseSerializer
 
         return DraftSerializer
 
@@ -23,3 +29,10 @@ class DraftView(
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    @action(detail=False)
+    def static(self, request):
+        drafts = self.get_queryset()
+
+        serializer = self.get_serializer({"static": True, "drafts": drafts})
+        return Response(serializer.data)
