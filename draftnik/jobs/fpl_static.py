@@ -3,7 +3,7 @@ from collections import defaultdict
 
 import requests
 
-from draftnik.keys import PLAYER_ID_KEY, TEAM_ID_KEY
+from draftnik.keys import PLAYER_ID_KEY, TEAM_DATA_KEY
 from helpers.instances import redis
 
 
@@ -18,6 +18,7 @@ def store_players(r):
 
 
 def store_teams(r):
+    team_data = {}
     teams = iter(r.json()["teams"])
     for team in teams:
         team_id = team.get("id")
@@ -31,8 +32,9 @@ def store_teams(r):
             "name": name,
             "short_name": short_name,
         }
+        team_data[team_id] = data
 
-        redis.set(TEAM_ID_KEY(team_id), json.dumps(data))
+    redis.set(TEAM_DATA_KEY, json.dumps(team_data))
 
 
 def fetch_static_data(players=True, teams=False):
