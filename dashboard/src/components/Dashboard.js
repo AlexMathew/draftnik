@@ -5,10 +5,18 @@ import SquadView from "./SquadView";
 import FixturesView from "./FixturesView";
 import { connect } from "react-redux";
 import { fetchStaticData } from "../actions";
+import history from "../history";
+import { AUTH_TOKEN_FIELD } from "../constants";
 
 class Dashboard extends React.Component {
   componentDidMount() {
-    this.props.fetchStaticData();
+    const authToken = localStorage.getItem(AUTH_TOKEN_FIELD);
+    if (authToken) {
+      this.props.fetchStaticData();
+    } else {
+      localStorage.removeItem(AUTH_TOKEN_FIELD);
+      history.push("/signin");
+    }
   }
 
   render() {
