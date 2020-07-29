@@ -1,9 +1,16 @@
-import { LOAD_DRAFTS } from "../actions/types";
+import { LOAD_DRAFTS, SELECT_DRAFT } from "../actions/types";
 
-export default (state = [], action) => {
+const initialState = {
+  selected: null,
+  drafts: [],
+};
+
+export default (state = initialState, action) => {
   switch (action.type) {
     case LOAD_DRAFTS:
-      return [...state, ...action.payload.drafts];
+      return { ...state, drafts: action.payload.drafts };
+    case SELECT_DRAFT:
+      return { ...state, selected: action.payload.draft };
     default:
       return state;
   }

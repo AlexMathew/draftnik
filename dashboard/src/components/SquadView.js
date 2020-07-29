@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import {} from "../actions";
+import SquadDisplay from "./SquadDisplay";
 
 const styles = (theme) => ({
   toolbar: {
@@ -25,7 +25,7 @@ class SquadView extends React.Component {
     return (
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        Squad view.
+        {this.props.selectedDraft !== null ? <SquadDisplay /> : ""}
       </main>
     );
   }
@@ -35,9 +35,11 @@ SquadView.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = (state) => {
+  return {
+    selectedDraft: state.drafts.selected,
+  };
 };
 
-const wrappedSquadView = connect(mapStateToProps, {})(SquadView);
+const wrappedSquadView = connect(mapStateToProps)(SquadView);
 export default withStyles(styles)(wrappedSquadView);

@@ -3,8 +3,11 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import Divider from "@material-ui/core/Divider";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
 import { connect } from "react-redux";
-import {} from "../actions";
+import { selectDraft } from "../actions";
 
 const drawerWidth = 350;
 
@@ -34,6 +37,17 @@ class SquadSelector extends React.Component {
       >
         <div className={classes.toolbar} />
         <Divider />
+        <List>
+          {this.props.drafts.map((draft, index) => (
+            <ListItem
+              button
+              key={index}
+              onClick={() => this.props.selectDraft(index)}
+            >
+              <ListItemText primary={draft.name} />
+            </ListItem>
+          ))}
+        </List>
       </Drawer>
     );
   }
@@ -43,9 +57,13 @@ SquadSelector.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = (state) => {
+  return {
+    drafts: state.drafts.drafts,
+  };
 };
 
-const wrappedSquadSelector = connect(mapStateToProps, {})(SquadSelector);
+const wrappedSquadSelector = connect(mapStateToProps, { selectDraft })(
+  SquadSelector
+);
 export default withStyles(styles)(wrappedSquadSelector);

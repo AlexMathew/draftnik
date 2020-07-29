@@ -1,4 +1,9 @@
-import { LOAD_DRAFTS, LOAD_PLAYER_DATA, LOAD_TEAM_DATA } from "./types";
+import {
+  LOAD_DRAFTS,
+  LOAD_PLAYER_DATA,
+  LOAD_TEAM_DATA,
+  SELECT_DRAFT,
+} from "./types";
 import draftnik from "../api/draftnik";
 import history from "../history";
 import { AUTH_TOKEN_FIELD } from "../constants";
@@ -21,4 +26,8 @@ export const fetchStaticData = () => async (dispatch) => {
       history.push("/signin");
     }
   }
+};
+
+export const selectDraft = (draft) => {
+  return { type: SELECT_DRAFT, payload: { draft } };
 };
