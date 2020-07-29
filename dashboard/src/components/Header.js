@@ -9,18 +9,11 @@ import { AUTH_TOKEN_FIELD } from "../constants";
 import history from "../history";
 
 const styles = (theme) => ({
-  root: {
-    display: "flex",
-  },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
   },
   grow: {
     flexGrow: 1,
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
   },
 });
 
@@ -34,23 +27,21 @@ class Header extends React.Component {
     };
 
     return (
-      <div className={classes.root}>
-        <AppBar position="fixed" className={classes.appBar}>
-          <Toolbar>
-            <Typography variant="h6" color="inherit" className={classes.grow}>
-              Draftnik
-            </Typography>
-            <Button
-              color="inherit"
-              onClick={() => {
-                logout();
-              }}
-            >
-              Logout
-            </Button>
-          </Toolbar>
-        </AppBar>
-      </div>
+      <AppBar position="fixed" className={classes.appBar}>
+        <Toolbar>
+          <Typography variant="h6" color="inherit" className={classes.grow}>
+            Draftnik
+          </Typography>
+          <Button
+            color="inherit"
+            onClick={() => {
+              logout();
+            }}
+          >
+            Logout
+          </Button>
+        </Toolbar>
+      </AppBar>
     );
   }
 }

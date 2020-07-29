@@ -1,4 +1,7 @@
 import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import Header from "./Header";
 import SquadSelector from "./SquadSelector";
 import SquadView from "./SquadView";
@@ -7,6 +10,12 @@ import { connect } from "react-redux";
 import { fetchStaticData } from "../actions";
 import history from "../history";
 import { AUTH_TOKEN_FIELD } from "../constants";
+
+const styles = () => ({
+  root: {
+    display: "flex",
+  },
+});
 
 class Dashboard extends React.Component {
   componentDidMount() {
@@ -20,15 +29,23 @@ class Dashboard extends React.Component {
   }
 
   render() {
+    const { classes } = this.props;
+
     return (
-      <React.Fragment>
+      <div className={classes.root}>
+        <CssBaseline />
         <Header />
         <SquadSelector />
         <SquadView />
         <FixturesView />
-      </React.Fragment>
+      </div>
     );
   }
 }
 
-export default connect(null, { fetchStaticData })(Dashboard);
+Dashboard.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+const wrappedDashboard = connect(null, { fetchStaticData })(Dashboard);
+export default withStyles(styles)(wrappedDashboard);
