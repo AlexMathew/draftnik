@@ -5,3 +5,4 @@ PLAYER_ID_KEY = lambda name, team_code: f"{PLAYER_ID_PREFIX}{team_code}_{slugify
 
 PLAYER_DATA_KEY = "PLAYER_DATA"
 TEAM_DATA_KEY = "TEAM_DATA"
+GAMEWEEK_DATA_KEY = "GAMEWEEK_DATA"
