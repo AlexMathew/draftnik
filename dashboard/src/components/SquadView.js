@@ -37,7 +37,7 @@ SquadView.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    selectedDraft: state.drafts.selected,
+    selectedDraft: state.selected.draft,
   };
 };
 

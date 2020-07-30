@@ -4,6 +4,7 @@ import {
   LOAD_PLAYER_DATA,
   LOAD_TEAM_DATA,
   SELECT_DRAFT,
+  SELECT_GAMEWEEK,
 } from "./types";
 import draftnik from "../api/draftnik";
 import history from "../history";
@@ -32,4 +33,8 @@ export const fetchStaticData = () => async (dispatch) => {
 
 export const selectDraft = (draft) => {
   return { type: SELECT_DRAFT, payload: { draft } };
+};
+
+export const selectGameweek = (gameweek) => {
+  return { type: SELECT_GAMEWEEK, payload: { gameweek } };
 };

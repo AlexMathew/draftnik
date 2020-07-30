@@ -6,8 +6,10 @@ import Divider from "@material-ui/core/Divider";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
+import Typography from "@material-ui/core/Typography";
+import Pagination from "@material-ui/lab/Pagination";
 import { connect } from "react-redux";
-import { selectDraft } from "../actions";
+import { selectDraft, selectGameweek } from "../actions";
 
 const drawerWidth = 350;
 
@@ -24,7 +26,14 @@ const styles = (theme) => ({
 
 class SquadSelector extends React.Component {
   render() {
-    const { classes } = this.props;
+    const {
+      classes,
+      gameweeks,
+      drafts,
+      selectedGameweek,
+      selectGameweek,
+      selectDraft,
+    } = this.props;
 
     return (
       <Drawer
@@ -37,16 +46,31 @@ class SquadSelector extends React.Component {
       >
         <div className={classes.toolbar} />
         <Divider />
+        <Typography>
+          {selectedGameweek in gameweeks
+            ? gameweeks[selectedGameweek].name
+            : ""}
+        </Typography>
+        <Pagination
+          count={Object.keys(gameweeks).length}
+          defaultPage={1}
+          siblingCount={0}
+          boundaryCount={1}
+          onChange={(event, gw) => {
+            event.preventDefault();
+            selectGameweek(gw);
+            selectDraft(null);
+          }}
+        />
+        <Divider />
         <List>
-          {this.props.drafts.map((draft, index) => (
-            <ListItem
-              button
-              key={index}
-              onClick={() => this.props.selectDraft(index)}
-            >
-              <ListItemText primary={draft.name} />
-            </ListItem>
-          ))}
+          {selectedGameweek in drafts
+            ? drafts[selectedGameweek].map((draft, index) => (
+                <ListItem button key={index} onClick={() => selectDraft(index)}>
+                  <ListItemText primary={draft.name} />
+                </ListItem>
+              ))
+            : ""}
         </List>
       </Drawer>
     );
@@ -59,11 +83,14 @@ SquadSelector.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    drafts: state.drafts.drafts,
+    gameweeks: state.gameweeks,
+    selectedGameweek: state.selected.gameweek,
+    drafts: state.drafts,
   };
 };
 
-const wrappedSquadSelector = connect(mapStateToProps, { selectDraft })(
-  SquadSelector
-);
+const wrappedSquadSelector = connect(mapStateToProps, {
+  selectDraft,
+  selectGameweek,
+})(SquadSelector);
 export default withStyles(styles)(wrappedSquadSelector);

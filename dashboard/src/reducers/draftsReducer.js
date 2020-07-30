@@ -1,16 +1,11 @@
-import { LOAD_DRAFTS, SELECT_DRAFT } from "../actions/types";
+import _ from "lodash";
+import { LOAD_DRAFTS } from "../actions/types";
 
-const initialState = {
-  selected: null,
-  drafts: [],
-};
-
-export default (state = initialState, action) => {
+export default (state = {}, action) => {
   switch (action.type) {
     case LOAD_DRAFTS:
-      return { ...state, drafts: action.payload.drafts };
-    case SELECT_DRAFT:
-      return { ...state, selected: action.payload.draft };
+      const drafts = _.groupBy(action.payload.drafts, "gameweek");
+      return { ...state, ...drafts };
     default:
       return state;
   }

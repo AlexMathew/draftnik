@@ -19,15 +19,13 @@ class SquadDisplay extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, drafts, selectedGameweek, selectedDraft } = this.props;
 
     return (
       <div>
-        {this.props.drafts[this.props.selectedDraft].entries.map(
-          (entry, index) => (
-            <div key={index}>{this.displaySquadEntry(entry)}</div>
-          )
-        )}
+        {drafts[selectedGameweek][selectedDraft].entries.map((entry, index) => (
+          <div key={index}>{this.displaySquadEntry(entry)}</div>
+        ))}
       </div>
     );
   }
@@ -39,8 +37,9 @@ SquadDisplay.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    drafts: state.drafts.drafts,
-    selectedDraft: state.drafts.selected,
+    drafts: state.drafts,
+    selectedGameweek: state.selected.gameweek,
+    selectedDraft: state.selected.draft,
     players: state.players,
     teams: state.teams,
   };
