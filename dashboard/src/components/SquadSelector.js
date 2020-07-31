@@ -7,8 +7,11 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Typography from "@material-ui/core/Typography";
-import Pagination from "@material-ui/lab/Pagination";
+import IconButton from "@material-ui/core/IconButton";
+import ArrowLeftIcon from "@material-ui/icons/ArrowLeft";
+import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 import { connect } from "react-redux";
+import clsx from "clsx";
 import { selectDraft, selectGameweek } from "../actions";
 
 const drawerWidth = 350;
@@ -22,6 +25,17 @@ const styles = (theme) => ({
     width: drawerWidth,
   },
   toolbar: theme.mixins.toolbar,
+  paginator: {
+    display: "flex",
+    alignItems: "center",
+    alignSelf: "center",
+  },
+  paginatorButton: {
+    color: "black",
+  },
+  paginatorButtonDisabled: {
+    color: "lightgray",
+  },
 });
 
 class SquadSelector extends React.Component {
@@ -34,6 +48,7 @@ class SquadSelector extends React.Component {
       selectGameweek,
       selectDraft,
     } = this.props;
+    const gameweekKeys = Object.keys(gameweeks);
 
     return (
       <Drawer
@@ -46,22 +61,45 @@ class SquadSelector extends React.Component {
       >
         <div className={classes.toolbar} />
         <Divider />
-        <Typography>
-          {selectedGameweek in gameweeks
-            ? gameweeks[selectedGameweek].name
-            : ""}
-        </Typography>
-        <Pagination
-          count={Object.keys(gameweeks).length}
-          defaultPage={1}
-          siblingCount={0}
-          boundaryCount={1}
-          onChange={(event, gw) => {
-            event.preventDefault();
-            selectGameweek(gw);
-            selectDraft(null);
-          }}
-        />
+        <div className={classes.paginator}>
+          <IconButton
+            className={classes.paginatorButton}
+            disabled={selectedGameweek === gameweekKeys[0]}
+            classes={{
+              root: clsx({
+                [classes.paginatorButtonDisabled]:
+                  selectedGameweek === gameweekKeys[0],
+              }),
+            }}
+            onClick={() => {
+              selectGameweek(parseInt(selectedGameweek) - 1);
+              selectDraft(null);
+            }}
+          >
+            <ArrowLeftIcon style={{ fontSize: 60 }} />
+          </IconButton>
+          <Typography variant="h5">
+            {selectedGameweek in gameweeks
+              ? gameweeks[selectedGameweek].name
+              : ""}
+          </Typography>
+          <IconButton
+            className={classes.paginatorButton}
+            disabled={selectedGameweek === gameweekKeys.slice(-1)[0]}
+            classes={{
+              root: clsx({
+                [classes.paginatorButtonDisabled]:
+                  selectedGameweek === gameweekKeys.slice(-1)[0],
+              }),
+            }}
+            onClick={() => {
+              selectGameweek(parseInt(selectedGameweek) + 1);
+              selectDraft(null);
+            }}
+          >
+            <ArrowRightIcon style={{ fontSize: 60 }} />
+          </IconButton>
+        </div>
         <Divider />
         <List>
           {selectedGameweek in drafts
