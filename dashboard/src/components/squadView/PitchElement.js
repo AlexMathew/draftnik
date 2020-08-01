@@ -4,6 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
+import { ELEMENT_TYPES } from "../../constants";
 
 const styles = (theme) => ({
   jerseyContainer: {
@@ -18,16 +19,21 @@ const styles = (theme) => ({
 });
 
 class PitchElement extends React.Component {
+  jerseyUrl = (element) => {
+    const isGk = element.element_type === ELEMENT_TYPES.GOALKEEPERS;
+    return `jerseys/${isGk ? "gk" : "out"}/${element.team}.png`;
+  };
+
   render() {
     const { classes, element, teams } = this.props;
     const team = teams[element.team];
 
     return (
-      <Grid direction="column" justify="center" alignItems="center">
-        <Grid item xs className={classes.jerseyContainer}>
+      <Grid>
+        <Grid item className={classes.jerseyContainer}>
           <img
             className={classes.jersey}
-            src={`jerseys/${team.id}.png`}
+            src={this.jerseyUrl(element)}
             alt={team.name}
           />
         </Grid>
