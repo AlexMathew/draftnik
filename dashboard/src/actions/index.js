@@ -3,6 +3,7 @@ import {
   LOAD_GAMEWEEK_DATA,
   LOAD_PLAYER_DATA,
   LOAD_TEAM_DATA,
+  LOAD_TEAM_FIXTURES_DATA,
   SELECT_DRAFT,
   SELECT_GAMEWEEK,
   SWITCH_MOBILE,
@@ -27,6 +28,7 @@ export const fetchStaticData = () => async (dispatch) => {
     dispatch({ type: LOAD_TEAM_DATA, payload: response.data });
     dispatch({ type: LOAD_PLAYER_DATA, payload: response.data });
     dispatch({ type: LOAD_GAMEWEEK_DATA, payload: response.data });
+    dispatch({ type: LOAD_TEAM_FIXTURES_DATA, payload: response.data });
     dispatch({ type: LOAD_DRAFTS, payload: response.data });
   } catch (error) {
     if (error.response.status === 401) {

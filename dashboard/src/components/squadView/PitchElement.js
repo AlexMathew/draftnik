@@ -30,6 +30,11 @@ const styles = (theme) => ({
     textAlign: "center",
     background: "palegreen",
   },
+  fixture: {
+    fontWeight: "bold",
+    textAlign: "center",
+    background: "whitesmoke",
+  },
 });
 
 class PitchElement extends React.Component {
@@ -39,8 +44,15 @@ class PitchElement extends React.Component {
   };
 
   render() {
-    const { classes, element, teams } = this.props;
+    const {
+      classes,
+      element,
+      teams,
+      selectedGameweek,
+      teamFixtures,
+    } = this.props;
     const team = teams[element.team];
+    const fixtures = teamFixtures[element.team][selectedGameweek];
 
     return (
       <Grid className={classes.element}>
@@ -58,6 +70,12 @@ class PitchElement extends React.Component {
           <Typography className={classes.price}>
             {element.now_cost / 10}
           </Typography>
+          <Typography className={classes.fixture}>
+            {fixtures.map(
+              (fixture) =>
+                `${teams[fixture.opponent].short_name} (${fixture.location})`
+            )}
+          </Typography>
         </Grid>
       </Grid>
     );
@@ -71,6 +89,8 @@ PitchElement.propTypes = {
 const mapStateToProps = (state) => {
   return {
     teams: state.teams,
+    teamFixtures: state.fixtures.byTeam,
+    selectedGameweek: state.selected.gameweek,
   };
 };
 
