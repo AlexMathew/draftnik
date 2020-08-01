@@ -4,8 +4,8 @@ import { withStyles } from "@material-ui/core/styles";
 import Hidden from "@material-ui/core/Hidden";
 import Drawer from "@material-ui/core/Drawer";
 import Divider from "@material-ui/core/Divider";
-import GameweekPaginator from "./draftDrawer/GameweekPaginator";
-import DraftList from "./draftDrawer/DraftList";
+import GameweekPaginator from "./squadSelector/GameweekPaginator";
+import DraftList from "./squadSelector/DraftList";
 import { connect } from "react-redux";
 import { switchMobile } from "../actions";
 
