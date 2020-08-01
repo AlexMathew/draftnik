@@ -8,9 +8,6 @@ const styles = () => ({
   pitchRow: {
     height: "20vh",
   },
-  pitchRowGk: {
-    height: "15vh",
-  },
 });
 
 class PitchRow extends React.Component {
@@ -23,9 +20,7 @@ class PitchRow extends React.Component {
         direction="row"
         justify="space-evenly"
         alignItems="center"
-        className={
-          this.props.goalkeepers ? classes.pitchRowGk : classes.pitchRow
-        }
+        className={classes.pitchRow}
       >
         {this.props.elements.map((element) => (
           <PitchElement key={element.id} element={element} />
