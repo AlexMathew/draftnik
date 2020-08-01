@@ -15,7 +15,13 @@ const styles = (theme) => ({
 
 class SquadDisplay extends React.Component {
   render() {
-    const { classes, drafts, selectedGameweek, selectedDraft } = this.props;
+    const {
+      classes,
+      drafts,
+      players,
+      selectedGameweek,
+      selectedDraft,
+    } = this.props;
 
     if (selectedDraft === null) {
       return null;
@@ -23,10 +29,10 @@ class SquadDisplay extends React.Component {
 
     const draft =
       selectedDraft !== null ? drafts[selectedGameweek][selectedDraft] : null;
-    const players = draft
-      ? draft.entries.map((entry) => this.props.players[entry])
+    const squadPlayers = draft
+      ? draft.entries.map((entry) => players[entry])
       : [];
-    const elements = _.groupBy(players, "element_type");
+    const elements = _.groupBy(squadPlayers, "element_type");
 
     return (
       <Container maxWidth="lg" className={classes.elementsContainer}>
@@ -49,7 +55,6 @@ const mapStateToProps = (state) => {
     selectedGameweek: state.selected.gameweek,
     selectedDraft: state.selected.draft,
     players: state.players,
-    teams: state.teams,
   };
 };
 

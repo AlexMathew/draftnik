@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import PitchElement from "./PitchElement";
 
 const styles = () => ({
   PitchRow: {
@@ -15,13 +15,17 @@ class PitchRow extends React.Component {
     const { classes } = this.props;
 
     return (
-      <Container maxWidth="lg">
-        <div className={classes.PitchRow}>
-          {this.props.elements.map((element) => (
-            <Typography>{element.web_name}</Typography>
-          ))}
-        </div>
-      </Container>
+      <Grid
+        container
+        direction="row"
+        justify="space-evenly"
+        alignItems="center"
+        className={classes.PitchRow}
+      >
+        {this.props.elements.map((element) => (
+          <PitchElement key={element.id} element={element} />
+        ))}
+      </Grid>
     );
   }
 }
