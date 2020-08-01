@@ -1,6 +1,6 @@
 import React from "react";
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
+import SignIn from "./auth/SignIn";
+import SignUp from "./auth/SignUp";
 import Dashboard from "./Dashboard";
 import { Switch, Route, Router } from "react-router-dom";
 import history from "../history";

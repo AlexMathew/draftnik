@@ -11,7 +11,9 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Container from "@material-ui/core/Container";
 import { red } from "@material-ui/core/colors";
 import { Link as RouterLink } from "react-router-dom";
-import draftnik from "../api/draftnik";
+import draftnik from "../../api/draftnik";
+import history from "../../history";
+import { AUTH_TOKEN_FIELD } from "../../constants";
 
 const styles = (theme) => ({
   paper: {
@@ -25,8 +27,8 @@ const styles = (theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(3),
+    width: "100%",
+    marginTop: theme.spacing(1),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -37,7 +39,7 @@ const styles = (theme) => ({
   },
 });
 
-class SignUp extends React.Component {
+class SignIn extends React.Component {
   state = {
     username: "",
     password: "",
@@ -48,18 +50,20 @@ class SignUp extends React.Component {
     },
   };
 
-  signup = (event) => {
+  login = (event) => {
     event.preventDefault();
     const { username, password } = this.state;
     const fields = ["username", "password"];
 
     draftnik
-      .post("/auth/users/", {
+      .post("/auth/token/login/", {
         username,
         password,
       })
-      .then(() => {
-        this.props.history.push("/signin");
+      .then((response) => {
+        const { auth_token } = response.data;
+        localStorage.setItem(AUTH_TOKEN_FIELD, auth_token);
+        this.props.history.push("/");
       })
       .catch((err) => {
         if (err.response) {
@@ -74,6 +78,13 @@ class SignUp extends React.Component {
       });
   };
 
+  componentDidMount() {
+    const authToken = localStorage.getItem(AUTH_TOKEN_FIELD);
+    if (authToken) {
+      history.push("/");
+    }
+  }
+
   render() {
     const { classes } = this.props;
     const { error } = this.state;
@@ -86,48 +97,44 @@ class SignUp extends React.Component {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            Sign in
           </Typography>
           <Typography component="h4" variant="h6" className={classes.error}>
             {error.general || ""}
           </Typography>
-          <form className={classes.form} noValidate onSubmit={this.signup}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  autoComplete="username"
-                  name="username"
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="username"
-                  label="Username"
-                  autoFocus
-                  onChange={(e) => {
-                    this.setState({ username: e.target.value });
-                  }}
-                  error={error.username !== undefined && error.username !== ""}
-                  helperText={error.username}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  onChange={(e) => {
-                    this.setState({ password: e.target.value });
-                  }}
-                  error={error.password !== undefined && error.password !== ""}
-                  helperText={error.password}
-                />
-              </Grid>
-            </Grid>
+          <form className={classes.form} noValidate onSubmit={this.login}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
+              autoFocus
+              onChange={(e) => {
+                this.setState({ username: e.target.value });
+              }}
+              error={error.username !== undefined && error.username !== ""}
+              helperText={error.username}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              onChange={(e) => {
+                this.setState({ password: e.target.value });
+              }}
+              error={error.password !== undefined && error.password !== ""}
+              helperText={error.password}
+            />
             <Button
               type="submit"
               fullWidth
@@ -135,12 +142,12 @@ class SignUp extends React.Component {
               color="primary"
               className={classes.submit}
             >
-              Sign Up
+              Sign In
             </Button>
             <Grid container justify="flex-end">
               <Grid item>
-                <RouterLink to="/signin">
-                  Already have an account? Sign in
+                <RouterLink to="/signup">
+                  Don't have an account? Sign Up
                 </RouterLink>
               </Grid>
             </Grid>
@@ -151,8 +158,8 @@ class SignUp extends React.Component {
   }
 }
 
-SignUp.propTypes = {
+SignIn.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(SignUp);
+export default withStyles(styles)(SignIn);
