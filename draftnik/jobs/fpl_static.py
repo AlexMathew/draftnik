@@ -8,7 +8,7 @@ from draftnik.keys import (
     GAMEWEEK_DATA_KEY,
     PLAYER_DATA_KEY,
     PLAYER_ID_KEY,
-    TEAM_DATA_KEY
+    TEAM_DATA_KEY,
 )
 from helpers.instances import redis
 
@@ -23,6 +23,11 @@ def store_players(r):
         "team",
         "team_code",
         "photo",
+        "element_type",
+        "now_cost",
+        "status",
+        "news",
+        "news_added",
     ]
     field_getter = itemgetter(*FIELDS)
 
@@ -53,7 +58,7 @@ def store_teams(r):
 
 
 def store_gameweeks(r):
-    FIELDS = ["id", "name", "deadline_time"]
+    FIELDS = ["id", "name", "deadline_time", "finished"]
     field_getter = itemgetter(*FIELDS)
 
     gameweek_data = {}
