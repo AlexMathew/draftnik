@@ -9,6 +9,7 @@ from draftnik.keys import (
     PLAYER_DATA_KEY,
     PLAYER_ID_KEY,
     TEAM_DATA_KEY,
+    TEAM_FIXTURES_DATA_KEY,
 )
 from helpers.instances import redis
 
@@ -82,3 +83,27 @@ def fetch_static_data(players=True, teams=False, gameweeks=False):
 
     if gameweeks:
         store_gameweeks(r)
+
+
+def fetch_fixtures(start, end):
+    URL = "https://fantasy.premierleague.com/api/fixtures/"
+
+    fixtures = defaultdict(lambda: defaultdict(list))
+    for gw in range(start, end + 1):
+        print(gw)
+        r = requests.get(URL, params={"event": gw})
+        data = r.json()
+        for match in data:
+            event, team_a, team_h = (
+                match.get("event"),
+                match.get("team_a"),
+                match.get("team_h"),
+            )
+            fixtures[team_h][event].append(
+                {"opponent": team_a, "location": "H", "gw": event}
+            )
+            fixtures[team_a][event].append(
+                {"opponent": team_h, "location": "A", "gw": event}
+            )
+
+    redis.set(TEAM_FIXTURES_DATA_KEY, json.dumps(fixtures))
