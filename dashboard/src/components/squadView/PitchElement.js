@@ -7,6 +7,9 @@ import { connect } from "react-redux";
 import { ELEMENT_TYPES } from "../../constants";
 
 const styles = (theme) => ({
+  element: {
+    width: "15%",
+  },
   jerseyContainer: {
     textAlign: "center",
   },
@@ -15,6 +18,17 @@ const styles = (theme) => ({
       height: "8vh",
     },
     height: "5vh",
+  },
+  name: {
+    fontWeight: "bold",
+    textAlign: "center",
+    background: "darkgreen",
+    color: "white",
+  },
+  price: {
+    fontWeight: "bold",
+    textAlign: "center",
+    background: "palegreen",
   },
 });
 
@@ -29,7 +43,7 @@ class PitchElement extends React.Component {
     const team = teams[element.team];
 
     return (
-      <Grid>
+      <Grid className={classes.element}>
         <Grid item className={classes.jerseyContainer}>
           <img
             className={classes.jersey}
@@ -38,8 +52,11 @@ class PitchElement extends React.Component {
           />
         </Grid>
         <Grid item xs>
-          <Typography>
+          <Typography className={classes.name}>
             {element.web_name} ({team.short_name})
+          </Typography>
+          <Typography className={classes.price}>
+            {element.now_cost / 10}
           </Typography>
         </Grid>
       </Grid>
