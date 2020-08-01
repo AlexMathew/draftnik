@@ -26,7 +26,7 @@ class Pitch extends React.Component {
             backgroundImage: `url("pitch.jpg")`,
           }}
         >
-          {this.props.selectedDraft !== null ? <SquadDisplay /> : ""}
+          <SquadDisplay />
         </div>
       </Container>
     );

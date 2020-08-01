@@ -1,39 +1,40 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
 import { connect } from "react-redux";
+import _ from "lodash";
+import PitchRow from "./PitchRow";
+import { ELEMENT_TYPES } from "../../constants";
 
-const styles = (theme) => ({});
+const styles = (theme) => ({
+  elementsContainer: {
+    paddingTop: theme.spacing(5),
+  },
+});
 
 class SquadDisplay extends React.Component {
-  displaySquadEntry = (entry) => {
-    const player = this.props.players[entry];
-    const team = this.props.teams[player.team];
-
-    return (
-      <Typography variant="h6" gutterBottom>
-        {player.web_name} ({team.short_name})
-      </Typography>
-    );
-  };
-
   render() {
-    const {
-      // classes,
-      drafts,
-      selectedGameweek,
-      selectedDraft,
-    } = this.props;
+    const { classes, drafts, selectedGameweek, selectedDraft } = this.props;
+
+    if (selectedDraft === null) {
+      return null;
+    }
+
     const draft =
       selectedDraft !== null ? drafts[selectedGameweek][selectedDraft] : null;
+    const players = draft
+      ? draft.entries.map((entry) => this.props.players[entry])
+      : [];
+    const elements = _.groupBy(players, "element_type");
 
     return (
-      <div>
-        {draft.entries.map((entry, index) => (
-          <div key={index}>{this.displaySquadEntry(entry)}</div>
-        ))}
-      </div>
+      <Container maxWidth="lg" className={classes.elementsContainer}>
+        <PitchRow elements={elements[ELEMENT_TYPES.GOALKEEPERS]}></PitchRow>
+        <PitchRow elements={elements[ELEMENT_TYPES.DEFENDERS]}></PitchRow>
+        <PitchRow elements={elements[ELEMENT_TYPES.MIDFIELDERS]}></PitchRow>
+        <PitchRow elements={elements[ELEMENT_TYPES.FORWARDS]}></PitchRow>
+      </Container>
     );
   }
 }
