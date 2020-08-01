@@ -19,7 +19,12 @@ class SquadDisplay extends React.Component {
   };
 
   render() {
-    const { classes, drafts, selectedGameweek, selectedDraft } = this.props;
+    const {
+      // classes,
+      drafts,
+      selectedGameweek,
+      selectedDraft,
+    } = this.props;
 
     return (
       <div>
