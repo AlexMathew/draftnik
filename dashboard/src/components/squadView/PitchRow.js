@@ -5,8 +5,11 @@ import Grid from "@material-ui/core/Grid";
 import PitchElement from "./PitchElement";
 
 const styles = () => ({
-  PitchRow: {
+  pitchRow: {
     height: "20vh",
+  },
+  pitchRowGk: {
+    height: "15vh",
   },
 });
 
@@ -20,7 +23,9 @@ class PitchRow extends React.Component {
         direction="row"
         justify="space-evenly"
         alignItems="center"
-        className={classes.PitchRow}
+        className={
+          this.props.goalkeepers ? classes.pitchRowGk : classes.pitchRow
+        }
       >
         {this.props.elements.map((element) => (
           <PitchElement key={element.id} element={element} />

@@ -36,7 +36,10 @@ class SquadDisplay extends React.Component {
 
     return (
       <Container maxWidth="lg" className={classes.elementsContainer}>
-        <PitchRow elements={elements[ELEMENT_TYPES.GOALKEEPERS]}></PitchRow>
+        <PitchRow
+          elements={elements[ELEMENT_TYPES.GOALKEEPERS]}
+          goalkeepers={true}
+        ></PitchRow>
         <PitchRow elements={elements[ELEMENT_TYPES.DEFENDERS]}></PitchRow>
         <PitchRow elements={elements[ELEMENT_TYPES.MIDFIELDERS]}></PitchRow>
         <PitchRow elements={elements[ELEMENT_TYPES.FORWARDS]}></PitchRow>
