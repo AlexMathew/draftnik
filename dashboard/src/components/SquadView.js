@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
+import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
-import SquadDisplay from "./SquadDisplay";
+import Pitch from "./squadView/Pitch";
 
 const styles = (theme) => ({
   toolbar: {
@@ -17,32 +17,25 @@ const styles = (theme) => ({
     flexGrow: 1,
     paddingTop: theme.spacing(3),
   },
-  pitch: {
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-    height: "85vh",
-    // width: "100%",
+  title: {
+    display: "flex",
+    justifyContent: "center",
   },
 });
 
 class SquadView extends React.Component {
   render() {
-    const { classes } = this.props;
+    const { classes, drafts, selectedGameweek, selectedDraft } = this.props;
+    const draft =
+      selectedDraft !== null ? drafts[selectedGameweek][selectedDraft] : null;
 
     return (
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Container maxWidth="lg">
-          <div
-            className={classes.pitch}
-            style={{
-              backgroundImage: `url("pitch.jpg")`,
-            }}
-          >
-            {this.props.selectedDraft !== null ? <SquadDisplay /> : ""}
-          </div>
-        </Container>
+        <Typography variant="h5" className={classes.title}>
+          {draft ? draft.name : "DRAFT"}
+        </Typography>
+        <Pitch />
       </main>
     );
   }
@@ -54,6 +47,8 @@ SquadView.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
+    drafts: state.drafts,
+    selectedGameweek: state.selected.gameweek,
     selectedDraft: state.selected.draft,
   };
 };

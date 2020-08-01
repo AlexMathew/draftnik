@@ -25,10 +25,12 @@ class SquadDisplay extends React.Component {
       selectedGameweek,
       selectedDraft,
     } = this.props;
+    const draft =
+      selectedDraft !== null ? drafts[selectedGameweek][selectedDraft] : null;
 
     return (
       <div>
-        {drafts[selectedGameweek][selectedDraft].entries.map((entry, index) => (
+        {draft.entries.map((entry, index) => (
           <div key={index}>{this.displaySquadEntry(entry)}</div>
         ))}
       </div>
