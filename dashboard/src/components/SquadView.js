@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
 import { connect } from "react-redux";
 import SquadDisplay from "./SquadDisplay";
 
@@ -14,7 +15,14 @@ const styles = (theme) => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    paddingTop: theme.spacing(3),
+  },
+  pitch: {
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    height: "85vh",
+    // width: "100%",
   },
 });
 
@@ -25,7 +33,16 @@ class SquadView extends React.Component {
     return (
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        {this.props.selectedDraft !== null ? <SquadDisplay /> : ""}
+        <Container maxWidth="lg">
+          <div
+            className={classes.pitch}
+            style={{
+              backgroundImage: `url("pitch.jpg")`,
+            }}
+          >
+            {this.props.selectedDraft !== null ? <SquadDisplay /> : ""}
+          </div>
+        </Container>
       </main>
     );
   }
