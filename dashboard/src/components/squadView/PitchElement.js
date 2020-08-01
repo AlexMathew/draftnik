@@ -4,6 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
+import _ from "lodash";
 import { ELEMENT_TYPES } from "../../constants";
 
 const styles = (theme) => ({
@@ -30,10 +31,14 @@ const styles = (theme) => ({
     textAlign: "center",
     background: "palegreen",
   },
-  fixture: {
+  fixtures: {
     fontWeight: "bold",
+    fontSize: "small",
     textAlign: "center",
     background: "whitesmoke",
+  },
+  gwFixture: {
+    width: "30%",
   },
 });
 
@@ -44,15 +49,13 @@ class PitchElement extends React.Component {
   };
 
   render() {
-    const {
-      classes,
-      element,
-      teams,
-      selectedGameweek,
-      teamFixtures,
-    } = this.props;
+    const { classes, element, teams, teamFixtures } = this.props;
+    const selectedGameweek = parseInt(this.props.selectedGameweek);
     const team = teams[element.team];
-    const fixtures = teamFixtures[element.team][selectedGameweek];
+    const fixtures = _.pick(
+      teamFixtures[element.team],
+      _.range(selectedGameweek, selectedGameweek + 3)
+    );
 
     return (
       <Grid className={classes.element}>
@@ -70,12 +73,25 @@ class PitchElement extends React.Component {
           <Typography className={classes.price}>
             {element.now_cost / 10}
           </Typography>
-          <Typography className={classes.fixture}>
-            {fixtures.map(
-              (fixture) =>
-                `${teams[fixture.opponent].short_name} (${fixture.location})`
-            )}
-          </Typography>
+          <Grid container direction="row" className={classes.fixtures}>
+            {_.values(fixtures).map((gwFixtures, index) => (
+              <Grid
+                item
+                xs
+                className={classes.gwFixture}
+                key={`${element.id}_${index}`}
+              >
+                {gwFixtures
+                  .map(
+                    (fixture) =>
+                      `${teams[fixture.opponent].short_name} (${
+                        fixture.location
+                      })`
+                  )
+                  .join(" | ")}
+              </Grid>
+            ))}
+          </Grid>
         </Grid>
       </Grid>
     );
