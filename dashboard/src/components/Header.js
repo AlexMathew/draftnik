@@ -5,12 +5,22 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import { connect } from "react-redux";
+import { switchMobile } from "../actions";
 import { AUTH_TOKEN_FIELD } from "../constants";
 import history from "../history";
 
 const styles = (theme) => ({
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+    [theme.breakpoints.up("sm")]: {
+      display: "none",
+    },
   },
   grow: {
     flexGrow: 1,
@@ -29,6 +39,15 @@ class Header extends React.Component {
     return (
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={this.props.switchMobile}
+            className={classes.menuButton}
+          >
+            <MenuIcon />
+          </IconButton>
           <Typography variant="h6" color="inherit" className={classes.grow}>
             Draftnik
           </Typography>
@@ -50,4 +69,11 @@ Header.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Header);
+const mapStateToProps = (state) => {
+  return {
+    mobileOpen: state.responsive.mobileOpen,
+  };
+};
+
+const wrappedHeader = connect(mapStateToProps, { switchMobile })(Header);
+export default withStyles(styles)(wrappedHeader);

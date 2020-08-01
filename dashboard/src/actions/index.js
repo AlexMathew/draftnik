@@ -5,10 +5,15 @@ import {
   LOAD_TEAM_DATA,
   SELECT_DRAFT,
   SELECT_GAMEWEEK,
+  SWITCH_MOBILE,
 } from "./types";
 import draftnik from "../api/draftnik";
 import history from "../history";
 import { AUTH_TOKEN_FIELD } from "../constants";
+
+export const switchMobile = () => {
+  return { type: SWITCH_MOBILE };
+};
 
 export const fetchStaticData = () => async (dispatch) => {
   const authToken = localStorage.getItem(AUTH_TOKEN_FIELD);

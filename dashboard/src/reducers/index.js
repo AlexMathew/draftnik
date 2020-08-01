@@ -4,6 +4,7 @@ import playersReducer from "./playersReducer";
 import gameweeksReducer from "./gameweeksReducer";
 import draftsReducer from "./draftsReducer";
 import selectionsReducer from "./selectionsReducer";
+import responsiveReducer from "./responsiveReducer";
 
 export default combineReducers({
   teams: teamsReducer,
@@ -11,4 +12,5 @@ export default combineReducers({
   gameweeks: gameweeksReducer,
   drafts: draftsReducer,
   selected: selectionsReducer,
+  responsive: responsiveReducer,
 });
