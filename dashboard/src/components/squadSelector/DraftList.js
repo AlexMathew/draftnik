@@ -4,10 +4,17 @@ import { withStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import clsx from "clsx";
 import { connect } from "react-redux";
 import { selectDraft, switchMobile } from "../../actions";
 
-const styles = () => ({});
+const styles = () => ({
+  selected: {
+    background: "whitesmoke",
+    color: "blue",
+  },
+});
 
 class DraftList extends React.Component {
   selectDraft = (index) => {
@@ -15,12 +22,12 @@ class DraftList extends React.Component {
     this.props.switchMobile();
   };
 
+  isSelectedDraft = (index) => {
+    return index === this.props.selectedDraft;
+  };
+
   render() {
-    const {
-      //   classes,
-      drafts,
-      selectedGameweek,
-    } = this.props;
+    const { classes, drafts, selectedGameweek } = this.props;
 
     return (
       <List>
@@ -30,8 +37,14 @@ class DraftList extends React.Component {
                 button
                 key={index}
                 onClick={() => this.selectDraft(index)}
+                classes={{
+                  root: clsx({
+                    [classes.selected]: this.isSelectedDraft(index),
+                  }),
+                }}
               >
                 <ListItemText primary={draft.name} />
+                <ChevronRightIcon />
               </ListItem>
             ))
           : ""}
@@ -48,6 +61,7 @@ const mapStateToProps = (state) => {
   return {
     gameweeks: state.gameweeks,
     selectedGameweek: state.selected.gameweek,
+    selectedDraft: state.selected.draft,
     drafts: state.drafts,
   };
 };
