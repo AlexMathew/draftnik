@@ -15,26 +15,26 @@ const styles = (theme) => ({
     textAlign: "center",
   },
   jersey: {
-    [theme.breakpoints.up("lg")]: {
-      height: "8vh",
+    [theme.breakpoints.down("md")]: {
+      height: "5vh",
     },
-    height: "5vh",
+    height: "8vh",
   },
   name: {
-    [theme.breakpoints.up("lg")]: {
-      fontSize: "medium",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "small",
     },
-    fontSize: "small",
+    fontSize: "medium",
     fontWeight: "bold",
     textAlign: "center",
     background: "darkgreen",
     color: "white",
   },
   price: {
-    [theme.breakpoints.up("lg")]: {
-      fontSize: "medium",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "small",
     },
-    fontSize: "small",
+    fontSize: "medium",
     fontWeight: "bold",
     textAlign: "center",
     background: "palegreen",

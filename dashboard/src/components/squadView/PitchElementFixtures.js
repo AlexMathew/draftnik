@@ -8,11 +8,11 @@ import _ from "lodash";
 
 const styles = (theme) => ({
   fixtures: {
-    [theme.breakpoints.up("lg")]: {
-      fontSize: "small",
+    [theme.breakpoints.down("md")]: {
+      fontSize: "x-small",
     },
     fontWeight: "bold",
-    fontSize: "x-small",
+    fontSize: "small",
     textAlign: "center",
     background: "whitesmoke",
   },
