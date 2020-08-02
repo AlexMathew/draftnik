@@ -47,6 +47,12 @@ class PitchElement extends React.Component {
     return `jerseys/${isGk ? "gk" : "out"}/${element.team}.png`;
   };
 
+  playerCost = (element) => {
+    return `${(element.now_cost / 10).toString()}${
+      element.now_cost % 10 === 0 ? ".0" : ""
+    }`;
+  };
+
   render() {
     const { classes, element, teams } = this.props;
     const team = teams[element.team];
@@ -65,7 +71,7 @@ class PitchElement extends React.Component {
             {element.web_name} ({team.short_name})
           </Typography>
           <Typography className={classes.price}>
-            {element.now_cost / 10}
+            {this.playerCost(element)}
           </Typography>
           <PitchElementFixtures element={element} />
         </Grid>
