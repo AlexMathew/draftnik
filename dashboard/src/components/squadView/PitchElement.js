@@ -21,12 +21,20 @@ const styles = (theme) => ({
     height: "5vh",
   },
   name: {
+    [theme.breakpoints.up("lg")]: {
+      fontSize: "medium",
+    },
+    fontSize: "small",
     fontWeight: "bold",
     textAlign: "center",
     background: "darkgreen",
     color: "white",
   },
   price: {
+    [theme.breakpoints.up("lg")]: {
+      fontSize: "medium",
+    },
+    fontSize: "small",
     fontWeight: "bold",
     textAlign: "center",
     background: "palegreen",

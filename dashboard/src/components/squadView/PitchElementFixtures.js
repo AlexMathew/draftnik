@@ -5,10 +5,13 @@ import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
 import _ from "lodash";
 
-const styles = () => ({
+const styles = (theme) => ({
   fixtures: {
+    [theme.breakpoints.up("lg")]: {
+      fontSize: "small",
+    },
     fontWeight: "bold",
-    fontSize: "small",
+    fontSize: "x-small",
     textAlign: "center",
     background: "whitesmoke",
   },
