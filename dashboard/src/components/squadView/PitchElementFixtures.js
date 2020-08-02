@@ -38,12 +38,19 @@ class PitchElementFixtures extends React.Component {
             className={classes.gwFixture}
             key={`${element.id}_${index}`}
           >
-            {gwFixtures
-              .map(
-                (fixture) =>
-                  `${teams[fixture.opponent].short_name} (${fixture.location})`
-              )
-              .join(" | ")}
+            <Grid container direction="column">
+              {gwFixtures.map((fixture) => (
+                <Grid
+                  item
+                  xs
+                  key={`${element.id}_${fixture.gw}-${fixture.opponent}`}
+                >
+                  {`${teams[fixture.opponent].short_name} (${
+                    fixture.location
+                  })`}
+                </Grid>
+              ))}
+            </Grid>
           </Grid>
         ))}
       </Grid>
