@@ -35,6 +35,21 @@ services:
     volumes:
       - draftnik-data-redis:/data
 
+  celery:
+    container_name: draftnik-celery
+    env_file:
+      - ops/.env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+      - redis
+    command: celery -A draftnik worker --concurrency=20 --loglevel=info
+    restart: on-failure:5
+    volumes:
+      - .:/code
+
 volumes:
   draftnik-ipython:
   draftnik-data-postgres:
