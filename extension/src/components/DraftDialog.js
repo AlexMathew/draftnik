@@ -21,10 +21,15 @@ const styles = () => ({
 });
 
 class DraftDialog extends React.Component {
+  state = {
+    name: "",
+  };
+
   saveDraft = () => {
+    const name = this.state.name;
     const squad = getPlayers();
     draftnik
-      .post("/draft/", { squad })
+      .post("/draft/", { squad, name })
       .then(() => {})
       .catch((err) => {
         console.log(err);
@@ -66,6 +71,9 @@ class DraftDialog extends React.Component {
             label="Draft Name"
             type="text"
             fullWidth
+            onChange={(e) => {
+              this.setState({ name: e.target.value });
+            }}
           />
         </DialogContent>
         <DialogActions>
