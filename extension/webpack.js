@@ -3,6 +3,7 @@ var webpack = require("webpack"),
   env = require("./utils/env"),
   CleanWebpackPlugin = require("clean-webpack-plugin").CleanWebpackPlugin,
   CopyWebpackPlugin = require("copy-webpack-plugin"),
+  HtmlWebpackPlugin = require("html-webpack-plugin"),
   WriteFilePlugin = require("write-file-webpack-plugin");
 
 var fileExtensions = [
@@ -21,6 +22,7 @@ var fileExtensions = [
 var options = {
   mode: process.env.NODE_ENV || "development",
   entry: {
+    options: path.join(__dirname, "src", "options.js"),
     content: path.join(__dirname, "src", "content.js"),
   },
   output: {
@@ -82,6 +84,11 @@ var options = {
         to: "icons",
       },
     ]),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, "public", "options.html"),
+      filename: "options.html",
+      chunks: ["options"],
+    }),
     new WriteFilePlugin(),
   ],
 };
