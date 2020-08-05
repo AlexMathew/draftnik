@@ -1,10 +1,10 @@
 import React from "react";
-import DraftDialog from "./DraftDialog";
+import DraftDialog from "./content/DraftDialog";
 import { getByXpath } from "../utils/xpath";
 
 MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
-class App extends React.Component {
+class ContentScript extends React.Component {
   state = {
     modalOpen: false,
   };
@@ -71,4 +71,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default ContentScript;

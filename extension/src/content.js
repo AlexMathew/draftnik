@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./components/App";
+import ContentScript from "./components/ContentScript";
 
 const reactRoot = document.createElement("div");
 reactRoot.classList = "draftnik-root";
 
-ReactDOM.render(<App />, reactRoot);
+ReactDOM.render(<ContentScript />, reactRoot);

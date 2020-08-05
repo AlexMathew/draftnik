@@ -8,8 +8,9 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { getPlayers } from "../utils/players";
-import draftnik from "../api/draftnik";
+import { getPlayers } from "../../utils/players";
+import draftnik from "../../api/draftnik";
+import { AUTH_TOKEN_FIELD } from "../../constants";
 
 const styles = () => ({
   smallSize: {
@@ -28,12 +29,25 @@ class DraftDialog extends React.Component {
   saveDraft = () => {
     const name = this.state.name;
     const squad = getPlayers();
-    draftnik
-      .post("/draft/", { squad, name })
-      .then(() => {})
-      .catch((err) => {
-        console.log(err);
-      });
+    chrome.storage.local.get([AUTH_TOKEN_FIELD], (result) => {
+      const { auth_token } = result[[AUTH_TOKEN_FIELD]];
+      if (auth_token !== undefined && auth_token !== null) {
+        draftnik
+          .post(
+            "/draft/",
+            { squad, name },
+            {
+              headers: {
+                Authorization: `Token ${auth_token}`,
+              },
+            }
+          )
+          .then(() => {})
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
   };
 
   handleSaveClick = () => {
