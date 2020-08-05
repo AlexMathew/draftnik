@@ -1,11 +1,22 @@
 import React from "react";
+import DraftDialog from "./DraftDialog";
 import { getByXpath } from "../utils/xpath";
-import { getPlayers } from "../utils/players";
-import draftnik from "../api/draftnik";
 
 MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
 class App extends React.Component {
+  state = {
+    modalOpen: false,
+  };
+
+  handleOpen = () => {
+    this.setState({ modalOpen: true });
+  };
+
+  handleClose = () => {
+    this.setState({ modalOpen: false });
+  };
+
   insertSaveButton = (transfersButton) => {
     const existingSaveDiv = getByXpath(`//div[@class="draftnik"]`);
     if (!existingSaveDiv) {
@@ -16,7 +27,7 @@ class App extends React.Component {
       const saveButton = document.createElement("button");
       saveButton.disabled = transfersButton.disabled;
       saveButton.classList = transfersButton.classList;
-      saveButton.onclick = this.saveDraft;
+      saveButton.onclick = this.handleOpen;
       const saveText = document.createTextNode("Save Draft");
       saveButton.appendChild(saveText);
       saveDiv.appendChild(saveButton);
@@ -34,16 +45,6 @@ class App extends React.Component {
         attributes: true,
       });
     }
-  };
-
-  saveDraft = () => {
-    const squad = getPlayers();
-    draftnik
-      .post("/save/", { squad })
-      .then(() => {})
-      .catch((err) => {
-        console.log(err);
-      });
   };
 
   componentDidMount() {
@@ -64,7 +65,9 @@ class App extends React.Component {
   }
 
   render() {
-    return null;
+    return (
+      <DraftDialog open={this.state.modalOpen} handleClose={this.handleClose} />
+    );
   }
 }
 
