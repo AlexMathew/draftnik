@@ -1,7 +1,6 @@
 import uuid
 
 from django.conf import settings
-from django.contrib.postgres.fields import JSONField
 from django.db import models
 
 
@@ -15,7 +14,7 @@ class Draft(models.Model):
     )
     name = models.CharField(max_length=256, default=get_random_draft_name)
     gameweek = models.IntegerField(blank=False, null=False)
-    entries = JSONField(default=list)
+    entries = models.JSONField(default=list)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
