@@ -99,38 +99,44 @@ class SignIn extends React.Component {
             {error.general || ""}
           </Typography>
           <form className={classes.form} noValidate onSubmit={this.login}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="username"
-              label="Username"
-              name="username"
-              autoComplete="username"
-              autoFocus
-              onChange={(e) => {
-                this.setState({ username: e.target.value });
-              }}
-              error={error.username !== undefined && error.username !== ""}
-              helperText={error.username}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              onChange={(e) => {
-                this.setState({ password: e.target.value });
-              }}
-              error={error.password !== undefined && error.password !== ""}
-              helperText={error.password}
-            />
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="username"
+                  label="Username"
+                  name="username"
+                  autoComplete="username"
+                  autoFocus
+                  onChange={(e) => {
+                    this.setState({ username: e.target.value });
+                  }}
+                  error={error.username !== undefined && error.username !== ""}
+                  helperText={error.username}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  onChange={(e) => {
+                    this.setState({ password: e.target.value });
+                  }}
+                  error={error.password !== undefined && error.password !== ""}
+                  helperText={error.password}
+                />
+              </Grid>
+            </Grid>
             <Button
               type="submit"
               fullWidth

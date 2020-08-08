@@ -93,13 +93,14 @@ class SignUp extends React.Component {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                  autoComplete="username"
-                  name="username"
                   variant="outlined"
+                  margin="normal"
                   required
                   fullWidth
                   id="username"
                   label="Username"
+                  name="username"
+                  autoComplete="username"
                   autoFocus
                   onChange={(e) => {
                     this.setState({ username: e.target.value });
@@ -111,6 +112,7 @@ class SignUp extends React.Component {
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"
+                  margin="normal"
                   required
                   fullWidth
                   name="password"
