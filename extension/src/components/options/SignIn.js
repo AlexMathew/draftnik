@@ -27,7 +27,7 @@ const styles = (theme) => ({
   },
   form: {
     width: "100%",
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(3),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -48,6 +48,17 @@ class SignIn extends React.Component {
       password: "",
     },
   };
+
+  componentDidMount() {
+    const state = this.props.location.state;
+    if (state) {
+      if (state.success) {
+        this.setState({
+          error: { general: "You have created your new account." },
+        });
+      }
+    }
+  }
 
   finishLogin = ({ auth_token, username }) => {
     chrome.storage.local.set({

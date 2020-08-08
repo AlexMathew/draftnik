@@ -59,7 +59,10 @@ class SignUp extends React.Component {
         password,
       })
       .then(() => {
-        this.props.history.push("/signin");
+        this.props.history.push({
+          pathname: "/signin",
+          state: { success: true },
+        });
       })
       .catch((err) => {
         if (err.response) {
