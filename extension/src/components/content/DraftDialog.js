@@ -10,7 +10,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { getPlayers } from "../../utils/players";
 import draftnik from "../../api/draftnik";
-import { AUTH_TOKEN_FIELD } from "../../constants";
+import { AUTH_TOKEN_FIELD, ACTIONS } from "../../constants";
 
 const styles = () => ({
   smallSize: {
@@ -30,22 +30,29 @@ class DraftDialog extends React.Component {
     const name = this.state.name;
     const squad = getPlayers();
     chrome.storage.local.get([AUTH_TOKEN_FIELD], (result) => {
-      const { auth_token } = result[[AUTH_TOKEN_FIELD]];
-      if (auth_token !== undefined && auth_token !== null) {
-        draftnik
-          .post(
-            "/draft/",
-            { squad, name },
-            {
-              headers: {
-                Authorization: `Token ${auth_token}`,
-              },
-            }
-          )
-          .then(() => {})
-          .catch((err) => {
-            console.log(err);
-          });
+      if (AUTH_TOKEN_FIELD in result) {
+        const { auth_token } = result[[AUTH_TOKEN_FIELD]];
+        if (auth_token !== undefined && auth_token !== null) {
+          draftnik
+            .post(
+              "/draft/",
+              { squad, name },
+              {
+                headers: {
+                  Authorization: `Token ${auth_token}`,
+                },
+              }
+            )
+            .then(() => {})
+            .catch((err) => {
+              if (err.response.status === 401) {
+                chrome.storage.local.remove([AUTH_TOKEN_FIELD]);
+                chrome.runtime.sendMessage({ action: ACTIONS.OPEN_OPTIONS });
+              }
+            });
+        }
+      } else {
+        chrome.runtime.sendMessage({ action: ACTIONS.OPEN_OPTIONS });
       }
     });
   };
