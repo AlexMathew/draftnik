@@ -40,25 +40,22 @@ const styles = (theme) => ({
 class SignUp extends React.Component {
   state = {
     username: "",
-    email: "",
     password: "",
     error: {
       general: "",
       username: "",
-      email: "",
       password: "",
     },
   };
 
   signup = (event) => {
     event.preventDefault();
-    const { username, email, password } = this.state;
-    const fields = ["username", "email", "password"];
+    const { username, password } = this.state;
+    const fields = ["username", "password"];
 
     draftnik
       .post("/auth/users/", {
         username,
-        email,
         password,
       })
       .then(() => {
@@ -109,21 +106,6 @@ class SignUp extends React.Component {
                   }}
                   error={error.username !== undefined && error.username !== ""}
                   helperText={error.username}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  onChange={(e) => {
-                    this.setState({ email: e.target.value });
-                  }}
-                  error={error.email !== undefined && error.email !== ""}
-                  helperText={error.email}
                 />
               </Grid>
               <Grid item xs={12}>
