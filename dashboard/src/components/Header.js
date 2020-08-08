@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
+import Avatar from "@material-ui/core/Avatar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
@@ -25,7 +26,14 @@ const styles = (theme) => ({
     },
   },
   grow: {
+    display: "flex",
     flexGrow: 1,
+    alignItems: "center",
+  },
+  logo: {
+    margin: theme.spacing(1),
+    width: theme.spacing(4),
+    height: theme.spacing(4),
   },
 });
 
@@ -50,9 +58,12 @@ class Header extends React.Component {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" color="inherit" className={classes.grow}>
-            Draftnik
-          </Typography>
+          <div className={classes.grow}>
+            <Avatar src="/icons/logo128.png" className={classes.logo} />
+            <Typography variant="h5" color="inherit">
+              Draftnik
+            </Typography>
+          </div>
           <IconButton
             color="inherit"
             onClick={() => {
