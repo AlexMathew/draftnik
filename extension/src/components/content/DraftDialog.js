@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
+import Avatar from "@material-ui/core/Avatar";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -12,12 +13,21 @@ import { getPlayers } from "../../utils/players";
 import draftnik from "../../api/draftnik";
 import { AUTH_TOKEN_FIELD, ACTIONS } from "../../constants";
 
-const styles = () => ({
+const styles = (theme) => ({
+  title: {
+    display: "flex",
+    alignItems: "center",
+  },
   smallSize: {
     fontSize: "small",
   },
   mediumSize: {
     fontSize: "medium",
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    width: theme.spacing(4),
+    height: theme.spacing(4),
   },
 });
 
@@ -74,10 +84,15 @@ class DraftDialog extends React.Component {
         <DialogTitle
           id="form-dialog-title"
           disableTypography
+          className={classes.title}
           classes={{
             root: classes.mediumSize,
           }}
         >
+          <Avatar
+            src={chrome.extension.getURL("icons/logo48.png")}
+            className={classes.avatar}
+          />
           Save Draft
         </DialogTitle>
         <DialogContent dividers>

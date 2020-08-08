@@ -9,6 +9,9 @@
     "48": "icons/logo48.png",
     "128": "icons/logo128.png"
   },
+  "web_accessible_resources": [
+    "icons/logo48.png"
+  ],
   "content_scripts": [{
     "matches": ["https://fantasy.premierleague.com/*"],
     "js": ["content.bundle.js"],
