@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import withStyles from "@material-ui/core/styles/withStyles";
+import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -27,6 +28,11 @@ const styles = (theme) => ({
     padding: `${theme.spacing(2)}px ${theme.spacing(3)}px ${theme.spacing(
       3
     )}px`,
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    width: theme.spacing(7),
+    height: theme.spacing(7),
   },
   logout: {
     margin: theme.spacing(3, 0, 2),
@@ -70,6 +76,7 @@ class LoggedIn extends React.Component {
       <main className={classes.main}>
         <CssBaseline />
         <Paper className={classes.paper}>
+          <Avatar src="/icons/logo128.png" className={classes.avatar} />
           <Typography component="h4" variant="h4">
             Logged in as {this.state.username}.
           </Typography>
