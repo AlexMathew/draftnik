@@ -30,11 +30,6 @@ var options = {
     path: path.join(__dirname, "build"),
     filename: "[name].bundle.js",
   },
-  optimization: {
-    splitChunks: {
-      chunks: "all",
-    },
-  },
   performance: {
     maxEntrypointSize: 512000,
     maxAssetSize: 512000,
