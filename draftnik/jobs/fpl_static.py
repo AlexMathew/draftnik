@@ -1,4 +1,5 @@
 import json
+import logging
 from collections import defaultdict
 from operator import itemgetter
 
@@ -12,6 +13,8 @@ from draftnik.keys import (
     TEAM_FIXTURES_DATA_KEY,
 )
 from helpers.instances import redis
+
+logger = logging.getLogger(__name__)
 
 
 def store_players(r):
@@ -38,6 +41,7 @@ def store_players(r):
         data = {key: value for key, value in zip(FIELDS, field_getter(player))}
         player_data[data.get("id")] = data
 
+        logger.debug(f'Player - {data.get("web_name")}')
         redis.set(
             PLAYER_ID_KEY(data.get("web_name"), data.get("team_code")), data.get("id")
         )
@@ -54,6 +58,7 @@ def store_teams(r):
     for team in teams:
         data = {key: value for key, value in zip(FIELDS, field_getter(team))}
         team_data[data.get("id")] = data
+        logger.debug(f'Team - {data.get("name")}')
 
     redis.set(TEAM_DATA_KEY, json.dumps(team_data))
 
@@ -67,6 +72,7 @@ def store_gameweeks(r):
     for gameweek in gameweeks:
         data = {key: value for key, value in zip(FIELDS, field_getter(gameweek))}
         gameweek_data[data.get("id")] = data
+        logger.debug(f'Gameweek - {data.get("name")}')
 
     redis.set(GAMEWEEK_DATA_KEY, json.dumps(gameweek_data))
 
@@ -90,7 +96,7 @@ def fetch_fixtures(start, end):
 
     fixtures = defaultdict(lambda: defaultdict(list))
     for gw in range(start, end + 1):
-        print(gw)
+        logger.debug(f"Fixtures GW#{gw}")
         r = requests.get(URL, params={"event": gw})
         data = r.json()
         for match in data:
