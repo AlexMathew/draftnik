@@ -28,6 +28,7 @@ DEBUG = True if os.environ.get("DEBUG") == "true" else False
 ALLOWED_HOSTS = [
     "localhost",
     "xp5xqoen52.execute-api.us-east-1.amazonaws.com",
+    "api.draftnik.cc",
 ]
 
 
