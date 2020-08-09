@@ -19,6 +19,7 @@ celery = "^4.4.7"
 ipython = "^7.16.1"
 ipdb = "^0.13.3"
 black = "^19.10b0"
+django-s3-storage = "^0.13.3"
 
 [tool.isort]
 multi_line_output=3
