@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "drafter",
     "django_s3_storage",
+    "zappa_django_utils",
 ]
 
 MIDDLEWARE = [
