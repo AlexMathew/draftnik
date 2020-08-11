@@ -32,8 +32,8 @@ const styles = (theme) => ({
   },
   logo: {
     margin: theme.spacing(1),
-    width: theme.spacing(4),
-    height: theme.spacing(4),
+    width: theme.spacing(5),
+    height: theme.spacing(5),
   },
 });
 
@@ -59,7 +59,7 @@ class Header extends React.Component {
             <MenuIcon />
           </IconButton>
           <div className={classes.grow}>
-            <Avatar src="/icons/logo128.png" className={classes.logo} />
+            <Avatar src="/icons/logo192.png" className={classes.logo} />
             <Typography variant="h5" color="inherit">
               Draftnik
             </Typography>
