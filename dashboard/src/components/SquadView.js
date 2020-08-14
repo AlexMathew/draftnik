@@ -20,6 +20,8 @@ const styles = (theme) => ({
   title: {
     display: "flex",
     justifyContent: "center",
+    height: "3vh",
+    fontWeight: "bold",
   },
 });
 
@@ -33,7 +35,7 @@ class SquadView extends React.Component {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Typography variant="h5" className={classes.title}>
-          {draft ? draft.name : "DRAFT"}
+          {draft ? draft.name : ""}
         </Typography>
         <Pitch />
       </main>
