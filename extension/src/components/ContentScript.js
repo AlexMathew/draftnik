@@ -51,11 +51,14 @@ class ContentScript extends React.Component {
     console.log("Draftnik");
 
     var observer = new MutationObserver(() => {
+      const initialButton = getByXpath(
+        `//button[contains(text(),'Enter Squad')]`
+      );
       const transfersButton = getByXpath(
         `//button[contains(text(),'Make Transfers')]`
       );
-      if (transfersButton) {
-        this.insertSaveButton(transfersButton);
+      if (initialButton || transfersButton) {
+        this.insertSaveButton(initialButton || transfersButton);
       }
     });
     observer.observe(document, {
