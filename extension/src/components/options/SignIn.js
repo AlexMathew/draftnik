@@ -5,6 +5,13 @@ import { AuthFlow, styles } from "./AuthFlow";
 
 class SignIn extends AuthFlow {
   componentDidMount() {
+    chrome.storage.local.get([AUTH_TOKEN_FIELD], (result) => {
+      const token = result[[AUTH_TOKEN_FIELD]];
+      if (token !== undefined && token.auth_token !== null) {
+        this.props.history.push("/");
+      }
+    });
+
     const state = this.props.location.state;
     if (state) {
       if (state.success) {
