@@ -31,23 +31,25 @@ class DraftList extends React.Component {
 
     return (
       <List>
-        {selectedGameweek in drafts
-          ? drafts[selectedGameweek].map((draft, index) => (
-              <ListItem
-                button
-                key={index}
-                onClick={() => this.selectDraft(index)}
-                classes={{
-                  root: clsx({
-                    [classes.selected]: this.isSelectedDraft(index),
-                  }),
-                }}
-              >
-                <ListItemText primary={draft.name} />
-                <ChevronRightIcon />
-              </ListItem>
-            ))
-          : ""}
+        {selectedGameweek in drafts ? (
+          drafts[selectedGameweek].map((draft, index) => (
+            <ListItem
+              button
+              key={index}
+              onClick={() => this.selectDraft(index)}
+              classes={{
+                root: clsx({
+                  [classes.selected]: this.isSelectedDraft(index),
+                }),
+              }}
+            >
+              <ListItemText primary={draft.name} />
+              <ChevronRightIcon />
+            </ListItem>
+          ))
+        ) : (
+          <ListItem>No saved drafts for this gameweek</ListItem>
+        )}
       </List>
     );
   }
