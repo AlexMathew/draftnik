@@ -24,10 +24,18 @@ const styles = (theme) => ({
 class PitchElementFixtures extends React.Component {
   getNextFixtures = (count) => {
     const selectedGameweek = parseInt(this.props.selectedGameweek);
-    const fixtures = _.pick(
-      this.props.teamFixtures[this.props.element.team],
-      _.range(selectedGameweek, selectedGameweek + count)
-    );
+    const gwKeys = _.range(selectedGameweek, selectedGameweek + count);
+    const teamFixtures = this.props.teamFixtures[this.props.element.team];
+    var defaultValues = _(gwKeys)
+      .mapKeys()
+      .mapValues(function () {
+        return null;
+      })
+      .value();
+    const fixtures = _(teamFixtures)
+      .pick(gwKeys)
+      .defaults(defaultValues)
+      .value();
 
     return fixtures;
   };
@@ -43,15 +51,19 @@ class PitchElementFixtures extends React.Component {
         key={`${element.id}_${index}`}
       >
         <Grid container direction="column">
-          {gwFixtures.map((fixture) => (
-            <Grid
-              item
-              xs
-              key={`${element.id}_${fixture.gw}-${fixture.opponent}${fixture.location}`}
-            >
-              {`${teams[fixture.opponent].short_name} (${fixture.location})`}
-            </Grid>
-          ))}
+          {gwFixtures
+            ? gwFixtures.map((fixture) => (
+                <Grid
+                  item
+                  xs
+                  key={`${element.id}_${fixture.gw}-${fixture.opponent}${fixture.location}`}
+                >
+                  {`${teams[fixture.opponent].short_name} (${
+                    fixture.location
+                  })`}
+                </Grid>
+              ))
+            : "-"}
         </Grid>
       </Grid>
     ));
