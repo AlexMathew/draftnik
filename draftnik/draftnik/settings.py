@@ -50,9 +50,9 @@ INSTALLED_APPS = [
     "drafter",
     "django_s3_storage",
     "zappa_django_utils",
-    "oauth2_provider",
-    "social_django",
-    "rest_framework_social_oauth2",
+    # "oauth2_provider",
+    # "social_django",
+    # "rest_framework_social_oauth2",
 ]
 
 MIDDLEWARE = [
@@ -141,17 +141,17 @@ PAGE_SIZE = 100
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.TokenAuthentication",
-        "social_core.backends.google.GoogleOAuth2",
+        # "social_core.backends.google.GoogleOAuth2",
     ),
     "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.IsAuthenticated",],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": PAGE_SIZE,
 }
 
-AUTHENTICATION_BACKENDS = (
-    "rest_framework_social_oauth2.backends.DjangoOAuth2",
-    "django.contrib.auth.backends.ModelBackend",
-)
+# AUTHENTICATION_BACKENDS = (
+#     "rest_framework_social_oauth2.backends.DjangoOAuth2",
+#     "django.contrib.auth.backends.ModelBackend",
+# )
 
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_KEY")
