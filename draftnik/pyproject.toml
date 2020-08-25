@@ -15,6 +15,7 @@ django-cors-headers = "^3.4.0"
 djoser = "^2.0.3"
 celery = "^4.4.7"
 zappa-django-utils = "^0.4.1"
+django-rest-framework-social-oauth2 = "^1.1.0"
 
 [tool.poetry.dev-dependencies]
 ipython = "^7.16.1"
