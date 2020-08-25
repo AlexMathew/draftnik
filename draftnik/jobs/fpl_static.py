@@ -50,7 +50,7 @@ def store_players(r):
 
 
 def store_teams(r):
-    FIELDS = ["id", "code", "name", "short_name"]
+    FIELDS = ["id", "code", "name", "short_name", "strength"]
     field_getter = itemgetter(*FIELDS)
 
     team_data = {}

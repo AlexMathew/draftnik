@@ -19,6 +19,26 @@ const styles = (theme) => ({
   gwFixture: {
     width: "30%",
   },
+  strength1: {
+    background: "white",
+    color: "black",
+  },
+  strength2: {
+    background: "#00ff86",
+    color: "black",
+  },
+  strength3: {
+    background: "#ebebe4",
+    color: "black",
+  },
+  strength4: {
+    background: "#ff0059",
+    color: "black",
+  },
+  strength5: {
+    background: "#861d45",
+    color: "black",
+  },
 });
 
 class PitchElementFixtures extends React.Component {
@@ -57,6 +77,10 @@ class PitchElementFixtures extends React.Component {
                   item
                   xs
                   key={`${element.id}_${fixture.gw}-${fixture.opponent}${fixture.location}`}
+                  classes={{
+                    item:
+                      classes[`strength${teams[fixture.opponent].strength}`],
+                  }}
                 >
                   {`${teams[fixture.opponent].short_name} (${
                     fixture.location
