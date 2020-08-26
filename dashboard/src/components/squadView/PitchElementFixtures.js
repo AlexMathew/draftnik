@@ -33,11 +33,11 @@ const styles = (theme) => ({
   },
   strength4: {
     background: "#ff0059",
-    color: "black",
+    color: "white",
   },
   strength5: {
     background: "#861d45",
-    color: "black",
+    color: "white",
   },
 });
 
