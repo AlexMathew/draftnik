@@ -29,6 +29,14 @@ const styles = (theme) => ({
     width: theme.spacing(4),
     height: theme.spacing(4),
   },
+  "@global": {
+    ".MuiInputLabel-root": {
+      fontSize: "small",
+    },
+    ".MuiInput-root": {
+      fontSize: "small",
+    },
+  },
 });
 
 class DraftDialog extends React.Component {
@@ -96,7 +104,11 @@ class DraftDialog extends React.Component {
           Save Draft
         </DialogTitle>
         <DialogContent dividers>
-          <DialogContentText variant="h6">
+          <DialogContentText
+            classes={{
+              root: classes.smallSize,
+            }}
+          >
             You can add a name to the draft that you're saving. If you don't add
             a name, a placeholder name will be used.
           </DialogContentText>
