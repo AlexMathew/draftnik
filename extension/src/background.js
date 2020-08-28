@@ -1,4 +1,4 @@
-import { AUTH_TOKEN_FIELD, ACTIONS } from "./constants";
+import { AUTH_TOKEN_FIELD, ACTIONS, DASHBOARD_URL } from "./constants";
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.local.get([AUTH_TOKEN_FIELD], (result) => {
@@ -20,4 +20,8 @@ chrome.runtime.onMessage.addListener((message) => {
       chrome.runtime.openOptionsPage();
     }
   }
+});
+
+chrome.browserAction.onClicked.addListener(() => {
+  chrome.tabs.create({ url: DASHBOARD_URL });
 });
