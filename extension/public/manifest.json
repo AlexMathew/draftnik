@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Draftnik",
   "short_name": "Draftnik",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Save drafts you create on Fantasy Premier League.",
   "icons": {
     "16": "icons/logo16.png",
