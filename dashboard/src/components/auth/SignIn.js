@@ -13,6 +13,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { red } from "@material-ui/core/colors";
 import { Link as RouterLink } from "react-router-dom";
 import Copyright from "./Copyright";
@@ -50,10 +51,17 @@ export const styles = (theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    display: "grid",
+    placeItems: "center",
   },
   error: {
     fontSize: theme.spacing(2),
     color: red[500],
+  },
+  submitSpinner: {
+    color: "white",
+    width: `${theme.spacing(3)}px !important`,
+    height: `${theme.spacing(3)}px !important`,
   },
 });
 
@@ -68,6 +76,7 @@ class SignIn extends React.Component {
       username: "",
       password: "",
     },
+    submitting: false,
   };
 
   componentDidMount() {
@@ -99,6 +108,7 @@ class SignIn extends React.Component {
 
   submit = (event) => {
     event.preventDefault();
+    this.setState({ submitting: true });
     const { username, password } = this.state;
     const fields = ["username", "password"];
 
@@ -120,6 +130,9 @@ class SignIn extends React.Component {
           });
           this.setState({ error });
         }
+      })
+      .finally(() => {
+        this.setState({ submitting: false });
       });
   };
 
@@ -208,7 +221,15 @@ class SignIn extends React.Component {
                 color="primary"
                 className={classes.submit}
               >
-                Sign In
+                {this.state.submitting ? (
+                  <CircularProgress
+                    classes={{
+                      root: classes.submitSpinner,
+                    }}
+                  />
+                ) : (
+                  "Sign In"
+                )}
               </Button>
               <Grid container justify="flex-end">
                 <Grid item>

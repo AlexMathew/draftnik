@@ -9,6 +9,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { red } from "@material-ui/core/colors";
 import { Link as RouterLink } from "react-router-dom";
 import Copyright from "./Copyright";
@@ -34,10 +35,17 @@ export const styles = (theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    display: "grid",
+    placeItems: "center",
   },
   error: {
     fontSize: theme.spacing(2),
     color: red[500],
+  },
+  submitSpinner: {
+    color: "white",
+    width: `${theme.spacing(3)}px !important`,
+    height: `${theme.spacing(3)}px !important`,
   },
 });
 
@@ -50,6 +58,7 @@ class SignUp extends React.Component {
       username: "",
       password: "",
     },
+    submitting: false,
   };
 
   componentDidMount() {
@@ -68,6 +77,7 @@ class SignUp extends React.Component {
 
   submit = (event) => {
     event.preventDefault();
+    this.setState({ submitting: true });
     const { username, password } = this.state;
     const fields = ["username", "password"];
 
@@ -89,6 +99,9 @@ class SignUp extends React.Component {
           });
           this.setState({ error });
         }
+      })
+      .finally(() => {
+        this.setState({ submitting: false });
       });
   };
 
@@ -153,7 +166,15 @@ class SignUp extends React.Component {
               color="primary"
               className={classes.submit}
             >
-              Sign Up
+              {this.state.submitting ? (
+                <CircularProgress
+                  classes={{
+                    root: classes.submitSpinner,
+                  }}
+                />
+              ) : (
+                "Sign Up"
+              )}
             </Button>
             <Grid container justify="flex-end">
               <Grid item>
