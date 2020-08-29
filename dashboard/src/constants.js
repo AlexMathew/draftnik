@@ -12,5 +12,8 @@ export const ELEMENT_TYPES = {
 export const AVAILABILITY = {
   AVAILABLE: "a",
   DOUBTFUL: "d",
-  UNAVAILABLE: "u",
+  TRANSFERRED: "u",
+  INJURED: "i",
+  ON_LOAN: "n",
+  SUSPENDED: "s",
 };

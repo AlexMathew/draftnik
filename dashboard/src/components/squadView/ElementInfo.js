@@ -15,11 +15,32 @@ const styles = (theme) => ({
 });
 
 class ElementInfo extends React.Component {
+  DOUBTFUL_75 = "75%";
+  DOUBTFUL_50 = "50%";
+  DOUBTFUL_25 = "25%";
+
+  playerStatusColor = () => {
+    const { element } = this.props;
+    if (element.status === AVAILABILITY.AVAILABLE) return "white";
+    else if (element.status === AVAILABILITY.DOUBTFUL) {
+      if (element.news.includes(this.DOUBTFUL_25)) {
+        return "rgb(212, 68, 1)";
+      } else if (element.news.includes(this.DOUBTFUL_50)) {
+        return "rgb(255, 171, 27)";
+      } else {
+        return "rgb(233, 255, 3)";
+      }
+    } else {
+      return "rgb(192, 2, 13)";
+    }
+  };
+
   render() {
     const { classes, element } = this.props;
 
     if (element.status === AVAILABILITY.AVAILABLE) return null;
 
+    const statusColor = this.playerStatusColor();
     return (
       <Tooltip
         classes={{ tooltipArrow: classes.tooltip }}
@@ -28,7 +49,7 @@ class ElementInfo extends React.Component {
         interactive
         placement="top-start"
       >
-        <InfoIcon htmlColor="red" />
+        <InfoIcon htmlColor={statusColor} />
       </Tooltip>
     );
   }
