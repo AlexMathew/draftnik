@@ -59,10 +59,10 @@ class SignUp extends React.Component {
     }
   }
 
-  onSubmitSuccess = () => {
+  onSubmitSuccess = (username) => {
     this.props.history.push({
       pathname: "/signin",
-      state: { success: true },
+      state: { success: true, username },
     });
   };
 
@@ -77,7 +77,7 @@ class SignUp extends React.Component {
         password,
       })
       .then((response) => {
-        this.onSubmitSuccess(response);
+        this.onSubmitSuccess(username);
       })
       .catch((err) => {
         if (err.response) {

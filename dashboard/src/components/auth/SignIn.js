@@ -8,6 +8,11 @@ import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import { red } from "@material-ui/core/colors";
 import { Link as RouterLink } from "react-router-dom";
 import Copyright from "./Copyright";
@@ -54,6 +59,8 @@ export const styles = (theme) => ({
 
 class SignIn extends React.Component {
   state = {
+    modalOpen: false,
+    modalUsername: "",
     username: "",
     password: "",
     error: {
@@ -68,7 +75,21 @@ class SignIn extends React.Component {
     if (authToken) {
       history.push("/");
     }
+
+    const state = this.props.location.state;
+    if (state) {
+      if (state.success) {
+        this.setState({
+          modalOpen: true,
+          modalUsername: state.username,
+        });
+      }
+    }
   }
+
+  handleModalClose = () => {
+    this.setState({ modalOpen: false });
+  };
 
   onSubmitSuccess = (response) => {
     const { auth_token } = response.data;
@@ -109,6 +130,26 @@ class SignIn extends React.Component {
     return (
       <Grid container component="main" className={classes.root}>
         <CssBaseline />
+        <Dialog
+          open={this.state.modalOpen}
+          onClose={this.handleModalClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            You have successfully registered on Draftnik!
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              {`${this.state.modalUsername}, you can now sign in to the Draftnik dashboard.`}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleModalClose} color="primary">
+              Continue
+            </Button>
+          </DialogActions>
+        </Dialog>
         <Grid item xs={false} sm={4} md={7} className={classes.image} />
         <Grid
           item
