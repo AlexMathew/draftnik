@@ -8,3 +8,9 @@ export const ELEMENT_TYPES = {
   MIDFIELDERS: 3,
   FORWARDS: 4,
 };
+
+export const AVAILABILITY = {
+  AVAILABLE: "a",
+  DOUBTFUL: "d",
+  UNAVAILABLE: "u",
+};

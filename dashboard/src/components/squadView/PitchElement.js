@@ -3,8 +3,10 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
+import Badge from "@material-ui/core/Badge";
 import { connect } from "react-redux";
 import { ELEMENT_TYPES } from "../../constants";
+import ElementInfo from "./ElementInfo";
 import PitchElementFixtures from "./PitchElementFixtures";
 
 const styles = (theme) => ({
@@ -60,11 +62,19 @@ class PitchElement extends React.Component {
     return (
       <Grid className={classes.element}>
         <Grid item className={classes.jerseyContainer}>
-          <img
-            className={classes.jersey}
-            src={this.jerseyUrl(element)}
-            alt={team.name}
-          />
+          <Badge
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+            badgeContent={<ElementInfo element={element} />}
+          >
+            <img
+              className={classes.jersey}
+              src={this.jerseyUrl(element)}
+              alt={team.name}
+            />
+          </Badge>
         </Grid>
         <Grid item xs>
           <Typography className={classes.name}>
