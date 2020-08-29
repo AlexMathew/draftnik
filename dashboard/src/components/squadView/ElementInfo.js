@@ -12,6 +12,29 @@ const styles = (theme) => ({
     boxShadow: theme.shadows[1],
     fontSize: 11,
   },
+  info: {
+    borderRadius: "50%",
+  },
+  available: {
+    fill: "white",
+    background: "black",
+  },
+  unavailable: {
+    fill: "rgb(192, 2, 13)",
+    background: "white",
+  },
+  doubtful25: {
+    fill: "rgb(212, 68, 1)",
+    background: "white",
+  },
+  doubtful50: {
+    fill: "rgb(255, 171, 27)",
+    background: "black",
+  },
+  doubtful75: {
+    fill: "rgb(233, 255, 3)",
+    background: "black",
+  },
 });
 
 class ElementInfo extends React.Component {
@@ -19,19 +42,19 @@ class ElementInfo extends React.Component {
   DOUBTFUL_50 = "50%";
   DOUBTFUL_25 = "25%";
 
-  playerStatusColor = () => {
+  playerStatusClass = () => {
     const { element } = this.props;
-    if (element.status === AVAILABILITY.AVAILABLE) return "white";
+    if (element.status === AVAILABILITY.AVAILABLE) return "available";
     else if (element.status === AVAILABILITY.DOUBTFUL) {
       if (element.news.includes(this.DOUBTFUL_25)) {
-        return "rgb(212, 68, 1)";
+        return "doubtful25";
       } else if (element.news.includes(this.DOUBTFUL_50)) {
-        return "rgb(255, 171, 27)";
+        return "doubtful50";
       } else {
-        return "rgb(233, 255, 3)";
+        return "doubtful75";
       }
     } else {
-      return "rgb(192, 2, 13)";
+      return "unavailable";
     }
   };
 
@@ -40,7 +63,6 @@ class ElementInfo extends React.Component {
 
     if (element.status === AVAILABILITY.AVAILABLE) return null;
 
-    const statusColor = this.playerStatusColor();
     return (
       <Tooltip
         classes={{ tooltipArrow: classes.tooltip }}
@@ -49,7 +71,12 @@ class ElementInfo extends React.Component {
         interactive
         placement="top-start"
       >
-        <InfoIcon htmlColor={statusColor} />
+        <InfoIcon
+          className={classes.info}
+          classes={{
+            root: classes[this.playerStatusClass()],
+          }}
+        />
       </Tooltip>
     );
   }
