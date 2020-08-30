@@ -1,3 +1,6 @@
+from urllib.parse import urljoin
+
+from django.conf import settings
 from rest_framework import serializers
 
 from draftnik.keys import PLAYER_ID_KEY
@@ -64,3 +67,10 @@ class DraftStaticDataSerializer(serializers.Serializer):
 class DraftResponseSerializer(serializers.Serializer):
     static = DraftStaticDataSerializer(read_only=True)
     drafts = DraftSerializer(many=True, read_only=True)
+
+
+class DraftUrlSerializer(serializers.Serializer):
+    url = serializers.SerializerMethodField()
+
+    def get_url(self, obj):
+        return urljoin(settings.DASHBOARD_URL, obj.shareable_url)

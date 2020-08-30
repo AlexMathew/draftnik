@@ -6,7 +6,8 @@ from .models import Draft
 from .serializers import (
     DraftCreateSerializer,
     DraftResponseSerializer,
-    DraftSerializer
+    DraftSerializer,
+    DraftUrlSerializer,
 )
 
 
@@ -14,12 +15,13 @@ class DraftView(
     mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet,
 ):
     def get_serializer_class(self):
-        if self.action in ["create"]:
-            return DraftCreateSerializer
-        elif self.action in ["static"]:
-            return DraftResponseSerializer
+        serializers = {
+            "create": DraftCreateSerializer,
+            "static": DraftResponseSerializer,
+            "url": DraftUrlSerializer,
+        }
 
-        return DraftSerializer
+        return serializers.get(self.action) or DraftSerializer
 
     def get_queryset(self):
         return Draft.objects.filter(user=self.request.user)
@@ -35,4 +37,11 @@ class DraftView(
         drafts = self.get_queryset()
 
         serializer = self.get_serializer({"static": True, "drafts": drafts})
+        return Response(serializer.data)
+
+    @action(detail=True, methods=["get"])
+    def url(self, request, pk=None):
+        draft = self.get_object()
+
+        serializer = self.get_serializer(draft)
         return Response(serializer.data)

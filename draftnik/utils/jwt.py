@@ -1,5 +1,5 @@
-from django.conf import settings
 import jwt
+from django.conf import settings
 
 
 def decode_payload(token):
