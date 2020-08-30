@@ -21,7 +21,7 @@ app.conf.update(
     CELERYBEAT_SCHEDULE={
         "fetch-static-data": {
             "task": "draftnik.fetch_static_data",
-            "schedule": crontab(minute=0, hour=0),
+            "schedule": crontab(minute=0, hour=12),
         },
         "fetch-fixtures": {
             "task": "draftnik.fetch_fixtures",
