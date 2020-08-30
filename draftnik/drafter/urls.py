@@ -1,7 +1,7 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from .views import DraftView
+from .views import DraftDetailView, DraftView
 
 urlpatterns = [
     path("auth/", include("djoser.urls")),
@@ -14,4 +14,5 @@ router.register(r"draft", DraftView, basename="draft")
 
 urlpatterns += [
     path("", include(router.urls)),
+    path("draft/detail/<shared_url>/", DraftDetailView.as_view(), name="draft-detail"),
 ]

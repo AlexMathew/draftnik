@@ -1,10 +1,17 @@
+import jwt
+from django.core.exceptions import ObjectDoesNotExist
+from django.http.response import HttpResponse, JsonResponse
+from django.views import View
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from utils.jwt import decode_payload
+
 from .models import Draft
 from .serializers import (
     DraftCreateSerializer,
+    DraftDetailResponseSerializer,
     DraftResponseSerializer,
     DraftSerializer,
     DraftUrlSerializer,
@@ -45,3 +52,16 @@ class DraftView(
 
         serializer = self.get_serializer(draft)
         return Response(serializer.data)
+
+
+class DraftDetailView(View):
+    def get(self, request, shared_url):
+        try:
+            payload = decode_payload(shared_url)
+            draft = Draft.objects.get(id=payload.get("id"))
+        except (jwt.InvalidSignatureError, ObjectDoesNotExist):
+            return HttpResponse(status=404)
+
+        serializer = DraftDetailResponseSerializer({"static": True, "draft": draft})
+
+        return JsonResponse(serializer.data)

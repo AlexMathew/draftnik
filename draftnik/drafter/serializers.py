@@ -74,3 +74,8 @@ class DraftUrlSerializer(serializers.Serializer):
 
     def get_url(self, obj):
         return urljoin(settings.DASHBOARD_URL, obj.shareable_url)
+
+
+class DraftDetailResponseSerializer(serializers.Serializer):
+    static = DraftStaticDataSerializer(read_only=True)
+    draft = DraftSerializer(read_only=True)
