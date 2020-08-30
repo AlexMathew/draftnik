@@ -5,6 +5,7 @@ from operator import itemgetter
 
 import requests
 
+from draftnik.celery import app
 from draftnik.keys import (
     GAMEWEEK_DATA_KEY,
     PLAYER_DATA_KEY,
@@ -41,7 +42,7 @@ def store_players(r):
         data = {key: value for key, value in zip(FIELDS, field_getter(player))}
         player_data[data.get("id")] = data
 
-        logger.debug(f'Player - {data.get("web_name")}')
+        logger.info(f'Player - {data.get("web_name")}')
         redis.set(
             PLAYER_ID_KEY(data.get("web_name"), data.get("team_code")), data.get("id")
         )
@@ -58,7 +59,7 @@ def store_teams(r):
     for team in teams:
         data = {key: value for key, value in zip(FIELDS, field_getter(team))}
         team_data[data.get("id")] = data
-        logger.debug(f'Team - {data.get("name")}')
+        logger.info(f'Team - {data.get("name")}')
 
     redis.set(TEAM_DATA_KEY, json.dumps(team_data))
 
@@ -72,12 +73,14 @@ def store_gameweeks(r):
     for gameweek in gameweeks:
         data = {key: value for key, value in zip(FIELDS, field_getter(gameweek))}
         gameweek_data[data.get("id")] = data
-        logger.debug(f'Gameweek - {data.get("name")}')
+        logger.info(f'Gameweek - {data.get("name")}')
 
     redis.set(GAMEWEEK_DATA_KEY, json.dumps(gameweek_data))
 
 
+@app.task(name="draftnik.fetch_static_data")
 def fetch_static_data(players=True, teams=False, gameweeks=False):
+    logger.info("fetch_static_data")
     URL = "https://fantasy.premierleague.com/api/bootstrap-static/"
     r = requests.get(URL)
 
@@ -91,12 +94,14 @@ def fetch_static_data(players=True, teams=False, gameweeks=False):
         store_gameweeks(r)
 
 
-def fetch_fixtures(start, end):
+@app.task(name="draftnik.fetch_fixtures")
+def fetch_fixtures(start=1, end=38):
+    logger.info("fetch_fixtures")
     URL = "https://fantasy.premierleague.com/api/fixtures/"
 
     fixtures = defaultdict(lambda: defaultdict(list))
     for gw in range(start, end + 1):
-        logger.debug(f"Fixtures GW#{gw}")
+        logger.info(f"Fixtures GW#{gw}")
         r = requests.get(URL, params={"event": gw})
         data = r.json()
         for match in data:
