@@ -2,6 +2,9 @@ import uuid
 
 from django.conf import settings
 from django.db import models
+from django.utils.functional import cached_property
+
+from utils.jwt import encode_payload
 
 
 def get_random_draft_name():
@@ -25,3 +28,8 @@ class Draft(models.Model):
 
     def __str__(self):
         return f"#{self.gameweek}- {self.name} ({self.user})"
+
+    @cached_property
+    def shareable_url(self):
+        payload = {"id": self.id}
+        return f"/draft/{encode_payload(payload).decode('utf-8')}"
