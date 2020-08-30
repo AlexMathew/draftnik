@@ -1,8 +1,7 @@
-version: "3"
+version: "3.7"
 
-services:
-  draftnik:
-    container_name: draftnik-webserver
+x-services:
+  draftnik: &draftnik
     hostname: draftnik
     env_file:
       - ops/.env
@@ -12,11 +11,16 @@ services:
     depends_on:
       - db
       - redis
-    command: bash -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
     restart: on-failure:5
     volumes:
       - .:/code
       - draftnik-ipython:/root/.ipython
+
+services:
+  webserver:
+    <<: *draftnik
+    container_name: draftnik-webserver
+    command: bash -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
     ports:
       - "8000:8000"
 
@@ -36,19 +40,14 @@ services:
       - draftnik-data-redis:/data
 
   celery:
+    <<: *draftnik
     container_name: draftnik-celery
-    env_file:
-      - ops/.env
-    build:
-      context: .
-      dockerfile: Dockerfile
-    depends_on:
-      - db
-      - redis
     command: celery -A draftnik worker --concurrency=20 --loglevel=info
-    restart: on-failure:5
-    volumes:
-      - .:/code
+
+  celery-beat:
+    <<: *draftnik
+    container_name: draftnik-celery-beat
+    command: celery -A draftnik beat --loglevel=info
 
 volumes:
   draftnik-ipython:
