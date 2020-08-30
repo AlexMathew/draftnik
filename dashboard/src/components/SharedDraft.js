@@ -14,7 +14,7 @@ class SharedDraft extends React.Component {
   render() {
     const body = (
       <>
-        <SquadView />
+        <SquadView showUsername={true} />
         {/* <FixturesView /> */}
       </>
     );

@@ -21,22 +21,41 @@ const styles = (theme) => ({
     display: "flex",
     justifyContent: "center",
     height: "3vh",
+  },
+  draftName: {
     fontWeight: "bold",
+  },
+  userName: {
+    color: "grey",
+    marginLeft: theme.spacing(1),
   },
 });
 
 class SquadView extends React.Component {
   render() {
-    const { classes, drafts, selectedGameweek, selectedDraft } = this.props;
+    const {
+      classes,
+      drafts,
+      selectedGameweek,
+      selectedDraft,
+      showUsername,
+    } = this.props;
     const draft =
       selectedDraft !== null ? drafts[selectedGameweek][selectedDraft] : null;
 
     return (
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Typography variant="h5" className={classes.title}>
-          {draft ? draft.name : ""}
-        </Typography>
+        <div className={classes.title}>
+          <Typography variant="h5" className={classes.draftName}>
+            {draft ? draft.name : ""}
+          </Typography>{" "}
+          {showUsername ? (
+            <Typography variant="h6" className={classes.userName}>
+              {draft ? `(${draft.user})` : ""}
+            </Typography>
+          ) : null}
+        </div>
         <Pitch />
       </main>
     );

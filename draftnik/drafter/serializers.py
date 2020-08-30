@@ -16,6 +16,8 @@ from .models import Draft
 
 
 class DraftSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source="user.username")
+
     class Meta:
         model = Draft
         fields = "__all__"
