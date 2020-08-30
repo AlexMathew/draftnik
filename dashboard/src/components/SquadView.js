@@ -17,10 +17,20 @@ const styles = (theme) => ({
     flexGrow: 1,
     paddingTop: theme.spacing(3),
   },
+  details: {
+    height: "3vh",
+    display: "flex",
+    justifyContent: "space-evenly",
+  },
   title: {
     display: "flex",
-    justifyContent: "center",
-    height: "3vh",
+    justifyContent: "flex-start",
+    alignSelf: "center",
+  },
+  createdDate: {
+    display: "flex",
+    justifyContent: "flex-end",
+    alignSelf: "center",
   },
   draftName: {
     fontWeight: "bold",
@@ -29,9 +39,17 @@ const styles = (theme) => ({
     color: "grey",
     marginLeft: theme.spacing(1),
   },
+  createdAt: {
+    color: "grey",
+    fontSize: "small",
+  },
 });
 
 class SquadView extends React.Component {
+  getDateString = (datetime) => {
+    return new Date(datetime).toDateString();
+  };
+
   render() {
     const {
       classes,
@@ -46,15 +64,24 @@ class SquadView extends React.Component {
     return (
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <div className={classes.title}>
-          <Typography variant="h5" className={classes.draftName}>
-            {draft ? draft.name : ""}
-          </Typography>{" "}
-          {showUsername ? (
-            <Typography variant="h6" className={classes.userName}>
-              {draft ? `(${draft.user})` : ""}
+        <div className={classes.details}>
+          <div className={classes.title}>
+            <Typography variant="h5" className={classes.draftName}>
+              {draft ? draft.name : ""}
             </Typography>
-          ) : null}
+            {showUsername ? (
+              <Typography variant="h6" className={classes.userName}>
+                {draft ? `(${draft.user})` : ""}
+              </Typography>
+            ) : null}
+          </div>
+          <div className={classes.createdDate}>
+            <Typography variant="h6" className={classes.createdAt}>
+              {draft
+                ? `Created on: ${this.getDateString(draft.created_at)}`
+                : ""}
+            </Typography>
+          </div>
         </div>
         <Pitch />
       </main>
