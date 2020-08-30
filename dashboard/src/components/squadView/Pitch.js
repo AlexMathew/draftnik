@@ -23,7 +23,7 @@ class Pitch extends React.Component {
         <div
           className={classes.pitch}
           style={{
-            backgroundImage: `url("pitch.jpg")`,
+            backgroundImage: `url("/pitch.jpg")`,
           }}
         >
           <SquadDisplay />

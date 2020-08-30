@@ -1,5 +1,6 @@
 import {
   LOAD_DRAFTS,
+  LOAD_SINGLE_DRAFT,
   LOAD_GAMEWEEK_DATA,
   LOAD_PLAYER_DATA,
   LOAD_TEAM_DATA,
@@ -34,6 +35,26 @@ export const fetchStaticData = () => async (dispatch) => {
     if (error.response.status === 401) {
       localStorage.removeItem(AUTH_TOKEN_FIELD);
       history.push("/signin");
+    }
+  }
+};
+
+export const fetchSharedDraftDetails = (draftCode) => async (dispatch) => {
+  try {
+    const response = await draftnik.get(`/draft/detail/${draftCode}/`);
+
+    dispatch({ type: LOAD_TEAM_DATA, payload: response.data });
+    dispatch({ type: LOAD_PLAYER_DATA, payload: response.data });
+    dispatch({ type: LOAD_GAMEWEEK_DATA, payload: response.data });
+    dispatch({ type: LOAD_TEAM_FIXTURES_DATA, payload: response.data });
+    dispatch({ type: LOAD_SINGLE_DRAFT, payload: response.data });
+
+    const gameweek = response.data.draft.gameweek;
+    dispatch(selectGameweek(gameweek));
+    dispatch(selectDraft(0));
+  } catch (error) {
+    if (error.response.status === 404) {
+      console.log(error);
     }
   }
 };

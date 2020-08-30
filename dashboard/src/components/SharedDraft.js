@@ -6,7 +6,7 @@ import PublicHeader from "./sharedDraft/PublicHeader";
 import SquadView from "./SquadView";
 // import FixturesView from "./FixturesView";
 import { connect } from "react-redux";
-import { fetchStaticData } from "../actions";
+import { fetchSharedDraftDetails } from "../actions";
 
 const styles = () => ({
   root: {
@@ -16,7 +16,8 @@ const styles = () => ({
 
 class SharedDraft extends React.Component {
   componentDidMount() {
-    this.props.fetchStaticData();
+    const { draftCode } = this.props.match.params;
+    this.props.fetchSharedDraftDetails(draftCode);
   }
 
   render() {
@@ -37,5 +38,7 @@ SharedDraft.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const wrappedSharedDraft = connect(null, { fetchStaticData })(SharedDraft);
+const wrappedSharedDraft = connect(null, { fetchSharedDraftDetails })(
+  SharedDraft
+);
 export default withStyles(styles)(wrappedSharedDraft);
