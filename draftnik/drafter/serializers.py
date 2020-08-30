@@ -17,10 +17,14 @@ from .models import Draft
 
 class DraftSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source="user.username")
+    url = serializers.SerializerMethodField()
 
     class Meta:
         model = Draft
         fields = "__all__"
+
+    def get_url(self, obj):
+        return urljoin(settings.DASHBOARD_URL, obj.shareable_url)
 
 
 class DraftElementSerializer(serializers.Serializer):

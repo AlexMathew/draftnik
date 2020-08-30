@@ -5,6 +5,9 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import ShareIcon from "@material-ui/icons/Share";
+import IconButton from "@material-ui/core/IconButton";
+import ShareDraftModal from "./ShareDraftModal";
 import clsx from "clsx";
 import { connect } from "react-redux";
 import { selectDraft, switchMobile } from "../../actions";
@@ -14,9 +17,19 @@ const styles = () => ({
     background: "whitesmoke",
     color: "blue",
   },
+  draft: {
+    display: "flex",
+  },
 });
 
 class DraftList extends React.Component {
+  state = {
+    share: {
+      open: false,
+      draft: {},
+    },
+  };
+
   selectDraft = (index) => {
     this.props.selectDraft(index);
     this.props.switchMobile();
@@ -26,31 +39,59 @@ class DraftList extends React.Component {
     return index === this.props.selectedDraft;
   };
 
+  handleShareOpen = (draft) => {
+    this.setState({
+      share: {
+        open: true,
+        draft: draft,
+      },
+    });
+  };
+
+  handleShareClose = () => {
+    this.setState({
+      share: {
+        open: false,
+        draft: {},
+      },
+    });
+  };
+
   render() {
     const { classes, drafts, selectedGameweek } = this.props;
 
     return (
-      <List>
-        {selectedGameweek in drafts ? (
-          drafts[selectedGameweek].map((draft, index) => (
-            <ListItem
-              button
-              key={index}
-              onClick={() => this.selectDraft(index)}
-              classes={{
-                root: clsx({
-                  [classes.selected]: this.isSelectedDraft(index),
-                }),
-              }}
-            >
-              <ListItemText primary={draft.name} />
-              <ChevronRightIcon />
-            </ListItem>
-          ))
-        ) : (
-          <ListItem>No saved drafts for this gameweek</ListItem>
-        )}
-      </List>
+      <>
+        <List>
+          {selectedGameweek in drafts ? (
+            drafts[selectedGameweek].map((draft, index) => (
+              <div key={index} className={classes.draft}>
+                <ListItem
+                  button
+                  onClick={() => this.selectDraft(index)}
+                  classes={{
+                    root: clsx({
+                      [classes.selected]: this.isSelectedDraft(index),
+                    }),
+                  }}
+                >
+                  <ListItemText primary={draft.name} />
+                  <ChevronRightIcon />
+                </ListItem>
+                <IconButton onClick={() => this.handleShareOpen(draft)}>
+                  <ShareIcon fontSize="small" />
+                </IconButton>
+              </div>
+            ))
+          ) : (
+            <ListItem>No saved drafts for this gameweek</ListItem>
+          )}
+        </List>
+        <ShareDraftModal
+          state={this.state.share}
+          handleClose={this.handleShareClose}
+        />
+      </>
     );
   }
 }
