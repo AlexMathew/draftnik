@@ -1,18 +1,9 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import PublicHeader from "./sharedDraft/PublicHeader";
+import SharedDraftPage from "./sharedDraft/SharedDraftPage";
 import SquadView from "./SquadView";
 // import FixturesView from "./FixturesView";
 import { connect } from "react-redux";
 import { fetchSharedDraftDetails } from "../actions";
-
-const styles = () => ({
-  root: {
-    display: "flex",
-  },
-});
 
 class SharedDraft extends React.Component {
   componentDidMount() {
@@ -21,24 +12,15 @@ class SharedDraft extends React.Component {
   }
 
   render() {
-    const { classes } = this.props;
-
-    return (
-      <div className={classes.root}>
-        <CssBaseline />
-        <PublicHeader />
+    const body = (
+      <>
         <SquadView />
         {/* <FixturesView /> */}
-      </div>
+      </>
     );
+
+    return <SharedDraftPage body={body} />;
   }
 }
 
-SharedDraft.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-const wrappedSharedDraft = connect(null, { fetchSharedDraftDetails })(
-  SharedDraft
-);
-export default withStyles(styles)(wrappedSharedDraft);
+export default connect(null, { fetchSharedDraftDetails })(SharedDraft);

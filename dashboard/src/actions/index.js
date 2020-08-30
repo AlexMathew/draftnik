@@ -54,7 +54,7 @@ export const fetchSharedDraftDetails = (draftCode) => async (dispatch) => {
     dispatch(selectDraft(0));
   } catch (error) {
     if (error.response.status === 404) {
-      console.log(error);
+      history.push("/draft/not-found");
     }
   }
 };
