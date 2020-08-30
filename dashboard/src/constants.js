@@ -17,3 +17,5 @@ export const AVAILABILITY = {
   ON_LOAN: "n",
   SUSPENDED: "s",
 };
+
+export const LANDING_PAGE_URL = "https://draftnik.cc/";
