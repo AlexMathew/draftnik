@@ -5,9 +5,9 @@ import AppBar from "@material-ui/core/AppBar";
 import Avatar from "@material-ui/core/Avatar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import { connect } from "react-redux";
 import DirectToLandingPage from "./DirectToLandingPage";
 import CloneDraft from "./CloneDraft";
+import { AUTH_TOKEN_FIELD } from "../../constants";
 
 const styles = (theme) => ({
   appBar: {
@@ -34,6 +34,7 @@ const styles = (theme) => ({
 class PublicHeader extends React.Component {
   render() {
     const { classes, found, draftCode } = this.props;
+    const authToken = localStorage.getItem(AUTH_TOKEN_FIELD);
 
     return (
       <AppBar position="fixed" className={classes.appBar}>
@@ -44,7 +45,7 @@ class PublicHeader extends React.Component {
               Draftnik
             </Typography>
           </div>
-          {found ? (
+          {found && authToken ? (
             <CloneDraft draftCode={draftCode} />
           ) : (
             <DirectToLandingPage />
@@ -59,9 +60,4 @@ PublicHeader.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => {
-  return {};
-};
-
-const wrappedPublicHeader = connect(mapStateToProps, {})(PublicHeader);
-export default withStyles(styles)(wrappedPublicHeader);
+export default withStyles(styles)(PublicHeader);
