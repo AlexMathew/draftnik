@@ -1,10 +1,13 @@
 from urllib.parse import urljoin
 
+import jwt
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 
 from draftnik.keys import PLAYER_ID_KEY
 from helpers.instances import redis
+from utils.jwt import decode_payload
 from utils.static import (
     get_gameweek_data,
     get_player_data,
@@ -61,6 +64,36 @@ class DraftCreateSerializer(serializers.ModelSerializer):
         instance = Draft.objects.create(**fields)
 
         return instance
+
+
+class DraftCloneSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source="user.username")
+    draft_code = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = Draft
+        fields = ["user", "draft_code", "name", "gameweek"]
+        read_only_fields = ["name", "gameweek"]
+
+    def create(self, validated_data):
+        user = validated_data.get("user")
+        draft_code = validated_data.get("draft_code")
+
+        try:
+            payload = decode_payload(draft_code)
+            draft = Draft.objects.get(id=payload.get("id"))
+        except (jwt.InvalidSignatureError, ObjectDoesNotExist):
+            raise Exception("Invalid draft code.")
+
+        fields = {
+            "user": user,
+            "entries": draft.entries,
+            "gameweek": 1,
+            "name": f"{draft.name} (cloned from {draft.user.username})",
+        }
+        new_draft = Draft.objects.create(**fields)
+
+        return new_draft
 
 
 class DraftStaticDataSerializer(serializers.Serializer):

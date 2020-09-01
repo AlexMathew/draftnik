@@ -10,6 +10,7 @@ from utils.jwt import decode_payload
 
 from .models import Draft
 from .serializers import (
+    DraftCloneSerializer,
     DraftCreateSerializer,
     DraftDetailResponseSerializer,
     DraftResponseSerializer,
@@ -26,6 +27,7 @@ class DraftView(
             "create": DraftCreateSerializer,
             "static": DraftResponseSerializer,
             "url": DraftUrlSerializer,
+            "clone": DraftCloneSerializer,
         }
 
         return serializers.get(self.action) or DraftSerializer
@@ -53,6 +55,14 @@ class DraftView(
         serializer = self.get_serializer(draft)
         return Response(serializer.data)
 
+    @action(detail=False, methods=["post"])
+    def clone(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(user=self.request.user)
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 class DraftDetailView(View):
     def get(self, request, shared_url):
@@ -60,7 +70,7 @@ class DraftDetailView(View):
             payload = decode_payload(shared_url)
             draft = Draft.objects.get(id=payload.get("id"))
         except (jwt.InvalidSignatureError, ObjectDoesNotExist):
-            return HttpResponse(status=404)
+            return HttpResponse(status=status.HTTP_404_NOT_FOUND)
 
         serializer = DraftDetailResponseSerializer({"static": True, "draft": draft})
 
