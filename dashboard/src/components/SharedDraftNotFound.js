@@ -4,7 +4,9 @@ import NotFound from "./sharedDraft/NotFound";
 
 class SharedDraftNotFound extends React.Component {
   render() {
-    return <SharedDraftPage body={<NotFound />}></SharedDraftPage>;
+    return (
+      <SharedDraftPage body={<NotFound />} found={false}></SharedDraftPage>
+    );
   }
 }
 

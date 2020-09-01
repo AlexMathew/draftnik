@@ -12,6 +12,7 @@ class SharedDraft extends React.Component {
   }
 
   render() {
+    const { draftCode } = this.props.match.params;
     const body = (
       <>
         <SquadView showUsername={true} />
@@ -19,7 +20,7 @@ class SharedDraft extends React.Component {
       </>
     );
 
-    return <SharedDraftPage body={body} />;
+    return <SharedDraftPage body={body} draftCode={draftCode} found />;
   }
 }
 

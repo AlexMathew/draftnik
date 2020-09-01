@@ -34,7 +34,7 @@ class SharedDraftPage extends React.Component {
           </Helmet>
         ) : null}
         <CssBaseline />
-        <PublicHeader />
+        <PublicHeader {...this.props} />
         {body}
       </div>
     );

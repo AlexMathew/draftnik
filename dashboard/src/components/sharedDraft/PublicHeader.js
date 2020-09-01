@@ -5,9 +5,9 @@ import AppBar from "@material-ui/core/AppBar";
 import Avatar from "@material-ui/core/Avatar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
-import { LANDING_PAGE_URL } from "../../constants";
+import DirectToLandingPage from "./DirectToLandingPage";
+import CloneDraft from "./CloneDraft";
 
 const styles = (theme) => ({
   appBar: {
@@ -33,7 +33,7 @@ const styles = (theme) => ({
 
 class PublicHeader extends React.Component {
   render() {
-    const { classes } = this.props;
+    const { classes, found, draftCode } = this.props;
 
     return (
       <AppBar position="fixed" className={classes.appBar}>
@@ -44,18 +44,11 @@ class PublicHeader extends React.Component {
               Draftnik
             </Typography>
           </div>
-          <Button
-            className={classes.landingPageButton}
-            variant="outlined"
-            color="primary"
-            size="large"
-            onClick={() => {
-              var win = window.open(LANDING_PAGE_URL, "_blank");
-              win.focus();
-            }}
-          >
-            Try Draftnik
-          </Button>
+          {found ? (
+            <CloneDraft draftCode={draftCode} />
+          ) : (
+            <DirectToLandingPage />
+          )}
         </Toolbar>
       </AppBar>
     );
