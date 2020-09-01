@@ -2,6 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import { Helmet } from "react-helmet";
+import { connect } from "react-redux";
 import PublicHeader from "./PublicHeader";
 
 const styles = () => ({
@@ -12,10 +14,25 @@ const styles = () => ({
 
 class SharedDraftPage extends React.Component {
   render() {
-    const { classes, body } = this.props;
+    const {
+      classes,
+      body,
+      drafts,
+      selectedGameweek,
+      selectedDraft,
+    } = this.props;
+    const draft =
+      selectedDraft !== null ? drafts[selectedGameweek][selectedDraft] : null;
 
     return (
       <div className={classes.root}>
+        {draft ? (
+          <Helmet>
+            <title>{`View ${draft ? `${draft.user}'s` : ""} "${
+              draft ? draft.name : ""
+            }" draft - Draftnik`}</title>
+          </Helmet>
+        ) : null}
         <CssBaseline />
         <PublicHeader />
         {body}
@@ -27,4 +44,14 @@ class SharedDraftPage extends React.Component {
 SharedDraftPage.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-export default withStyles(styles)(SharedDraftPage);
+
+const mapStateToProps = (state) => {
+  return {
+    drafts: state.drafts,
+    selectedGameweek: state.selected.gameweek,
+    selectedDraft: state.selected.draft,
+  };
+};
+
+const wrappedSharedDraftPage = connect(mapStateToProps)(SharedDraftPage);
+export default withStyles(styles)(wrappedSharedDraftPage);
