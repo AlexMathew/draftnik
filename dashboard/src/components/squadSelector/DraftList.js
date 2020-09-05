@@ -20,6 +20,9 @@ const styles = () => ({
   draft: {
     display: "flex",
   },
+  shareButton: {
+    borderRadius: "0%",
+  },
 });
 
 class DraftList extends React.Component {
@@ -78,7 +81,10 @@ class DraftList extends React.Component {
                   <ListItemText primary={draft.name} />
                   <ChevronRightIcon />
                 </ListItem>
-                <IconButton onClick={() => this.handleShareOpen(draft)}>
+                <IconButton
+                  classes={{ root: classes.shareButton }}
+                  onClick={() => this.handleShareOpen(draft)}
+                >
                   <ShareIcon fontSize="small" />
                 </IconButton>
               </div>
