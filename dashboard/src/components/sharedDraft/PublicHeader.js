@@ -7,6 +7,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import DirectToLandingPage from "./DirectToLandingPage";
 import CloneDraft from "./CloneDraft";
+import history from "../../history";
 import { AUTH_TOKEN_FIELD } from "../../constants";
 
 const styles = (theme) => ({
@@ -18,7 +19,11 @@ const styles = (theme) => ({
   grow: {
     display: "flex",
     flexGrow: 1,
+  },
+  header: {
+    display: "flex",
     alignItems: "center",
+    cursor: "pointer",
   },
   logo: {
     margin: theme.spacing(1),
@@ -45,14 +50,16 @@ class PublicHeader extends React.Component {
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <div className={classes.grow}>
-            <Avatar src="/icons/logo192.png" className={classes.logo} />
-            <Typography
-              variant="h5"
-              color="inherit"
-              className={classes.brandName}
-            >
-              Draftnik
-            </Typography>
+            <div className={classes.header} onClick={() => history.push("/")}>
+              <Avatar src="/icons/logo192.png" className={classes.logo} />
+              <Typography
+                variant="h5"
+                color="inherit"
+                className={classes.brandName}
+              >
+                Draftnik
+              </Typography>
+            </div>
           </div>
           {found && authToken ? (
             <CloneDraft draftCode={draftCode} />

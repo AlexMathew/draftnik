@@ -9,7 +9,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { connect } from "react-redux";
-import { switchMobile } from "../actions";
+import { switchMobile, fetchStaticData } from "../actions";
 import { AUTH_TOKEN_FIELD } from "../constants";
 import history from "../history";
 
@@ -28,7 +28,11 @@ const styles = (theme) => ({
   grow: {
     display: "flex",
     flexGrow: 1,
+  },
+  header: {
+    display: "flex",
     alignItems: "center",
+    cursor: "pointer",
   },
   logo: {
     margin: theme.spacing(1),
@@ -64,14 +68,19 @@ class Header extends React.Component {
             <MenuIcon />
           </IconButton>
           <div className={classes.grow}>
-            <Avatar src="/icons/logo192.png" className={classes.logo} />
-            <Typography
-              variant="h5"
-              color="inherit"
-              className={classes.brandName}
+            <div
+              className={classes.header}
+              onClick={() => this.props.fetchStaticData()}
             >
-              Draftnik
-            </Typography>
+              <Avatar src="/icons/logo192.png" className={classes.logo} />
+              <Typography
+                variant="h5"
+                color="inherit"
+                className={classes.brandName}
+              >
+                Draftnik
+              </Typography>
+            </div>
           </div>
           <IconButton
             color="inherit"
@@ -97,5 +106,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-const wrappedHeader = connect(mapStateToProps, { switchMobile })(Header);
+const wrappedHeader = connect(mapStateToProps, {
+  switchMobile,
+  fetchStaticData,
+})(Header);
 export default withStyles(styles)(wrappedHeader);
