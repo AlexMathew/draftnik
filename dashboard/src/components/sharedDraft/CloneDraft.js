@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
+import Hidden from "@material-ui/core/Hidden";
 import CtaButton from "./CtaButton";
 import InfoModal from "./InfoModal";
 import CopyIcon from "../utils/CopyIcon";
@@ -10,7 +11,9 @@ import { AUTH_TOKEN_FIELD } from "../../constants";
 
 const styles = (theme) => ({
   icon: {
-    marginRight: theme.spacing(1),
+    [theme.breakpoints.up("md")]: {
+      marginRight: theme.spacing(1),
+    },
   },
 });
 
@@ -98,7 +101,9 @@ class CloneDraft extends React.Component {
     const content = (
       <>
         <CopyIcon className={classes.icon} />
-        Clone Draft
+        <Hidden smDown implementation="js">
+          Clone Draft
+        </Hidden>
       </>
     );
 

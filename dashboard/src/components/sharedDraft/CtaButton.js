@@ -3,10 +3,12 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 
-const styles = () => ({
+const styles = (theme) => ({
   landingPageButton: {
-    fontSize: "large",
-    fontWeight: "bold",
+    [theme.breakpoints.up("md")]: {
+      fontSize: "large",
+      fontWeight: "bold",
+    },
   },
 });
 
