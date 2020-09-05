@@ -14,13 +14,8 @@ const styles = () => ({
 
 class SharedDraftPage extends React.Component {
   render() {
-    const {
-      classes,
-      body,
-      drafts,
-      selectedGameweek,
-      selectedDraft,
-    } = this.props;
+    const { classes, ...otherProps } = this.props;
+    const { body, drafts, selectedGameweek, selectedDraft } = otherProps;
     const draft =
       selectedDraft !== null ? drafts[selectedGameweek][selectedDraft] : null;
 
@@ -34,7 +29,7 @@ class SharedDraftPage extends React.Component {
           </Helmet>
         ) : null}
         <CssBaseline />
-        <PublicHeader {...this.props} />
+        <PublicHeader {...otherProps} />
         {body}
       </div>
     );
