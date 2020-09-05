@@ -19,13 +19,15 @@ const styles = (theme) => ({
   },
   details: {
     height: "3vh",
-    display: "flex",
-    justifyContent: "space-evenly",
+    display: "grid",
+    placeContent: "center",
+    placeItems: "center",
   },
   title: {
     display: "flex",
     justifyContent: "flex-start",
     alignSelf: "center",
+    alignItems: "baseline",
   },
   createdDate: {
     display: "flex",
@@ -34,14 +36,23 @@ const styles = (theme) => ({
   },
   draftName: {
     fontWeight: "bold",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "small",
+    },
   },
   userName: {
     color: "grey",
     marginLeft: theme.spacing(1),
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "small",
+    },
   },
   createdAt: {
     color: "grey",
     fontSize: "small",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "x-small",
+    },
   },
 });
 
