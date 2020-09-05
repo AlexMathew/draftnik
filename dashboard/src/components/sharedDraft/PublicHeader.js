@@ -25,6 +25,11 @@ const styles = (theme) => ({
     width: theme.spacing(5),
     height: theme.spacing(5),
   },
+  brandName: {
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "large",
+    },
+  },
   landingPageButton: {
     fontSize: "large",
     fontWeight: "bold",
@@ -41,7 +46,11 @@ class PublicHeader extends React.Component {
         <Toolbar>
           <div className={classes.grow}>
             <Avatar src="/icons/logo192.png" className={classes.logo} />
-            <Typography variant="h5" color="inherit">
+            <Typography
+              variant="h5"
+              color="inherit"
+              className={classes.brandName}
+            >
               Draftnik
             </Typography>
           </div>

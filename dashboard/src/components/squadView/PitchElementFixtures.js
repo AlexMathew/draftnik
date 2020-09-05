@@ -11,6 +11,9 @@ const styles = (theme) => ({
     [theme.breakpoints.down("md")]: {
       fontSize: "x-small",
     },
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "xx-small",
+    },
     fontWeight: "bold",
     fontSize: "small",
     textAlign: "center",
