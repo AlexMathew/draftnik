@@ -168,3 +168,10 @@ JWT_ALGORITHM = "HS256"
 JWT_SECRET = os.getenv("JWT_SECRET")
 
 DASHBOARD_URL = os.getenv("DASHBOARD_URL")
+if DEBUG:
+    # To access dashboard from inside container for screenshot with selenium
+    # https://docs.docker.com/docker-for-mac/networking/#use-cases-and-workarounds
+    # SCREENSHOT_URL=http://host.docker.internal:3000
+    SCREENSHOT_URL = os.getenv("SCREENSHOT_URL") or DASHBOARD_URL
+else:
+    SCREENSHOT_URL = DASHBOARD_URL
