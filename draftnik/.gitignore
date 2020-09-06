@@ -138,5 +138,7 @@ dmypy.json
 
 zappa_settings.json
 
+test.png
+
 # End of https://www.toptal.com/developers/gitignore/api/python
 n
