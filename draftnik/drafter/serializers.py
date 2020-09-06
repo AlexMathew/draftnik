@@ -21,6 +21,7 @@ from .models import Draft
 class DraftSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source="user.username")
     url = serializers.SerializerMethodField()
+    preview_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Draft
@@ -28,6 +29,9 @@ class DraftSerializer(serializers.ModelSerializer):
 
     def get_url(self, obj):
         return urljoin(settings.DASHBOARD_URL, obj.shareable_url)
+
+    def get_preview_url(self, obj):
+        return urljoin(settings.PREVIEW_HOST, f"{obj.preview_filename}.png")
 
 
 class DraftElementSerializer(serializers.Serializer):

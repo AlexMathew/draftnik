@@ -2,8 +2,11 @@ import uuid
 
 from django.conf import settings
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils.functional import cached_property
 
+from jobs.preview import take_screenshot
 from utils.jwt import encode_payload
 
 
@@ -30,6 +33,23 @@ class Draft(models.Model):
         return f"#{self.gameweek}- {self.name} ({self.user})"
 
     @cached_property
-    def shareable_url(self):
+    def encoded(self):
         payload = {"id": self.id}
-        return f"/draft/{encode_payload(payload).decode('utf-8')}"
+        return encode_payload(payload).decode("utf-8")
+
+    @cached_property
+    def shareable_url(self):
+        return f"/draft/{self.encoded}"
+
+    @cached_property
+    def preview_filename(self):
+        return self.encoded.replace(".", "_")
+
+
+@receiver(post_save, sender=Draft)
+def save_draft_preview(sender, instance=None, created=False, **kwargs):
+    if created:
+        take_screenshot.delay(
+            shareable_url=instance.shareable_url,
+            preview_filename=instance.preview_filename,
+        )
