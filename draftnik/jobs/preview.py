@@ -17,7 +17,6 @@ def take_screenshot(shareable_url, preview_filename):
         driver.get(url)
         driver.maximize_window()
         time.sleep(10)
-        driver.save_screenshot(f"{preview_filename}.png")
         driver.save_screenshot(f"/tmp/{preview_filename}.png")
 
     upload_to_s3.delay(preview_filename)
