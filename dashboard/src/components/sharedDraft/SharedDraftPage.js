@@ -13,19 +13,35 @@ const styles = () => ({
 });
 
 class SharedDraftPage extends React.Component {
-  render() {
-    const { classes, ...otherProps } = this.props;
-    const { body, drafts, selectedGameweek, selectedDraft } = otherProps;
+  draftDetails = () => {
+    const { drafts, selectedGameweek, selectedDraft } = this.props;
     const draft =
       selectedDraft !== null ? drafts[selectedGameweek][selectedDraft] : null;
+
+    return draft
+      ? {
+          title: `${draft.user}: ${draft.name} - Draftnik`,
+          description: `View ${draft.user}'s "${draft.name}" draft on Draftnik`,
+          url: draft.url,
+          preview: draft.preview_url,
+        }
+      : {};
+  };
+
+  render() {
+    const { classes, body, ...otherProps } = this.props;
+    const draft = this.draftDetails();
 
     return (
       <div className={classes.root}>
         {draft ? (
           <Helmet>
-            <title>{`View ${draft ? `${draft.user}'s` : ""} "${
-              draft ? draft.name : ""
-            }" draft - Draftnik`}</title>
+            <title>{draft.title}</title>
+            <meta name="description" content={draft.description} />
+            <meta property="og:title" content={draft.title} />
+            <meta property="og:description" content={draft.description} />
+            <meta property="og:image" content={draft.preview} />
+            <meta property="og:url" content={draft.url} />
           </Helmet>
         ) : null}
         <CssBaseline />
