@@ -61,7 +61,7 @@ class DraftCreateSerializer(serializers.ModelSerializer):
 
         entries = [self._get_player_id(player) for player in squad]
 
-        fields = {"user": user, "entries": entries, "gameweek": 1}
+        fields = {"user": user, "entries": entries, "gameweek": 2}
         if name:
             fields.update({"name": name})
 
