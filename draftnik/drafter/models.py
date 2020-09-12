@@ -53,3 +53,10 @@ def save_draft_preview(sender, instance=None, created=False, **kwargs):
             shareable_url=instance.shareable_url,
             preview_filename=instance.preview_filename,
         )
+
+
+class Gameweek(models.Model):
+    gw_id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=16, blank=True, null=True)
+    deadline = models.DateTimeField(help_text="UTC")
+    active = models.BooleanField(default=False)
