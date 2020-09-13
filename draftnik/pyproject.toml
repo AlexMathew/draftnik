@@ -19,10 +19,10 @@ django-rest-framework-social-oauth2 = "^1.1.0"
 PyJWT = "^1.7.1"
 selenium = "^3.141.0"
 boto3 = "^1.14.56"
+django-s3-storage = "^0.13.3"
+ipython = "^7.18.1"
 
 [tool.poetry.dev-dependencies]
-ipython = "^7.16.1"
-ipdb = "^0.13.3"
 black = "^19.10b0"
 django-s3-storage = "^0.13.3"
 
