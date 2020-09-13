@@ -9,6 +9,7 @@ from draftnik.keys import PLAYER_ID_KEY
 from helpers.instances import redis
 from utils.jwt import decode_payload
 from utils.static import (
+    get_current_gameweek,
     get_gameweek_data,
     get_player_data,
     get_team_data,
@@ -105,6 +106,7 @@ class DraftStaticDataSerializer(serializers.Serializer):
     teams = serializers.ReadOnlyField(default=get_team_data)
     gameweeks = serializers.ReadOnlyField(default=get_gameweek_data)
     team_fixtures = serializers.ReadOnlyField(default=get_team_fixtures_data)
+    current_gameweek = serializers.ReadOnlyField(default=get_current_gameweek)
 
 
 class DraftResponseSerializer(serializers.Serializer):

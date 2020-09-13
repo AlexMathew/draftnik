@@ -58,5 +58,11 @@ def save_draft_preview(sender, instance=None, created=False, **kwargs):
 class Gameweek(models.Model):
     gw_id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=16, blank=True, null=True)
-    deadline = models.DateTimeField(help_text="UTC")
+    deadline = models.DateTimeField(help_text="UTC", null=True)
     active = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ["gw_id"]
+
+    def __str__(self):
+        return f"{self.gw_id}: {self.name} ({self.active})"

@@ -1,6 +1,7 @@
 import json
 
 from draftnik.keys import (
+    CURRENT_GAMEWEEK_KEY,
     GAMEWEEK_DATA_KEY,
     PLAYER_DATA_KEY,
     TEAM_DATA_KEY,
@@ -23,3 +24,7 @@ def get_gameweek_data():
 
 def get_team_fixtures_data():
     return json.loads(redis.get(TEAM_FIXTURES_DATA_KEY) or "{}")
+
+
+def get_current_gameweek():
+    return redis.get(CURRENT_GAMEWEEK_KEY).decode("utf-8") or "1"

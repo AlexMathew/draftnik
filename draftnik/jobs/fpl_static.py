@@ -1,12 +1,15 @@
 import json
 import logging
 from collections import defaultdict
+from datetime import datetime
 from operator import itemgetter
 
 import requests
 
+from drafter.models import Gameweek
 from draftnik.celery import app
 from draftnik.keys import (
+    CURRENT_GAMEWEEK_KEY,
     GAMEWEEK_DATA_KEY,
     PLAYER_DATA_KEY,
     PLAYER_ID_KEY,
@@ -76,6 +79,7 @@ def store_gameweeks(r):
         logger.info(f'Gameweek - {data.get("name")}')
 
     redis.set(GAMEWEEK_DATA_KEY, json.dumps(gameweek_data))
+    configure_gameweek_updates(gameweek_data)
 
 
 @app.task(name="draftnik.fetch_static_data")
@@ -118,3 +122,29 @@ def fetch_fixtures(start=1, end=38):
             )
 
     redis.set(TEAM_FIXTURES_DATA_KEY, json.dumps(fixtures))
+
+
+@app.task(name="draftnik.update_gameweek")
+def update_gameweek(gameweek):
+    Gameweek.objects.all().update(active=False)
+    selected_gameweek = Gameweek.objects.filter(gw_id=gameweek)
+    if selected_gameweek:
+        selected_gameweek.update(active=True)
+        redis.set(CURRENT_GAMEWEEK_KEY, gameweek)
+
+
+def configure_gameweek_updates(gameweek_data):
+    for gameweek in gameweek_data.values():
+        gw_obj = Gameweek.objects.filter(gw_id=gameweek.get("id", 0))
+        if not gw_obj:
+            Gameweek.objects.create(
+                gw_id=gameweek.get("id", 0),
+                name=gameweek.get("name", ""),
+                deadline=gameweek.get("deadline_time", None),
+            )
+            update_gameweek.apply_async(
+                (gameweek.get("id", 0) + 1,),
+                eta=datetime.strptime(
+                    gameweek.get("deadline_time"), "%Y-%m-%dT%H:%M:%S%z"
+                ),
+            )
