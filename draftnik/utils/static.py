@@ -27,4 +27,4 @@ def get_team_fixtures_data():
 
 
 def get_current_gameweek():
-    return redis.get(CURRENT_GAMEWEEK_KEY).decode("utf-8") or "1"
+    return (redis.get(CURRENT_GAMEWEEK_KEY) or b"1").decode("utf-8")
