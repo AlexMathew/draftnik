@@ -1,7 +1,7 @@
 import { SELECT_DRAFT, SELECT_GAMEWEEK } from "../actions/types";
 
 const initialState = {
-  gameweek: "2",
+  gameweek: "1",
   draft: null,
 };
 

@@ -32,7 +32,7 @@ export const fetchStaticData = () => async (dispatch) => {
     dispatch({ type: LOAD_TEAM_FIXTURES_DATA, payload: response.data });
     dispatch({ type: LOAD_DRAFTS, payload: response.data });
 
-    dispatch(selectGameweek("2"));
+    dispatch(selectGameweek(response.data.static.current_gameweek));
     dispatch(selectDraft(null));
   } catch (error) {
     if (error.response.status === 401) {

@@ -62,7 +62,11 @@ class DraftCreateSerializer(serializers.ModelSerializer):
 
         entries = [self._get_player_id(player) for player in squad]
 
-        fields = {"user": user, "entries": entries, "gameweek": 2}
+        fields = {
+            "user": user,
+            "entries": entries,
+            "gameweek": int(get_current_gameweek()),
+        }
         if name:
             fields.update({"name": name})
 
@@ -93,7 +97,7 @@ class DraftCloneSerializer(serializers.ModelSerializer):
         fields = {
             "user": user,
             "entries": draft.entries,
-            "gameweek": 1,
+            "gameweek": int(get_current_gameweek()),
             "name": f"{draft.name} (cloned from {draft.user.username})",
         }
         new_draft = Draft.objects.create(**fields)
