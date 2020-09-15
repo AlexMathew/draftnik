@@ -11,6 +11,7 @@ from draftnik.celery import app
 from draftnik.keys import (
     CURRENT_GAMEWEEK_KEY,
     GAMEWEEK_DATA_KEY,
+    GAMEWEEK_FIXTURES_DATA_KEY,
     PLAYER_DATA_KEY,
     PLAYER_ID_KEY,
     TEAM_DATA_KEY,
@@ -104,15 +105,17 @@ def fetch_fixtures(start=1, end=38):
     URL = "https://fantasy.premierleague.com/api/fixtures/"
 
     fixtures = defaultdict(lambda: defaultdict(list))
+    gameweek_fixtures = defaultdict(list)
     for gw in range(start, end + 1):
         logger.info(f"Fixtures GW#{gw}")
         r = requests.get(URL, params={"event": gw})
         data = r.json()
         for match in data:
-            event, team_a, team_h = (
+            event, team_a, team_h, kickoff_time = (
                 match.get("event"),
                 match.get("team_a"),
                 match.get("team_h"),
+                match.get("kickoff_time"),
             )
             fixtures[team_h][event].append(
                 {"opponent": team_a, "location": "H", "gw": event}
@@ -120,8 +123,12 @@ def fetch_fixtures(start=1, end=38):
             fixtures[team_a][event].append(
                 {"opponent": team_h, "location": "A", "gw": event}
             )
+            gameweek_fixtures[event].append(
+                {"home": team_h, "away": team_a, "kickoff_time": kickoff_time}
+            )
 
     redis.set(TEAM_FIXTURES_DATA_KEY, json.dumps(fixtures))
+    redis.set(GAMEWEEK_FIXTURES_DATA_KEY, json.dumps(gameweek_fixtures))
 
 
 @app.task(name="draftnik.update_gameweek")

@@ -11,6 +11,7 @@ from utils.jwt import decode_payload
 from utils.static import (
     get_current_gameweek,
     get_gameweek_data,
+    get_gameweek_fixtures_data,
     get_player_data,
     get_team_data,
     get_team_fixtures_data,
@@ -110,6 +111,7 @@ class DraftStaticDataSerializer(serializers.Serializer):
     teams = serializers.ReadOnlyField(default=get_team_data)
     gameweeks = serializers.ReadOnlyField(default=get_gameweek_data)
     team_fixtures = serializers.ReadOnlyField(default=get_team_fixtures_data)
+    gameweek_fixtures = serializers.ReadOnlyField(default=get_gameweek_fixtures_data)
     current_gameweek = serializers.ReadOnlyField(default=get_current_gameweek)
 
 
