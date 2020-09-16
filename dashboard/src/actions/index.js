@@ -4,7 +4,7 @@ import {
   LOAD_GAMEWEEK_DATA,
   LOAD_PLAYER_DATA,
   LOAD_TEAM_DATA,
-  LOAD_TEAM_FIXTURES_DATA,
+  LOAD_FIXTURES_DATA,
   SELECT_DRAFT,
   SELECT_GAMEWEEK,
   SWITCH_MOBILE,
@@ -29,7 +29,7 @@ export const fetchStaticData = () => async (dispatch) => {
     dispatch({ type: LOAD_TEAM_DATA, payload: response.data });
     dispatch({ type: LOAD_PLAYER_DATA, payload: response.data });
     dispatch({ type: LOAD_GAMEWEEK_DATA, payload: response.data });
-    dispatch({ type: LOAD_TEAM_FIXTURES_DATA, payload: response.data });
+    dispatch({ type: LOAD_FIXTURES_DATA, payload: response.data });
     dispatch({ type: LOAD_DRAFTS, payload: response.data });
 
     dispatch(selectGameweek(response.data.static.current_gameweek));
@@ -49,7 +49,7 @@ export const fetchSharedDraftDetails = (draftCode) => async (dispatch) => {
     dispatch({ type: LOAD_TEAM_DATA, payload: response.data });
     dispatch({ type: LOAD_PLAYER_DATA, payload: response.data });
     dispatch({ type: LOAD_GAMEWEEK_DATA, payload: response.data });
-    dispatch({ type: LOAD_TEAM_FIXTURES_DATA, payload: response.data });
+    dispatch({ type: LOAD_FIXTURES_DATA, payload: response.data });
     dispatch({ type: LOAD_SINGLE_DRAFT, payload: response.data });
 
     const gameweek = response.data.draft.gameweek;
