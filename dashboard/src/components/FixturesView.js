@@ -4,21 +4,17 @@ import { withStyles } from "@material-ui/core/styles";
 import Hidden from "@material-ui/core/Hidden";
 import Drawer from "@material-ui/core/Drawer";
 import Divider from "@material-ui/core/Divider";
-import Typography from "@material-ui/core/Typography";
-import { connect } from "react-redux";
-import {} from "../actions";
-
-const drawerWidth = 350;
+import FixturesList from "./fixturesView/FixturesList";
 
 const styles = (theme) => ({
   drawer: {
     [theme.breakpoints.up("sm")]: {
-      width: drawerWidth,
+      width: theme.spacing(40),
       flexShrink: 0,
     },
   },
   drawerPaper: {
-    width: drawerWidth,
+    width: theme.spacing(40),
   },
   toolbar: theme.mixins.toolbar,
   content: {
@@ -33,14 +29,15 @@ class FixturesView extends React.Component {
     const { classes } = this.props;
     const fixtures = (
       <div className={classes.content}>
+        <div className={classes.toolbar}></div>
         <Divider />
-        <Typography variant="h5">FIXTURES</Typography>
+        <FixturesList />
       </div>
     );
 
     return (
       <nav className={classes.drawer}>
-        <Hidden smUp implementation="js">
+        <Hidden xsUp implementation="js">
           {fixtures}
         </Hidden>
         <Hidden xsDown implementation="js">
@@ -65,9 +62,4 @@ FixturesView.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = () => {
-  return {};
-};
-
-const wrappedFixturesView = connect(mapStateToProps, {})(FixturesView);
-export default withStyles(styles)(wrappedFixturesView);
+export default withStyles(styles)(FixturesView);

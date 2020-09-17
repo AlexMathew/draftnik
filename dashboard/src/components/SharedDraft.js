@@ -1,7 +1,7 @@
 import React from "react";
 import SharedDraftPage from "./sharedDraft/SharedDraftPage";
 import SquadView from "./SquadView";
-// import FixturesView from "./FixturesView";
+import FixturesView from "./FixturesView";
 import { connect } from "react-redux";
 import { fetchSharedDraftDetails } from "../actions";
 
@@ -16,7 +16,7 @@ class SharedDraft extends React.Component {
     const body = (
       <>
         <SquadView showUsername={true} />
-        {/* <FixturesView /> */}
+        <FixturesView />
       </>
     );
 
