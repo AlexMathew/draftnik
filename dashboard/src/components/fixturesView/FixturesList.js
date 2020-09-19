@@ -10,8 +10,7 @@ import _ from "lodash";
 
 const styles = (theme) => ({
   section: {
-    display: "flex",
-    alignItems: "center",
+    display: "grid",
     alignSelf: "center",
   },
   header: {
@@ -21,6 +20,10 @@ const styles = (theme) => ({
   info: {
     padding: theme.spacing(0.5),
     fontSize: "small",
+  },
+  fixtureDay: {
+    width: "100%",
+    marginTop: theme.spacing(1),
   },
 });
 
@@ -53,7 +56,7 @@ class FixturesList extends React.Component {
         {selectedGameweekFixtures
           ? _.toPairs(selectedGameweekFixtures).map(
               ([fixtureDay, fixtures], index) => (
-                <div className={classes.section}>
+                <div className={classes.fixtureDay}>
                   <FixtureDay
                     key={index}
                     fixtureDay={fixtureDay}

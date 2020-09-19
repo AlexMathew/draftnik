@@ -7,7 +7,16 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { connect } from "react-redux";
 import { getDateString } from "../../utils/datetime";
 
-const styles = () => ({});
+const styles = (theme) => ({
+  header: {
+    background: "lightgrey",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  fixture: {
+    textAlign: "center",
+  },
+});
 
 class FixturesDay extends React.Component {
   render() {
@@ -15,16 +24,14 @@ class FixturesDay extends React.Component {
 
     return (
       <>
-        <div>{getDateString(fixtureDay)}</div>
+        <div className={classes.header}>{getDateString(fixtureDay)}</div>
         <List>
           {fixtures.map((fixture, index) => (
-            <div key={index}>
-              <ListItem>
-                <ListItemText>{`${teams[fixture.home].short_name} vs ${
-                  teams[fixture.away].short_name
-                }`}</ListItemText>
-              </ListItem>
-            </div>
+            <ListItem className={classes.fixture} key={index} divider>
+              <ListItemText>{`${teams[fixture.home].short_name} vs ${
+                teams[fixture.away].short_name
+              }`}</ListItemText>
+            </ListItem>
           ))}
         </List>
       </>
