@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Hidden from "@material-ui/core/Hidden";
 import Drawer from "@material-ui/core/Drawer";
-import Divider from "@material-ui/core/Divider";
 import FixturesList from "./fixturesView/FixturesList";
+import { Divider } from "@material-ui/core";
 
 const styles = (theme) => ({
   drawer: {
@@ -28,11 +28,11 @@ class FixturesView extends React.Component {
   render() {
     const { classes } = this.props;
     const fixtures = (
-      <div className={classes.content}>
-        <div className={classes.toolbar}></div>
+      <>
+        <div className={classes.toolbar} />
         <Divider />
         <FixturesList />
-      </div>
+      </>
     );
 
     return (
@@ -49,7 +49,6 @@ class FixturesView extends React.Component {
             open
             anchor="right"
           >
-            <div className={classes.toolbar} />
             {fixtures}
           </Drawer>
         </Hidden>
