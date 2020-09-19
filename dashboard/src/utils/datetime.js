@@ -15,6 +15,18 @@ export const getTimeString = (datetime = null) => {
   }).format(datetime ? new Date(datetime) : new Date());
 };
 
+export const getDateTimeString = (datetime = null) => {
+  return Intl.DateTimeFormat(navigator.language, {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  }).format(datetime ? new Date(datetime) : new Date());
+};
+
 export const getTimeZoneName = (datetime = null) => {
   return Intl.DateTimeFormat(navigator.language, { timeZoneName: "long" })
     .formatToParts(datetime ? new Date(datetime) : new Date())
