@@ -102,7 +102,7 @@ class ElementInfo extends React.Component {
             />
           </Tooltip>
         </Hidden>
-        <Hidden smUp implementation="js">
+        <Hidden mdUp implementation="js">
           <ClickAwayListener onClickAway={this.handleTooltipClose}>
             <Tooltip
               onClose={this.handleTooltipClose}
