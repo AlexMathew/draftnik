@@ -5,15 +5,19 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Header from "./Header";
 import SquadSelector from "./SquadSelector";
 import SquadView from "./SquadView";
-// import FixturesView from "./FixturesView";
+import FixturesView from "./FixturesView";
 import { connect } from "react-redux";
 import { fetchStaticData } from "../actions";
 import history from "../history";
 import { AUTH_TOKEN_FIELD } from "../constants";
 
-const styles = () => ({
+const styles = (theme) => ({
   root: {
-    display: "flex",
+    [theme.breakpoints.up("sm")]: {
+      display: "flex",
+      flexGrow: 1,
+    },
+    display: "grid",
   },
 });
 
@@ -37,7 +41,7 @@ class Dashboard extends React.Component {
         <Header />
         <SquadSelector />
         <SquadView />
-        {/* <FixturesView /> */}
+        <FixturesView />
       </div>
     );
   }

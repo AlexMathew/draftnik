@@ -9,17 +9,15 @@ import DraftList from "./squadSelector/DraftList";
 import { connect } from "react-redux";
 import { switchMobile } from "../actions";
 
-const drawerWidth = 350;
-
 const styles = (theme) => ({
   drawer: {
     [theme.breakpoints.up("sm")]: {
-      width: drawerWidth,
+      width: theme.spacing(40),
       flexShrink: 0,
     },
   },
   drawerPaper: {
-    width: drawerWidth,
+    width: theme.spacing(40),
   },
   toolbar: theme.mixins.toolbar,
 });
