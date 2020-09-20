@@ -56,12 +56,8 @@ class FixturesList extends React.Component {
         {selectedGameweekFixtures
           ? _.toPairs(selectedGameweekFixtures).map(
               ([fixtureDay, fixtures], index) => (
-                <div className={classes.fixtureDay}>
-                  <FixtureDay
-                    key={index}
-                    fixtureDay={fixtureDay}
-                    fixtures={fixtures}
-                  />
+                <div key={index} className={classes.fixtureDay}>
+                  <FixtureDay fixtureDay={fixtureDay} fixtures={fixtures} />
                 </div>
               )
             )

@@ -1,12 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import ListItemText from "@material-ui/core/ListItemText";
 import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
 import { getTimeString } from "../../utils/datetime";
 
-const styles = (theme) => ({});
+const styles = (theme) => ({
+  badge: {
+    [theme.breakpoints.down("sm")]: {
+      height: "2vh",
+    },
+    height: "4vh",
+  },
+  kickoff: {
+    fontWeight: "bold",
+    borderStyle: "solid",
+    borderWidth: "thin",
+  },
+});
 
 class Fixture extends React.Component {
   getTeamDetails = (teamCode) => {
@@ -14,6 +25,7 @@ class Fixture extends React.Component {
     const team = teams[teamCode];
 
     return {
+      name: team.name,
       shortName: team.short_name,
       badge: `/badges/${teamCode}.png`,
     };
@@ -25,9 +37,17 @@ class Fixture extends React.Component {
     const away = this.getTeamDetails(fixture.away);
 
     return (
-      <ListItemText>{`${home.shortName} vs ${away.shortName} (${getTimeString(
-        fixture.kickoff_time
-      )})`}</ListItemText>
+      <Grid container direction="row" justify="center" alignItems="center">
+        <Grid item xs>
+          <img className={classes.badge} src={home.badge} alt={home.name}></img>
+        </Grid>
+        <Grid item xs className={classes.kickoff}>
+          {getTimeString(fixture.kickoff_time)}
+        </Grid>
+        <Grid item xs>
+          <img className={classes.badge} src={away.badge} alt={away.name}></img>
+        </Grid>
+      </Grid>
     );
   }
 }
