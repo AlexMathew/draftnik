@@ -7,9 +7,6 @@ import { getTimeString } from "../../utils/datetime";
 
 const styles = (theme) => ({
   badge: {
-    [theme.breakpoints.down("sm")]: {
-      height: "2vh",
-    },
     height: "4vh",
   },
   kickoff: {

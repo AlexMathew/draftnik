@@ -37,7 +37,7 @@ class FixturesView extends React.Component {
 
     return (
       <nav className={classes.drawer}>
-        <Hidden xsUp implementation="js">
+        <Hidden smUp implementation="js">
           {fixtures}
         </Hidden>
         <Hidden xsDown implementation="js">

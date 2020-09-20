@@ -12,6 +12,7 @@ const styles = (theme) => ({
   section: {
     display: "grid",
     alignSelf: "center",
+    textAlign: "center",
   },
   header: {
     paddingTop: theme.spacing(2),

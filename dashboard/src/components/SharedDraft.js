@@ -1,9 +1,21 @@
 import React from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
 import SharedDraftPage from "./sharedDraft/SharedDraftPage";
 import SquadView from "./SquadView";
 import FixturesView from "./FixturesView";
 import { connect } from "react-redux";
 import { fetchSharedDraftDetails } from "../actions";
+
+const styles = (theme) => ({
+  root: {
+    [theme.breakpoints.up("sm")]: {
+      display: "flex",
+      flexGrow: 1,
+    },
+    display: "grid",
+  },
+});
 
 class SharedDraft extends React.Component {
   componentDidMount() {
@@ -12,16 +24,25 @@ class SharedDraft extends React.Component {
   }
 
   render() {
+    const { classes } = this.props;
     const { draftCode } = this.props.match.params;
+
     const body = (
-      <>
+      <main className={classes.root}>
         <SquadView showUsername={true} />
         <FixturesView />
-      </>
+      </main>
     );
 
     return <SharedDraftPage body={body} draftCode={draftCode} found />;
   }
 }
 
-export default connect(null, { fetchSharedDraftDetails })(SharedDraft);
+SharedDraft.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+const wrappedSharedDraft = connect(null, { fetchSharedDraftDetails })(
+  SharedDraft
+);
+export default withStyles(styles)(wrappedSharedDraft);
