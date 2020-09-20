@@ -32,8 +32,8 @@ export const fetchStaticData = () => async (dispatch) => {
     dispatch({ type: LOAD_FIXTURES_DATA, payload: response.data });
     dispatch({ type: LOAD_DRAFTS, payload: response.data });
 
-    dispatch(selectGameweek(response.data.static.current_gameweek));
     dispatch(selectDraft(null));
+    dispatch(selectGameweek(response.data.static.current_gameweek));
   } catch (error) {
     if (error.response.status === 401) {
       localStorage.removeItem(AUTH_TOKEN_FIELD);
