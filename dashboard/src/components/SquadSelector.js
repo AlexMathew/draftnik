@@ -11,7 +11,7 @@ import { switchMobile } from "../actions";
 
 const styles = (theme) => ({
   drawer: {
-    [theme.breakpoints.up("sm")]: {
+    [theme.breakpoints.up("lg")]: {
       width: theme.spacing(40),
       flexShrink: 0,
     },
@@ -37,7 +37,7 @@ class SquadSelector extends React.Component {
 
     return (
       <nav className={classes.drawer}>
-        <Hidden smUp implementation="js">
+        <Hidden lgUp implementation="js">
           <Drawer
             variant="temporary"
             open={this.props.mobileOpen}
@@ -52,7 +52,7 @@ class SquadSelector extends React.Component {
             {drawer}
           </Drawer>
         </Hidden>
-        <Hidden xsDown implementation="js">
+        <Hidden mdDown implementation="js">
           <Drawer
             classes={{
               paper: classes.drawerPaper,
