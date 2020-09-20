@@ -15,12 +15,28 @@ const styles = (theme) => ({
     textAlign: "center",
   },
   header: {
+    [theme.breakpoints.down("md")]: {
+      fontSize: "large",
+    },
+    [theme.breakpoints.down("sm")]: {
+      paddingTop: theme.spacing(1),
+    },
+    fontSize: "x-large",
     paddingTop: theme.spacing(2),
     fontWeight: "bold",
   },
-  info: {
-    padding: theme.spacing(0.5),
+  deadline: {
+    [theme.breakpoints.down("md")]: {
+      fontSize: "x-small",
+    },
     fontSize: "small",
+  },
+  info: {
+    [theme.breakpoints.down("md")]: {
+      fontSize: "x-small",
+    },
+    fontSize: "small",
+    padding: theme.spacing(0.5),
   },
   fixtureDay: {
     width: "100%",
@@ -39,12 +55,10 @@ class FixturesList extends React.Component {
     return (
       <>
         <div className={classes.section}>
-          <Typography className={classes.header} variant="h5">
-            {gameweek?.name}
-          </Typography>
+          <Typography className={classes.header}>{gameweek?.name}</Typography>
         </div>
         <div className={classes.section}>
-          <Typography variant="body1">
+          <Typography className={classes.deadline}>
             {gameweek ? `${getDateTimeString(gameweek.deadline_time)}` : null}
           </Typography>
         </div>

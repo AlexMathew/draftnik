@@ -10,6 +10,10 @@ const styles = (theme) => ({
     height: "4vh",
   },
   kickoff: {
+    [theme.breakpoints.down("md")]: {
+      fontSize: "small",
+    },
+    maxWidth: "8vh",
     fontWeight: "bold",
     borderStyle: "solid",
     borderWidth: "thin",
