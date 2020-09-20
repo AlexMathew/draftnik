@@ -17,19 +17,19 @@ const styles = (theme) => ({
     textAlign: "center",
   },
   jersey: {
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("md")]: {
       height: "5vh",
     },
     height: "8vh",
   },
   name: {
     [theme.breakpoints.down("md")]: {
-      fontSize: "small",
-    },
-    [theme.breakpoints.down("sm")]: {
       fontSize: "x-small",
     },
-    fontSize: "medium",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "xx-small",
+    },
+    fontSize: "small",
     fontWeight: "bold",
     textAlign: "center",
     background: "darkgreen",
@@ -37,12 +37,12 @@ const styles = (theme) => ({
   },
   price: {
     [theme.breakpoints.down("md")]: {
-      fontSize: "small",
-    },
-    [theme.breakpoints.down("sm")]: {
       fontSize: "x-small",
     },
-    fontSize: "medium",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "xx-small",
+    },
+    fontSize: "small",
     fontWeight: "bold",
     textAlign: "center",
     background: "palegreen",

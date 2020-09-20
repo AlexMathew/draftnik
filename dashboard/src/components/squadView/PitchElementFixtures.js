@@ -9,13 +9,10 @@ import _ from "lodash";
 const styles = (theme) => ({
   fixtures: {
     [theme.breakpoints.down("md")]: {
-      fontSize: "x-small",
-    },
-    [theme.breakpoints.down("sm")]: {
       fontSize: "xx-small",
     },
     fontWeight: "bold",
-    fontSize: "small",
+    fontSize: "x-small",
     textAlign: "center",
     background: "whitesmoke",
   },
@@ -101,10 +98,10 @@ class PitchElementFixtures extends React.Component {
 
     return (
       <Grid container direction="row" className={classes.fixtures}>
-        <Hidden smUp implementation="js">
+        <Hidden lgUp implementation="js">
           {this.getFixturesGrid(1)}
         </Hidden>
-        <Hidden xsDown implementation="js">
+        <Hidden mdDown implementation="js">
           {this.getFixturesGrid(3)}
         </Hidden>
       </Grid>

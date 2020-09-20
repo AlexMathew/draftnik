@@ -36,21 +36,21 @@ const styles = (theme) => ({
   },
   draftName: {
     fontWeight: "bold",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("md")]: {
       fontSize: "small",
     },
   },
   userName: {
     color: "grey",
     marginLeft: theme.spacing(1),
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("md")]: {
       fontSize: "small",
     },
   },
   createdAt: {
     color: "grey",
     fontSize: "small",
-    [theme.breakpoints.down("sm")]: {
+    [theme.breakpoints.down("md")]: {
       fontSize: "x-small",
     },
   },
