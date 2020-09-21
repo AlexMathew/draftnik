@@ -8,20 +8,21 @@ import { Divider } from "@material-ui/core";
 
 const styles = (theme) => ({
   drawer: {
-    [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(40),
+    [theme.breakpoints.only("md")]: {
+      width: theme.spacing(30),
       flexShrink: 0,
+    },
+    [theme.breakpoints.up("lg")]: {
+      width: theme.spacing(40),
     },
   },
   drawerPaper: {
+    [theme.breakpoints.down("md")]: {
+      width: theme.spacing(30),
+    },
     width: theme.spacing(40),
   },
   toolbar: theme.mixins.toolbar,
-  content: {
-    display: "flex",
-    alignItems: "center",
-    alignSelf: "center",
-  },
 });
 
 class FixturesView extends React.Component {
