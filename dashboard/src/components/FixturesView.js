@@ -38,10 +38,10 @@ class FixturesView extends React.Component {
 
     return (
       <nav className={classes.drawer}>
-        <Hidden smUp implementation="js">
+        <Hidden mdUp implementation="js">
           {fixtures}
         </Hidden>
-        <Hidden xsDown implementation="js">
+        <Hidden smDown implementation="js">
           <Drawer
             classes={{
               paper: classes.drawerPaper,
