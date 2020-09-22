@@ -2,8 +2,6 @@ import uuid
 
 from django.conf import settings
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from django.utils.functional import cached_property
 
 from jobs.preview import take_screenshot
@@ -32,6 +30,15 @@ class Draft(models.Model):
     def __str__(self):
         return f"#{self.gameweek}- {self.name} ({self.user})"
 
+    def save(self, *args, **kwargs):
+        is_new = self._state.adding
+        super().save(*args, **kwargs)
+        if is_new:
+            take_screenshot.delay(
+                shareable_url=self.shareable_url,
+                preview_filename=self.preview_filename,
+            )
+
     @cached_property
     def encoded(self):
         payload = {"id": self.id}
@@ -44,15 +51,6 @@ class Draft(models.Model):
     @cached_property
     def preview_filename(self):
         return self.encoded.replace(".", "_")
-
-
-@receiver(post_save, sender=Draft)
-def save_draft_preview(sender, instance=None, created=False, **kwargs):
-    if created:
-        take_screenshot.delay(
-            shareable_url=instance.shareable_url,
-            preview_filename=instance.preview_filename,
-        )
 
 
 class Gameweek(models.Model):
