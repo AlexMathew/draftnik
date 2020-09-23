@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import SharedDraftPage from "./sharedDraft/SharedDraftPage";
 import SquadView from "./SquadView";
 import FixturesView from "./FixturesView";
@@ -28,10 +29,11 @@ class SharedDraft extends React.Component {
     const { draftCode } = this.props.match.params;
 
     const body = (
-      <main className={classes.root}>
+      <div className={classes.root}>
+        <CssBaseline />
         <SquadView showUsername={true} />
         <FixturesView />
-      </main>
+      </div>
     );
 
     return <SharedDraftPage body={body} draftCode={draftCode} found />;
