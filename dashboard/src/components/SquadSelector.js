@@ -12,7 +12,7 @@ import { switchMobile } from "../actions";
 const styles = (theme) => ({
   drawer: {
     [theme.breakpoints.up("lg")]: {
-      width: theme.spacing(40),
+      width: theme.spacing(37.5),
       flexShrink: 0,
     },
   },

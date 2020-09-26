@@ -13,7 +13,7 @@ const styles = (theme) => ({
       flexShrink: 0,
     },
     [theme.breakpoints.up("lg")]: {
-      width: theme.spacing(40),
+      width: theme.spacing(37.5),
     },
   },
   drawerPaper: {
