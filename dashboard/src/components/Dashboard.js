@@ -6,6 +6,7 @@ import Header from "./Header";
 import SquadSelector from "./SquadSelector";
 import SquadView from "./SquadView";
 import FixturesView from "./FixturesView";
+import { Helmet } from "react-helmet";
 import { connect } from "react-redux";
 import { fetchStaticData } from "../actions";
 import history from "../history";
@@ -32,11 +33,36 @@ class Dashboard extends React.Component {
     }
   }
 
+  componentDidUpdate() {
+    const ogImage = document.querySelector(`meta[property='og:image']`);
+    if (ogImage) {
+      ogImage.remove();
+    }
+
+    const ogUrl = document.querySelector(`meta[property='og:url']`);
+    if (ogUrl) {
+      ogUrl.remove();
+    }
+  }
+
   render() {
     const { classes } = this.props;
 
     return (
       <div className={classes.root}>
+        <Helmet>
+          <title>Draftnik</title>
+          <meta
+            name="description"
+            content="Save team drafts you create on Fantasy Premier League."
+          />
+          <meta property="og:title" content="Draftnik" />
+          <meta
+            property="og:description"
+            content="Save team drafts you create on Fantasy Premier League."
+          />
+        </Helmet>
+
         <CssBaseline />
         <Header />
         <SquadSelector />
