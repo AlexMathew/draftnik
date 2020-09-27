@@ -17,6 +17,14 @@ const styles = (theme) => ({
     flexGrow: 1,
     paddingTop: theme.spacing(3),
   },
+  placeholder: {
+    display: "grid",
+    placeContent: "center",
+    placeItems: "center",
+    fontSize: "large",
+    fontWeight: "bold",
+    height: "82vh",
+  },
   details: {
     height: "3vh",
     display: "grid",
@@ -61,6 +69,17 @@ class SquadView extends React.Component {
     return new Date(datetime).toDateString();
   };
 
+  placeholderText = () => {
+    const { classes } = this.props;
+
+    return (
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+        <div className={classes.placeholder}>Select a draft to view.</div>
+      </main>
+    );
+  };
+
   render() {
     const {
       classes,
@@ -69,8 +88,12 @@ class SquadView extends React.Component {
       selectedDraft,
       showUsername,
     } = this.props;
-    const draft =
-      selectedDraft !== null ? drafts[selectedGameweek][selectedDraft] : null;
+
+    if (selectedDraft === null) {
+      return this.placeholderText();
+    }
+
+    const draft = drafts[selectedGameweek][selectedDraft];
 
     return (
       <main className={classes.content}>
@@ -78,19 +101,17 @@ class SquadView extends React.Component {
         <div className={classes.details}>
           <div className={classes.title}>
             <Typography variant="h5" className={classes.draftName}>
-              {draft ? draft.name : ""}
+              {draft.name}
             </Typography>
             {showUsername ? (
               <Typography variant="h6" className={classes.userName}>
-                {draft ? `(${draft.user})` : ""}
+                {`(${draft.user})`}
               </Typography>
             ) : null}
           </div>
           <div className={classes.createdDate}>
             <Typography variant="h6" className={classes.createdAt}>
-              {draft
-                ? `Created on: ${this.getDateString(draft.created_at)}`
-                : ""}
+              {`Created on: ${this.getDateString(draft.created_at)}`}
             </Typography>
           </div>
         </div>
