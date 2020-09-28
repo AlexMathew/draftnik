@@ -100,6 +100,7 @@ def fetch_static_data(players=True, teams=False, gameweeks=False):
         store_gameweeks(r)
 
 
+@app.task(name="draftnik.fetch_fixtures")
 def fetch_fixtures(start=1, end=38):
     logger.info("fetch_fixtures")
     URL = "https://fantasy.premierleague.com/api/fixtures/"

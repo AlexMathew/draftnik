@@ -23,10 +23,14 @@ app.conf.update(
             "task": "draftnik.fetch_static_data",
             "schedule": crontab(minute=0, hour="2,14"),
         },
-        "fetch-next-fixtures": {
-            "task": "draftnik.fetch_next_fixtures",
+        # "fetch-next-fixtures": {
+        #     "task": "draftnik.fetch_next_fixtures",
+        #     "schedule": crontab(minute=0, hour=0, day_of_month="1"),
+        #     "kwargs": {"count": 5,},
+        # },
+        "fetch-fixtures": {
+            "task": "draftnik.fetch_fixtures",
             "schedule": crontab(minute=0, hour=0, day_of_month="1"),
-            "kwargs": {"count": 5,},
         },
     },
 )
