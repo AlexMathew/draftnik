@@ -18,6 +18,7 @@ from draftnik.keys import (
     TEAM_FIXTURES_DATA_KEY,
 )
 from helpers.instances import redis
+from utils.static import get_current_gameweek
 
 logger = logging.getLogger(__name__)
 
@@ -99,7 +100,6 @@ def fetch_static_data(players=True, teams=False, gameweeks=False):
         store_gameweeks(r)
 
 
-@app.task(name="draftnik.fetch_fixtures")
 def fetch_fixtures(start=1, end=38):
     logger.info("fetch_fixtures")
     URL = "https://fantasy.premierleague.com/api/fixtures/"
@@ -129,6 +129,12 @@ def fetch_fixtures(start=1, end=38):
 
     redis.set(TEAM_FIXTURES_DATA_KEY, json.dumps(fixtures))
     redis.set(GAMEWEEK_FIXTURES_DATA_KEY, json.dumps(gameweek_fixtures))
+
+
+@app.task(name="draftnik.fetch_next_fixtures")
+def fetch_next_fixtures(count=0):
+    current_gameweek = int(get_current_gameweek())
+    fetch_fixtures(current_gameweek, current_gameweek + count - 1)
 
 
 @app.task(name="draftnik.update_gameweek")
