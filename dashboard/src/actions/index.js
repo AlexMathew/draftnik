@@ -19,13 +19,22 @@ export const switchMobile = () => {
 
 export const fetchStaticData = () => async (dispatch) => {
   const authToken = localStorage.getItem(AUTH_TOKEN_FIELD);
+  let response = {};
+
   try {
-    const response = await draftnik.get("/draft/static/", {
+    response = await draftnik.get("/draft/static/", {
       headers: {
         Authorization: `Token ${authToken}`,
       },
     });
+  } catch (error) {
+    if (error.response.status === 401) {
+      localStorage.removeItem(AUTH_TOKEN_FIELD);
+      history.push("/signin");
+    }
+  }
 
+  try {
     dispatch({ type: LOAD_TEAM_DATA, payload: response.data });
     dispatch({ type: LOAD_PLAYER_DATA, payload: response.data });
     dispatch({ type: LOAD_GAMEWEEK_DATA, payload: response.data });
@@ -35,17 +44,22 @@ export const fetchStaticData = () => async (dispatch) => {
     dispatch(selectDraft(null));
     dispatch(selectGameweek(response.data.static.current_gameweek));
   } catch (error) {
-    if (error.response.status === 401) {
-      localStorage.removeItem(AUTH_TOKEN_FIELD);
-      history.push("/signin");
-    }
+    console.error(error);
   }
 };
 
 export const fetchSharedDraftDetails = (draftCode) => async (dispatch) => {
-  try {
-    const response = await draftnik.get(`/draft/detail/${draftCode}/`);
+  let response = {};
 
+  try {
+    response = await draftnik.get(`/draft/detail/${draftCode}/`);
+  } catch (error) {
+    if (error.response.status === 404) {
+      history.push("/draft/not-found");
+    }
+  }
+
+  try {
     dispatch({ type: LOAD_TEAM_DATA, payload: response.data });
     dispatch({ type: LOAD_PLAYER_DATA, payload: response.data });
     dispatch({ type: LOAD_GAMEWEEK_DATA, payload: response.data });
@@ -56,9 +70,7 @@ export const fetchSharedDraftDetails = (draftCode) => async (dispatch) => {
     dispatch(selectGameweek(gameweek));
     dispatch(selectDraft(0));
   } catch (error) {
-    if (error.response.status === 404) {
-      history.push("/draft/not-found");
-    }
+    console.error(error);
   }
 };
 
