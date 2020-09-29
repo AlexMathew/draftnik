@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { LOAD_FIXTURES_DATA } from "../actions/types";
-import { getDateString } from "../utils/datetime";
+import { getUSDateString } from "../utils/datetime";
 
 const initialState = {
   byTeam: {},
@@ -11,7 +11,9 @@ const formatGwFixtures = (fixtures) => {
   const newFixtures = {};
   // eslint-disable-next-line array-callback-return
   _.toPairs(fixtures).map(([gw, fixs]) => {
-    newFixtures[gw] = _.groupBy(fixs, (fix) => getDateString(fix.kickoff_time));
+    newFixtures[gw] = _.groupBy(fixs, (fix) =>
+      getUSDateString(fix.kickoff_time)
+    );
   });
   return newFixtures;
 };
