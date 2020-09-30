@@ -20,7 +20,10 @@ from .serializers import (
 
 
 class DraftView(
-    mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet,
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.DestroyModelMixin,
+    viewsets.GenericViewSet,
 ):
     def get_serializer_class(self):
         serializers = {
