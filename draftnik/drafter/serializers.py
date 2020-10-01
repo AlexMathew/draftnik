@@ -76,6 +76,16 @@ class DraftCreateSerializer(serializers.ModelSerializer):
         return instance
 
 
+class DraftUpdateSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source="user.username")
+    name = serializers.CharField(max_length=100, required=True)
+
+    class Meta:
+        model = Draft
+        fields = ["user", "name", "gameweek"]
+        read_only_fields = ["user", "gameweek"]
+
+
 class DraftCloneSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source="user.username")
     draft_code = serializers.CharField(write_only=True)

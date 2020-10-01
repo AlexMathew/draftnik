@@ -15,6 +15,7 @@ from .serializers import (
     DraftDetailResponseSerializer,
     DraftResponseSerializer,
     DraftSerializer,
+    DraftUpdateSerializer,
     DraftUrlSerializer,
 )
 
@@ -22,12 +23,14 @@ from .serializers import (
 class DraftView(
     mixins.ListModelMixin,
     mixins.CreateModelMixin,
+    mixins.UpdateModelMixin,
     mixins.DestroyModelMixin,
     viewsets.GenericViewSet,
 ):
     def get_serializer_class(self):
         serializers = {
             "create": DraftCreateSerializer,
+            "update": DraftUpdateSerializer,
             "static": DraftResponseSerializer,
             "url": DraftUrlSerializer,
             "clone": DraftCloneSerializer,
