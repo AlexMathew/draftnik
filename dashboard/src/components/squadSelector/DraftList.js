@@ -5,11 +5,9 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import ShareIcon from "@material-ui/icons/Share";
-import IconButton from "@material-ui/core/IconButton";
-import ShareDraftModal from "./ShareDraftModal";
 import clsx from "clsx";
 import { connect } from "react-redux";
+import DraftActions from "./DraftActions";
 import { selectDraft, switchMobile } from "../../actions";
 
 const styles = () => ({
@@ -42,24 +40,6 @@ class DraftList extends React.Component {
     return index === this.props.selectedDraft;
   };
 
-  handleShareOpen = (draft) => {
-    this.setState({
-      share: {
-        open: true,
-        draft: draft,
-      },
-    });
-  };
-
-  handleShareClose = () => {
-    this.setState({
-      share: {
-        open: false,
-        draft: {},
-      },
-    });
-  };
-
   render() {
     const { classes, drafts, selectedGameweek } = this.props;
 
@@ -80,23 +60,14 @@ class DraftList extends React.Component {
                 >
                   <ListItemText primary={draft.name} />
                   <ChevronRightIcon />
+                  <DraftActions draft={draft} />
                 </ListItem>
-                <IconButton
-                  classes={{ root: classes.shareButton }}
-                  onClick={() => this.handleShareOpen(draft)}
-                >
-                  <ShareIcon fontSize="small" />
-                </IconButton>
               </div>
             ))
           ) : (
             <ListItem>No saved drafts for this gameweek</ListItem>
           )}
         </List>
-        <ShareDraftModal
-          state={this.state.share}
-          handleClose={this.handleShareClose}
-        />
       </>
     );
   }
