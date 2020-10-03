@@ -17,6 +17,7 @@ const styles = () => ({
   },
   draft: {
     display: "flex",
+    flexGrow: 1,
   },
   shareButton: {
     borderRadius: "0%",
@@ -60,8 +61,8 @@ class DraftList extends React.Component {
                 >
                   <ListItemText primary={draft.name} />
                   <ChevronRightIcon />
-                  <DraftActions draft={draft} />
                 </ListItem>
+                <DraftActions draft={draft} />
               </div>
             ))
           ) : (
