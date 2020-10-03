@@ -19,22 +19,13 @@ export const switchMobile = () => {
 
 export const fetchStaticData = () => async (dispatch) => {
   const authToken = localStorage.getItem(AUTH_TOKEN_FIELD);
-  let response = {};
-
   try {
-    response = await draftnik.get("/draft/static/", {
+    const response = await draftnik.get("/draft/static/", {
       headers: {
         Authorization: `Token ${authToken}`,
       },
     });
-  } catch (error) {
-    if (error.response.status === 401) {
-      localStorage.removeItem(AUTH_TOKEN_FIELD);
-      history.push("/signin");
-    }
-  }
 
-  try {
     dispatch({ type: LOAD_TEAM_DATA, payload: response.data });
     dispatch({ type: LOAD_PLAYER_DATA, payload: response.data });
     dispatch({ type: LOAD_GAMEWEEK_DATA, payload: response.data });
@@ -45,21 +36,17 @@ export const fetchStaticData = () => async (dispatch) => {
     dispatch(selectGameweek(response.data.static.current_gameweek));
   } catch (error) {
     console.error(error);
+    if (error.response?.status === 401) {
+      localStorage.removeItem(AUTH_TOKEN_FIELD);
+      history.push("/signin");
+    }
   }
 };
 
 export const fetchSharedDraftDetails = (draftCode) => async (dispatch) => {
-  let response = {};
-
   try {
-    response = await draftnik.get(`/draft/detail/${draftCode}/`);
-  } catch (error) {
-    if (error.response.status === 404) {
-      history.push("/draft/not-found");
-    }
-  }
+    const response = await draftnik.get(`/draft/detail/${draftCode}/`);
 
-  try {
     dispatch({ type: LOAD_TEAM_DATA, payload: response.data });
     dispatch({ type: LOAD_PLAYER_DATA, payload: response.data });
     dispatch({ type: LOAD_GAMEWEEK_DATA, payload: response.data });
@@ -71,6 +58,9 @@ export const fetchSharedDraftDetails = (draftCode) => async (dispatch) => {
     dispatch(selectDraft(0));
   } catch (error) {
     console.error(error);
+    if (error.response?.status === 404) {
+      history.push("/draft/not-found");
+    }
   }
 };
 
