@@ -8,7 +8,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import ShareIcon from "@material-ui/icons/Share";
-import ShareDraftModal from "./ShareDraftModal";
+import ShareDraftModal from "./actionModals/ShareDraftModal";
 import { connect } from "react-redux";
 import {} from "../../actions";
 
