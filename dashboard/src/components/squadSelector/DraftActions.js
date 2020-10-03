@@ -7,10 +7,11 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import EditIcon from "@material-ui/icons/Edit";
 import ShareIcon from "@material-ui/icons/Share";
+import DeleteIcon from "@material-ui/icons/Delete";
 import ShareDraftModal from "./actionModals/ShareDraftModal";
-import { connect } from "react-redux";
-import {} from "../../actions";
+import DeleteDraftModal from "./actionModals/DeleteDraftModal";
 
 const styles = () => ({
   menuButton: {
@@ -22,6 +23,10 @@ class DraftActions extends React.Component {
   state = {
     anchorEl: null,
     share: {
+      open: false,
+      draft: {},
+    },
+    delete: {
       open: false,
       draft: {},
     },
@@ -55,6 +60,24 @@ class DraftActions extends React.Component {
     });
   };
 
+  handleDeleteOpen = (draft) => {
+    this.setState({
+      delete: {
+        open: true,
+        draft: draft,
+      },
+    });
+  };
+
+  handleDeleteClose = () => {
+    this.setState({
+      delete: {
+        open: false,
+        draft: {},
+      },
+    });
+  };
+
   render() {
     const { classes, draft } = this.props;
 
@@ -76,23 +99,50 @@ class DraftActions extends React.Component {
           open={Boolean(this.state.anchorEl)}
           onClose={this.handleMenuClose}
           anchorOrigin={{
+            vertical: "top",
             horizontal: "right",
           }}
         >
           <MenuItem
             onClick={() => {
+              /* this.handleShareOpen(draft); */
+            }}
+          >
+            <ListItemIcon>
+              <EditIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Rename" />
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
               this.handleShareOpen(draft);
+              this.handleMenuClose();
             }}
           >
             <ListItemIcon>
               <ShareIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText primary="Share Draft" />
+            <ListItemText primary="Share" />
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              this.handleDeleteOpen(draft);
+              this.handleMenuClose();
+            }}
+          >
+            <ListItemIcon>
+              <DeleteIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Delete" />
           </MenuItem>
         </Menu>
         <ShareDraftModal
           state={this.state.share}
           handleClose={this.handleShareClose}
+        />
+        <DeleteDraftModal
+          state={this.state.delete}
+          handleClose={this.handleDeleteClose}
         />
       </div>
     );
@@ -103,9 +153,4 @@ DraftActions.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => {
-  return {};
-};
-
-const wrappedDraftActions = connect(mapStateToProps, {})(DraftActions);
-export default withStyles(styles)(wrappedDraftActions);
+export default withStyles(styles)(DraftActions);

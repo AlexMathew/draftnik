@@ -47,7 +47,8 @@ class DraftList extends React.Component {
     return (
       <>
         <List>
-          {selectedGameweek in drafts ? (
+          {selectedGameweek in drafts &&
+          drafts[selectedGameweek].length !== 0 ? (
             drafts[selectedGameweek].map((draft, index) => (
               <div key={index} className={classes.draft}>
                 <ListItem

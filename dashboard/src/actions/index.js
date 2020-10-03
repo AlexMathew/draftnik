@@ -8,6 +8,7 @@ import {
   SELECT_DRAFT,
   SELECT_GAMEWEEK,
   SWITCH_MOBILE,
+  DELETE_DRAFT,
 } from "./types";
 import draftnik from "../api/draftnik";
 import history from "../history";
@@ -70,4 +71,24 @@ export const selectDraft = (draft) => {
 
 export const selectGameweek = (gameweek) => {
   return { type: SELECT_GAMEWEEK, payload: { gameweek } };
+};
+
+export const deleteDraft = (draft) => async (dispatch) => {
+  const authToken = localStorage.getItem(AUTH_TOKEN_FIELD);
+  try {
+    await draftnik.delete(`/draft/${draft.id}/`, {
+      headers: {
+        Authorization: `Token ${authToken}`,
+      },
+    });
+
+    dispatch({ type: DELETE_DRAFT, payload: draft });
+    dispatch(selectDraft(null));
+  } catch (error) {
+    console.error(error);
+    if (error.response?.status === 401) {
+      localStorage.removeItem(AUTH_TOKEN_FIELD);
+      history.push("/signin");
+    }
+  }
 };
