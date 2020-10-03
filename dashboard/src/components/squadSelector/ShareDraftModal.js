@@ -67,6 +67,9 @@ class ShareDraftModal extends React.Component {
               fullWidth
               defaultValue={state.draft.url}
               inputRef={this.urlRef}
+              InputProps={{
+                readOnly: true,
+              }}
             />
             <DialogActions>
               <IconButton
