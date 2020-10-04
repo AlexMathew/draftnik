@@ -8,3 +8,4 @@ export const LOAD_SINGLE_DRAFT = "LOAD_SINGLE_DRAFT";
 export const SELECT_DRAFT = "SELECT_DRAFT";
 export const SELECT_GAMEWEEK = "SELECT_GAMEWEEK";
 export const DELETE_DRAFT = "DELETE_DRAFT";
+export const RENAME_DRAFT = "RENAME_DRAFT";

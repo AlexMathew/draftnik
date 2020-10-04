@@ -10,6 +10,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import EditIcon from "@material-ui/icons/Edit";
 import ShareIcon from "@material-ui/icons/Share";
 import DeleteIcon from "@material-ui/icons/Delete";
+import RenameDraftModal from "./actionModals/RenameDraftModal";
 import ShareDraftModal from "./actionModals/ShareDraftModal";
 import DeleteDraftModal from "./actionModals/DeleteDraftModal";
 
@@ -22,6 +23,10 @@ const styles = () => ({
 class DraftActions extends React.Component {
   state = {
     anchorEl: null,
+    rename: {
+      open: false,
+      draft: {},
+    },
     share: {
       open: false,
       draft: {},
@@ -40,6 +45,24 @@ class DraftActions extends React.Component {
 
   handleMenuClose = () => {
     this.setState({ anchorEl: null });
+  };
+
+  handleRenameOpen = (draft) => {
+    this.setState({
+      rename: {
+        open: true,
+        draft: draft,
+      },
+    });
+  };
+
+  handleRenameClose = () => {
+    this.setState({
+      rename: {
+        open: false,
+        draft: {},
+      },
+    });
   };
 
   handleShareOpen = (draft) => {
@@ -105,7 +128,8 @@ class DraftActions extends React.Component {
         >
           <MenuItem
             onClick={() => {
-              /* this.handleShareOpen(draft); */
+              this.handleRenameOpen(draft);
+              this.handleMenuClose();
             }}
           >
             <ListItemIcon>
@@ -136,6 +160,10 @@ class DraftActions extends React.Component {
             <ListItemText primary="Delete" />
           </MenuItem>
         </Menu>
+        <RenameDraftModal
+          state={this.state.rename}
+          handleClose={this.handleRenameClose}
+        />
         <ShareDraftModal
           state={this.state.share}
           handleClose={this.handleShareClose}

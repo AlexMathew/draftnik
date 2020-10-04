@@ -9,6 +9,7 @@ import {
   SELECT_GAMEWEEK,
   SWITCH_MOBILE,
   DELETE_DRAFT,
+  RENAME_DRAFT,
 } from "./types";
 import draftnik from "../api/draftnik";
 import history from "../history";
@@ -84,6 +85,29 @@ export const deleteDraft = (draft) => async (dispatch) => {
 
     dispatch({ type: DELETE_DRAFT, payload: draft });
     dispatch(selectDraft(null));
+  } catch (error) {
+    console.error(error);
+    if (error.response?.status === 401) {
+      localStorage.removeItem(AUTH_TOKEN_FIELD);
+      history.push("/signin");
+    }
+  }
+};
+
+export const renameDraft = (draft, name) => async (dispatch) => {
+  const authToken = localStorage.getItem(AUTH_TOKEN_FIELD);
+  try {
+    await draftnik.put(
+      `/draft/${draft.id}/`,
+      { name },
+      {
+        headers: {
+          Authorization: `Token ${authToken}`,
+        },
+      }
+    );
+
+    dispatch({ type: RENAME_DRAFT, payload: { draft, name } });
   } catch (error) {
     console.error(error);
     if (error.response?.status === 401) {

@@ -1,5 +1,10 @@
 import _ from "lodash";
-import { LOAD_DRAFTS, LOAD_SINGLE_DRAFT, DELETE_DRAFT } from "../actions/types";
+import {
+  LOAD_DRAFTS,
+  LOAD_SINGLE_DRAFT,
+  DELETE_DRAFT,
+  RENAME_DRAFT,
+} from "../actions/types";
 
 export default (state = {}, action) => {
   switch (action.type) {
@@ -11,17 +16,35 @@ export default (state = {}, action) => {
       return { ...state, ...singleDraft };
     case DELETE_DRAFT:
       const deletedDraft = action.payload;
-      const gameweekDrafts = state[[deletedDraft.gameweek]];
+      const deletedGameweekDrafts = state[[deletedDraft.gameweek]];
       const deleteIndex = _.findIndex(
-        gameweekDrafts,
+        deletedGameweekDrafts,
         (draft) => draft.id === deletedDraft.id
       );
       return {
         ...state,
         ...{
           [deletedDraft.gameweek]: [
-            ...gameweekDrafts.slice(0, deleteIndex),
-            ...gameweekDrafts.slice(deleteIndex + 1),
+            ...deletedGameweekDrafts.slice(0, deleteIndex),
+            ...deletedGameweekDrafts.slice(deleteIndex + 1),
+          ],
+        },
+      };
+    case RENAME_DRAFT:
+      const renamedDraft = action.payload.draft;
+      const renamedGameweekDrafts = state[[renamedDraft.gameweek]];
+      const renameIndex = _.findIndex(
+        renamedGameweekDrafts,
+        (draft) => draft.id === renamedDraft.id
+      );
+      renamedDraft.name = action.payload.name;
+      return {
+        ...state,
+        ...{
+          [renamedDraft.gameweek]: [
+            ...renamedGameweekDrafts.slice(0, renameIndex),
+            renamedDraft,
+            ...renamedGameweekDrafts.slice(renameIndex + 1),
           ],
         },
       };
