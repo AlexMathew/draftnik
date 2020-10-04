@@ -63,9 +63,13 @@ class RenameDraftModal extends React.Component {
               id="draftName"
               name="draftName"
               type="text"
+              required
               fullWidth
               defaultValue={state.draft.name}
               inputRef={this.nameRef}
+              inputProps={{
+                maxlength: "100",
+              }}
             />
             <DialogActions>
               <Button
