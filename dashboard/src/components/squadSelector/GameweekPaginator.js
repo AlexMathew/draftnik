@@ -62,7 +62,7 @@ class GameweekPaginator extends React.Component {
         >
           <ArrowLeftIcon style={{ fontSize: 60 }} />
         </IconButton>
-        <Typography variant="h5">
+        <Typography variant="h6">
           {selectedGameweek in gameweeks
             ? gameweeks[selectedGameweek].name
             : ""}
