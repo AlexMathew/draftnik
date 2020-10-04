@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowLeftIcon from "@material-ui/icons/ArrowLeft";
@@ -12,6 +13,7 @@ import { selectDraft, selectGameweek } from "../../actions";
 const styles = () => ({
   paginator: {
     display: "flex",
+    flexGrow: 1,
     alignItems: "center",
     alignSelf: "center",
   },
@@ -20,6 +22,10 @@ const styles = () => ({
   },
   paginatorButtonDisabled: {
     color: "lightgray",
+  },
+  gameweek: {
+    alignSelf: "center",
+    textAlign: "center",
   },
 });
 
@@ -48,39 +54,47 @@ class GameweekPaginator extends React.Component {
 
     return (
       <div className={classes.paginator}>
-        <IconButton
-          className={classes.paginatorButton}
-          disabled={this.isFirstGameweek()}
-          classes={{
-            root: clsx({
-              [classes.paginatorButtonDisabled]: this.isFirstGameweek(),
-            }),
-          }}
-          onClick={() => {
-            this.updateGameweek({ down: true });
-          }}
-        >
-          <ArrowLeftIcon style={{ fontSize: 60 }} />
-        </IconButton>
-        <Typography variant="h6">
-          {selectedGameweek in gameweeks
-            ? gameweeks[selectedGameweek].name
-            : ""}
-        </Typography>
-        <IconButton
-          className={classes.paginatorButton}
-          disabled={this.isLastGameweek()}
-          classes={{
-            root: clsx({
-              [classes.paginatorButtonDisabled]: this.isLastGameweek(),
-            }),
-          }}
-          onClick={() => {
-            this.updateGameweek({ up: true });
-          }}
-        >
-          <ArrowRightIcon style={{ fontSize: 60 }} />
-        </IconButton>
+        <Grid container spacing={3}>
+          <Grid xs>
+            <IconButton
+              className={classes.paginatorButton}
+              disabled={this.isFirstGameweek()}
+              classes={{
+                root: clsx({
+                  [classes.paginatorButtonDisabled]: this.isFirstGameweek(),
+                }),
+              }}
+              onClick={() => {
+                this.updateGameweek({ down: true });
+              }}
+            >
+              <ArrowLeftIcon style={{ fontSize: 60 }} />
+            </IconButton>
+          </Grid>
+          <Grid item xs={6} className={classes.gameweek}>
+            <Typography variant="h6">
+              {selectedGameweek in gameweeks
+                ? gameweeks[selectedGameweek].name
+                : ""}
+            </Typography>
+          </Grid>
+          <Grid xs>
+            <IconButton
+              className={classes.paginatorButton}
+              disabled={this.isLastGameweek()}
+              classes={{
+                root: clsx({
+                  [classes.paginatorButtonDisabled]: this.isLastGameweek(),
+                }),
+              }}
+              onClick={() => {
+                this.updateGameweek({ up: true });
+              }}
+            >
+              <ArrowRightIcon style={{ fontSize: 60 }} />
+            </IconButton>
+          </Grid>
+        </Grid>
       </div>
     );
   }
