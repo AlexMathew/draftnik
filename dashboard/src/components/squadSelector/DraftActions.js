@@ -105,7 +105,7 @@ class DraftActions extends React.Component {
     const { classes, draft } = this.props;
 
     return (
-      <div>
+      <>
         <IconButton
           aria-label="menu"
           aria-controls="draft-menu"
@@ -172,7 +172,7 @@ class DraftActions extends React.Component {
           state={this.state.delete}
           handleClose={this.handleDeleteClose}
         />
-      </div>
+      </>
     );
   }
 }

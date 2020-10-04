@@ -19,8 +19,8 @@ const styles = () => ({
     display: "flex",
     flexGrow: 1,
   },
-  shareButton: {
-    borderRadius: "0%",
+  menu: {
+    alignSelf: "center",
   },
 });
 
@@ -63,7 +63,7 @@ class DraftList extends React.Component {
                   <ListItemText primary={draft.name} />
                   <ChevronRightIcon />
                 </ListItem>
-                <DraftActions draft={draft} />
+                <DraftActions className={classes.menu} draft={draft} />
               </div>
             ))
           ) : (
