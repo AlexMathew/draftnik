@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles, withTheme } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -34,7 +34,13 @@ class DraftList extends React.Component {
 
   selectDraft = (index) => {
     this.props.selectDraft(index);
-    this.props.switchMobile();
+    const vw = Math.max(
+      document.documentElement.clientWidth || 0,
+      window.innerWidth || 0
+    );
+    if (vw < this.props.theme.breakpoints.values.lg) {
+      this.props.switchMobile();
+    }
   };
 
   isSelectedDraft = (index) => {
@@ -92,4 +98,4 @@ const wrappedDraftList = connect(mapStateToProps, {
   selectDraft,
   switchMobile,
 })(DraftList);
-export default withStyles(styles)(wrappedDraftList);
+export default withTheme(withStyles(styles)(wrappedDraftList));
