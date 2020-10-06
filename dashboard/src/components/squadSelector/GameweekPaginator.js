@@ -55,7 +55,7 @@ class GameweekPaginator extends React.Component {
     return (
       <div className={classes.paginator}>
         <Grid container spacing={3}>
-          <Grid xs>
+          <Grid>
             <IconButton
               className={classes.paginatorButton}
               disabled={this.isFirstGameweek()}
@@ -78,7 +78,7 @@ class GameweekPaginator extends React.Component {
                 : ""}
             </Typography>
           </Grid>
-          <Grid xs>
+          <Grid>
             <IconButton
               className={classes.paginatorButton}
               disabled={this.isLastGameweek()}
