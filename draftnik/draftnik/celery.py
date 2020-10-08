@@ -32,6 +32,10 @@ app.conf.update(
             "task": "draftnik.fetch_fixtures",
             "schedule": crontab(minute=0, hour=0, day_of_month="1"),
         },
+        "refetch-unavailable-players": {
+            "task": "draftnik.refetch_unavailable_players",
+            "schedule": crontab(minute=0, hour="*/3"),
+        },
     },
 )
 
