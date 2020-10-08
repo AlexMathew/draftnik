@@ -52,20 +52,33 @@ class DraftCreateSerializer(serializers.ModelSerializer):
         read_only_fields = ["gameweek"]
 
     def _get_player_id(self, player):
-        return redis.get(PLAYER_ID_KEY(player.get("name"), player.get("team"))).decode(
-            "utf-8"
-        )
+        return redis.get(PLAYER_ID_KEY(player.get("name"), player.get("team")))
+
+    def _get_squad_entries(self, squad):
+        entries, unavailable = [], []
+        for player in squad:
+            player_id = self._get_player_id(player)
+            if player_id:
+                entries.append(player_id.decode("utf-8"))
+            else:
+                unavailable.append(player)
+
+        return {
+            "entries": entries,
+            "unavailable": unavailable,
+        }
 
     def create(self, validated_data):
         user = validated_data.get("user")
         squad = validated_data.get("squad")
         name = validated_data.get("name")
 
-        entries = [self._get_player_id(player) for player in squad]
+        squad_entries = self._get_squad_entries(squad)
 
         fields = {
             "user": user,
-            "entries": entries,
+            "entries": squad_entries.get("entries") or [],
+            "unavailable": squad_entries.get("unavailable") or None,
             "gameweek": int(get_current_gameweek()),
         }
         if name:
