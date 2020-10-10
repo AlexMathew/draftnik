@@ -17,7 +17,7 @@ app.conf.update(
     BROKER_URL=REDIS_URL,
     CELERY_TASK_RESULT_EXPIRES=3600,
     CELERY_TIMEZONE=settings.TIME_ZONE,
-    CELERY_IMPORTS=("jobs.fpl_static",),
+    CELERY_IMPORTS=("jobs.fpl_static", "jobs.squad_entries"),
     CELERYBEAT_SCHEDULE={
         "fetch-static-data": {
             "task": "draftnik.fetch_static_data",

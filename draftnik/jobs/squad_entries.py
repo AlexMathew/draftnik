@@ -1,8 +1,8 @@
 import logging
 
+from drafter.models import Draft
 from draftnik.celery import app
 from draftnik.keys import PLAYER_ID_KEY
-from drafter.models import Draft
 from helpers.instances import redis
 
 logger = logging.getLogger(__name__)
