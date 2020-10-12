@@ -18,7 +18,11 @@ from draftnik.keys import (
     TEAM_FIXTURES_DATA_KEY,
 )
 from helpers.instances import redis
-from utils.static import get_current_gameweek
+from utils.static import (
+    get_current_gameweek,
+    get_gameweek_fixtures_data,
+    get_team_fixtures_data,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -105,8 +109,8 @@ def fetch_fixtures(start=1, end=38):
     logger.info("fetch_fixtures")
     URL = "https://fantasy.premierleague.com/api/fixtures/"
 
-    fixtures = defaultdict(lambda: defaultdict(list))
-    gameweek_fixtures = defaultdict(list)
+    fixtures = get_team_fixtures_data()
+    gameweek_fixtures = get_gameweek_fixtures_data()
     for gw in range(start, end + 1):
         logger.info(f"Fixtures GW#{gw}")
         r = requests.get(URL, params={"event": gw})
@@ -118,13 +122,13 @@ def fetch_fixtures(start=1, end=38):
                 match.get("team_h"),
                 match.get("kickoff_time"),
             )
-            fixtures[team_h][event].append(
+            fixtures[str(team_h)][str(event)].append(
                 {"opponent": team_a, "location": "H", "gw": event}
             )
-            fixtures[team_a][event].append(
+            fixtures[str(team_a)][str(event)].append(
                 {"opponent": team_h, "location": "A", "gw": event}
             )
-            gameweek_fixtures[event].append(
+            gameweek_fixtures[str(event)].append(
                 {"home": team_h, "away": team_a, "kickoff_time": kickoff_time}
             )
 
