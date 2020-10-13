@@ -27,5 +27,5 @@ def refetch_unavailable_players():
             logger.info("No new player IDs found")
         else:
             draft.entries = new_entries
-            draft.unavailable = new_unavailable
+            draft.unavailable = new_unavailable or None
             draft.save(update_fields=["entries", "unavailable"])
