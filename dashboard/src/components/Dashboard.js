@@ -27,6 +27,7 @@ class Dashboard extends React.Component {
     const authToken = localStorage.getItem(AUTH_TOKEN_FIELD);
     if (authToken) {
       this.props.fetchStaticData();
+      new Image().src = process.env.PUBLIC_URL + '/pitch.jpg'
     } else {
       localStorage.removeItem(AUTH_TOKEN_FIELD);
       history.push("/signin");
