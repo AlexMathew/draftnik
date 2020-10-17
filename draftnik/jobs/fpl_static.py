@@ -21,6 +21,7 @@ from helpers.instances import redis
 from utils.static import (
     get_current_gameweek,
     get_gameweek_fixtures_data,
+    get_team_data,
     get_team_fixtures_data,
 )
 
@@ -109,10 +110,17 @@ def fetch_fixtures(start=1, end=38):
     logger.info("fetch_fixtures")
     URL = "https://fantasy.premierleague.com/api/fixtures/"
 
+    teams = get_team_data()
     fixtures = get_team_fixtures_data()
     gameweek_fixtures = get_gameweek_fixtures_data()
     for gw in range(start, end + 1):
+        gw = str(gw)
         logger.info(f"Fixtures GW#{gw}")
+
+        gameweek_fixtures[gw] = []
+        for team in teams.keys():
+            fixtures[team][gw] = []
+
         r = requests.get(URL, params={"event": gw})
         data = r.json()
         for match in data:
