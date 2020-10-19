@@ -10,6 +10,8 @@ import {
   SWITCH_MOBILE,
   DELETE_DRAFT,
   RENAME_DRAFT,
+  START_LOADING_STATIC_DATA,
+  STOP_LOADING_STATIC_DATA,
 } from "./types";
 import draftnik from "../api/draftnik";
 import history from "../history";
@@ -22,6 +24,7 @@ export const switchMobile = () => {
 export const fetchStaticData = () => async (dispatch) => {
   const authToken = localStorage.getItem(AUTH_TOKEN_FIELD);
   try {
+    dispatch(startStaticLoading());
     const response = await draftnik.get("/draft/static/", {
       headers: {
         Authorization: `Token ${authToken}`,
@@ -36,6 +39,7 @@ export const fetchStaticData = () => async (dispatch) => {
 
     dispatch(selectDraft(null));
     dispatch(selectGameweek(response.data.static.current_gameweek));
+    dispatch(stopStaticLoading());
   } catch (error) {
     console.error(error);
     if (error.response?.status === 401) {
@@ -115,4 +119,12 @@ export const renameDraft = (draft, name) => async (dispatch) => {
       history.push("/signin");
     }
   }
+};
+
+export const startStaticLoading = () => {
+  return { type: START_LOADING_STATIC_DATA };
+};
+
+export const stopStaticLoading = () => {
+  return { type: STOP_LOADING_STATIC_DATA };
 };
