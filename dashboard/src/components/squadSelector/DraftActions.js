@@ -14,7 +14,11 @@ import RenameDraftModal from "./actionModals/RenameDraftModal";
 import ShareDraftModal from "./actionModals/ShareDraftModal";
 import DeleteDraftModal from "./actionModals/DeleteDraftModal";
 import { connect } from "react-redux";
-import { openDeleteModal, openRenameModal } from "../../actions";
+import {
+  openDeleteModal,
+  openRenameModal,
+  openShareModal,
+} from "../../actions";
 
 const styles = () => ({
   menuButton: {
@@ -25,10 +29,6 @@ const styles = () => ({
 class DraftActions extends React.Component {
   state = {
     anchorEl: null,
-    share: {
-      open: false,
-      draft: {},
-    },
   };
 
   handleMenuClick = (event) => {
@@ -39,24 +39,6 @@ class DraftActions extends React.Component {
 
   handleMenuClose = () => {
     this.setState({ anchorEl: null });
-  };
-
-  handleShareOpen = (draft) => {
-    this.setState({
-      share: {
-        open: true,
-        draft: draft,
-      },
-    });
-  };
-
-  handleShareClose = () => {
-    this.setState({
-      share: {
-        open: false,
-        draft: {},
-      },
-    });
   };
 
   render() {
@@ -97,7 +79,7 @@ class DraftActions extends React.Component {
           </MenuItem>
           <MenuItem
             onClick={() => {
-              this.handleShareOpen(draft);
+              this.props.openShareModal(draft);
               this.handleMenuClose();
             }}
           >
@@ -119,10 +101,7 @@ class DraftActions extends React.Component {
           </MenuItem>
         </Menu>
         <RenameDraftModal />
-        <ShareDraftModal
-          state={this.state.share}
-          handleClose={this.handleShareClose}
-        />
+        <ShareDraftModal />
         <DeleteDraftModal />
       </>
     );
@@ -133,7 +112,9 @@ DraftActions.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const wrappedDraftActions = connect(null, { openDeleteModal, openRenameModal })(
-  DraftActions
-);
+const wrappedDraftActions = connect(null, {
+  openDeleteModal,
+  openRenameModal,
+  openShareModal,
+})(DraftActions);
 export default withStyles(styles)(wrappedDraftActions);

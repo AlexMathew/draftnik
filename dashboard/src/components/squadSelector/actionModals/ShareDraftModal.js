@@ -10,6 +10,8 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import CloseIcon from "@material-ui/icons/Close";
 import CopyIcon from "../../utils/CopyIcon";
+import { connect } from "react-redux";
+import { closeShareModal } from "../../../actions";
 
 const styles = (theme) => ({
   draftUrl: {
@@ -34,22 +36,23 @@ class ShareDraftModal extends React.Component {
   };
 
   render() {
-    const { classes, state, handleClose } = this.props;
+    const { classes, shareState, closeShareModal } = this.props;
+    const draft = shareState.draft;
 
     return (
       <Dialog
-        open={state.open}
-        onClose={handleClose}
+        open={shareState.modalOpen}
+        onClose={closeShareModal}
         fullWidth
         maxWidth="sm"
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">
-          Share "{state.draft.name}"
+          Share "{draft.name}"
           <IconButton
             aria-label="close"
             className={classes.closeButton}
-            onClick={handleClose}
+            onClick={closeShareModal}
           >
             <CloseIcon />
           </IconButton>
@@ -65,7 +68,7 @@ class ShareDraftModal extends React.Component {
               id="draftUrl"
               type="text"
               fullWidth
-              defaultValue={state.draft.url}
+              defaultValue={draft.url}
               inputRef={this.urlRef}
               InputProps={{
                 readOnly: true,
@@ -91,4 +94,13 @@ ShareDraftModal.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(ShareDraftModal);
+const mapStateToProps = (state) => {
+  return {
+    shareState: state.loading.share,
+  };
+};
+
+const wrappedShareDraftModal = connect(mapStateToProps, {
+  closeShareModal,
+})(ShareDraftModal);
+export default withStyles(styles)(wrappedShareDraftModal);

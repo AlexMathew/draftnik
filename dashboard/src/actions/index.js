@@ -20,6 +20,8 @@ import {
   START_DELETE_REQUEST,
   STOP_DELETE_REQUEST,
   CLOSE_DELETE_MODAL,
+  OPEN_SHARE_MODAL,
+  CLOSE_SHARE_MODAL,
 } from "./types";
 import draftnik from "../api/draftnik";
 import history from "../history";
@@ -173,4 +175,12 @@ export const stopDeleteRequest = () => {
 
 export const closeDeleteModal = () => {
   return { type: CLOSE_DELETE_MODAL };
+};
+
+export const openShareModal = (draft) => {
+  return { type: OPEN_SHARE_MODAL, payload: { draft } };
+};
+
+export const closeShareModal = () => {
+  return { type: CLOSE_SHARE_MODAL };
 };

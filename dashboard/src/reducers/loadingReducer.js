@@ -9,6 +9,8 @@ import {
   START_DELETE_REQUEST,
   STOP_DELETE_REQUEST,
   CLOSE_DELETE_MODAL,
+  OPEN_SHARE_MODAL,
+  CLOSE_SHARE_MODAL,
 } from "../actions/types";
 
 const INITIAL_STATE = {
@@ -22,6 +24,10 @@ const INITIAL_STATE = {
     modalOpen: false,
     draft: {},
     requesting: false,
+  },
+  share: {
+    modalOpen: false,
+    draft: {},
   },
 };
 
@@ -73,6 +79,19 @@ export default (state = INITIAL_STATE, action) => {
     case STOP_DELETE_REQUEST:
       xdelete = state.delete;
       return { ...state, delete: { ...xdelete, requesting: false } };
+    case OPEN_SHARE_MODAL:
+      return {
+        ...state,
+        share: {
+          modalOpen: true,
+          draft: action.payload.draft,
+        },
+      };
+    case CLOSE_SHARE_MODAL:
+      return {
+        ...state,
+        share: { modalOpen: false, draft: {} },
+      };
     default:
       return state;
   }
