@@ -10,7 +10,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { connect } from "react-redux";
-import { deleteDraft } from "../../../actions";
+import { deleteDraft, closeDeleteModal } from "../../../actions";
 
 const styles = (theme) => ({
   title: {
@@ -30,12 +30,13 @@ const styles = (theme) => ({
 
 class DeleteDraftModal extends React.Component {
   render() {
-    const { classes, state, handleClose, deleteDraft } = this.props;
+    const { classes, deleteState, closeDeleteModal, deleteDraft } = this.props;
+    const draft = deleteState.draft;
 
     return (
       <Dialog
-        open={state.open}
-        onClose={handleClose}
+        open={deleteState.modalOpen}
+        onClose={closeDeleteModal}
         fullWidth
         maxWidth="sm"
         aria-labelledby="delete-draft-dialog"
@@ -51,7 +52,7 @@ class DeleteDraftModal extends React.Component {
           <Avatar className={classes.avatar}>
             <WarningIcon fontSize="small" />
           </Avatar>
-          Delete "{state.draft.name}"?
+          Delete "{draft.name}"?
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -59,13 +60,12 @@ class DeleteDraftModal extends React.Component {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary" autoFocus>
+          <Button onClick={closeDeleteModal} color="primary" autoFocus>
             No
           </Button>
           <Button
             onClick={() => {
-              handleClose();
-              deleteDraft(state.draft);
+              deleteDraft(draft);
             }}
             color="primary"
           >
@@ -81,7 +81,14 @@ DeleteDraftModal.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const wrappedDeleteDraftModal = connect(null, { deleteDraft })(
-  DeleteDraftModal
-);
+const mapStateToProps = (state) => {
+  return {
+    deleteState: state.loading.delete,
+  };
+};
+
+const wrappedDeleteDraftModal = connect(mapStateToProps, {
+  deleteDraft,
+  closeDeleteModal,
+})(DeleteDraftModal);
 export default withStyles(styles)(wrappedDeleteDraftModal);

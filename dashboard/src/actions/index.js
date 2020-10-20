@@ -12,6 +12,14 @@ import {
   RENAME_DRAFT,
   START_LOADING_STATIC_DATA,
   STOP_LOADING_STATIC_DATA,
+  OPEN_RENAME_MODAL,
+  START_RENAME_REQUEST,
+  STOP_RENAME_REQUEST,
+  CLOSE_RENAME_MODAL,
+  OPEN_DELETE_MODAL,
+  START_DELETE_REQUEST,
+  STOP_DELETE_REQUEST,
+  CLOSE_DELETE_MODAL,
 } from "./types";
 import draftnik from "../api/draftnik";
 import history from "../history";
@@ -81,6 +89,7 @@ export const selectGameweek = (gameweek) => {
 export const deleteDraft = (draft) => async (dispatch) => {
   const authToken = localStorage.getItem(AUTH_TOKEN_FIELD);
   try {
+    dispatch(startDeleteRequest());
     await draftnik.delete(`/draft/${draft.id}/`, {
       headers: {
         Authorization: `Token ${authToken}`,
@@ -89,6 +98,8 @@ export const deleteDraft = (draft) => async (dispatch) => {
 
     dispatch({ type: DELETE_DRAFT, payload: draft });
     dispatch(selectDraft(null));
+    dispatch(stopDeleteRequest());
+    dispatch(closeDeleteModal());
   } catch (error) {
     console.error(error);
     if (error.response?.status === 401) {
@@ -101,6 +112,7 @@ export const deleteDraft = (draft) => async (dispatch) => {
 export const renameDraft = (draft, name) => async (dispatch) => {
   const authToken = localStorage.getItem(AUTH_TOKEN_FIELD);
   try {
+    dispatch(startRenameRequest());
     await draftnik.put(
       `/draft/${draft.id}/`,
       { name },
@@ -112,6 +124,8 @@ export const renameDraft = (draft, name) => async (dispatch) => {
     );
 
     dispatch({ type: RENAME_DRAFT, payload: { draft, name } });
+    dispatch(stopRenameRequest());
+    dispatch(closeRenameModal());
   } catch (error) {
     console.error(error);
     if (error.response?.status === 401) {
@@ -127,4 +141,36 @@ export const startStaticLoading = () => {
 
 export const stopStaticLoading = () => {
   return { type: STOP_LOADING_STATIC_DATA };
+};
+
+export const openRenameModal = (draft) => {
+  return { type: OPEN_RENAME_MODAL, payload: { draft } };
+};
+
+export const startRenameRequest = () => {
+  return { type: START_RENAME_REQUEST };
+};
+
+export const stopRenameRequest = () => {
+  return { type: STOP_RENAME_REQUEST };
+};
+
+export const closeRenameModal = () => {
+  return { type: CLOSE_RENAME_MODAL };
+};
+
+export const openDeleteModal = (draft) => {
+  return { type: OPEN_DELETE_MODAL, payload: { draft } };
+};
+
+export const startDeleteRequest = () => {
+  return { type: START_DELETE_REQUEST };
+};
+
+export const stopDeleteRequest = () => {
+  return { type: STOP_DELETE_REQUEST };
+};
+
+export const closeDeleteModal = () => {
+  return { type: CLOSE_DELETE_MODAL };
 };

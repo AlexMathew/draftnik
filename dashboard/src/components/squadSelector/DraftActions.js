@@ -13,6 +13,8 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import RenameDraftModal from "./actionModals/RenameDraftModal";
 import ShareDraftModal from "./actionModals/ShareDraftModal";
 import DeleteDraftModal from "./actionModals/DeleteDraftModal";
+import { connect } from "react-redux";
+import { openDeleteModal, openRenameModal } from "../../actions";
 
 const styles = () => ({
   menuButton: {
@@ -23,15 +25,7 @@ const styles = () => ({
 class DraftActions extends React.Component {
   state = {
     anchorEl: null,
-    rename: {
-      open: false,
-      draft: {},
-    },
     share: {
-      open: false,
-      draft: {},
-    },
-    delete: {
       open: false,
       draft: {},
     },
@@ -47,24 +41,6 @@ class DraftActions extends React.Component {
     this.setState({ anchorEl: null });
   };
 
-  handleRenameOpen = (draft) => {
-    this.setState({
-      rename: {
-        open: true,
-        draft: draft,
-      },
-    });
-  };
-
-  handleRenameClose = () => {
-    this.setState({
-      rename: {
-        open: false,
-        draft: {},
-      },
-    });
-  };
-
   handleShareOpen = (draft) => {
     this.setState({
       share: {
@@ -77,24 +53,6 @@ class DraftActions extends React.Component {
   handleShareClose = () => {
     this.setState({
       share: {
-        open: false,
-        draft: {},
-      },
-    });
-  };
-
-  handleDeleteOpen = (draft) => {
-    this.setState({
-      delete: {
-        open: true,
-        draft: draft,
-      },
-    });
-  };
-
-  handleDeleteClose = () => {
-    this.setState({
-      delete: {
         open: false,
         draft: {},
       },
@@ -128,7 +86,7 @@ class DraftActions extends React.Component {
         >
           <MenuItem
             onClick={() => {
-              this.handleRenameOpen(draft);
+              this.props.openRenameModal(draft);
               this.handleMenuClose();
             }}
           >
@@ -150,7 +108,7 @@ class DraftActions extends React.Component {
           </MenuItem>
           <MenuItem
             onClick={() => {
-              this.handleDeleteOpen(draft);
+              this.props.openDeleteModal(draft);
               this.handleMenuClose();
             }}
           >
@@ -160,18 +118,12 @@ class DraftActions extends React.Component {
             <ListItemText primary="Delete" />
           </MenuItem>
         </Menu>
-        <RenameDraftModal
-          state={this.state.rename}
-          handleClose={this.handleRenameClose}
-        />
+        <RenameDraftModal />
         <ShareDraftModal
           state={this.state.share}
           handleClose={this.handleShareClose}
         />
-        <DeleteDraftModal
-          state={this.state.delete}
-          handleClose={this.handleDeleteClose}
-        />
+        <DeleteDraftModal />
       </>
     );
   }
@@ -181,4 +133,7 @@ DraftActions.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(DraftActions);
+const wrappedDraftActions = connect(null, { openDeleteModal, openRenameModal })(
+  DraftActions
+);
+export default withStyles(styles)(wrappedDraftActions);

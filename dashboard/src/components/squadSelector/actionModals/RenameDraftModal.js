@@ -10,7 +10,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import CloseIcon from "@material-ui/icons/Close";
 import { connect } from "react-redux";
-import { renameDraft } from "../../../actions";
+import { renameDraft, closeRenameModal } from "../../../actions";
 
 const styles = (theme) => ({
   draftName: {
@@ -29,28 +29,29 @@ class RenameDraftModal extends React.Component {
   nameRef = React.createRef();
 
   renameDraft = () => {
-    const { draft } = this.props.state;
+    const { draft } = this.props.renameState;
     const el = this.nameRef.current;
     this.props.renameDraft(draft, el.value);
   };
 
   render() {
-    const { classes, state, handleClose } = this.props;
+    const { classes, renameState, closeRenameModal } = this.props;
+    const draft = renameState.draft;
 
     return (
       <Dialog
-        open={state.open}
-        onClose={handleClose}
+        open={renameState.modalOpen}
+        onClose={closeRenameModal}
         fullWidth
         maxWidth="sm"
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">
-          Rename "{state.draft.name}"
+          Rename "{draft.name}"
           <IconButton
             aria-label="close"
             className={classes.closeButton}
-            onClick={handleClose}
+            onClick={closeRenameModal}
           >
             <CloseIcon />
           </IconButton>
@@ -65,17 +66,16 @@ class RenameDraftModal extends React.Component {
               type="text"
               required
               fullWidth
-              defaultValue={state.draft.name}
+              defaultValue={draft.name}
               inputRef={this.nameRef}
               inputProps={{
-                maxlength: "100",
+                maxLength: "100",
               }}
             />
             <DialogActions>
               <Button
                 onClick={() => {
                   this.renameDraft();
-                  handleClose();
                 }}
               >
                 Rename
@@ -92,7 +92,14 @@ RenameDraftModal.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const wrappedRenameDraftModal = connect(null, { renameDraft })(
-  RenameDraftModal
-);
+const mapStateToProps = (state) => {
+  return {
+    renameState: state.loading.rename,
+  };
+};
+
+const wrappedRenameDraftModal = connect(mapStateToProps, {
+  renameDraft,
+  closeRenameModal,
+})(RenameDraftModal);
 export default withStyles(styles)(wrappedRenameDraftModal);
