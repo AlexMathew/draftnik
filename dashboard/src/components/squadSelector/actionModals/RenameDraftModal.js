@@ -8,6 +8,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import CloseIcon from "@material-ui/icons/Close";
 import { connect } from "react-redux";
 import { renameDraft, closeRenameModal } from "../../../actions";
@@ -22,6 +23,18 @@ const styles = (theme) => ({
     right: theme.spacing(1),
     top: theme.spacing(1),
     color: theme.palette.grey[500],
+  },
+  buttonWrapper: {
+    margin: theme.spacing(1),
+    position: "relative",
+  },
+  buttonProgress: {
+    color: "green",
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -12,
+    marginLeft: -12,
   },
 });
 
@@ -73,13 +86,22 @@ class RenameDraftModal extends React.Component {
               }}
             />
             <DialogActions>
-              <Button
-                onClick={() => {
-                  this.renameDraft();
-                }}
-              >
-                Rename
-              </Button>
+              <div className={classes.buttonWrapper}>
+                <Button
+                  onClick={() => {
+                    this.renameDraft();
+                  }}
+                  disabled={renameState.requesting}
+                >
+                  Rename
+                </Button>
+                {renameState.requesting && (
+                  <CircularProgress
+                    size={24}
+                    className={classes.buttonProgress}
+                  />
+                )}
+              </div>
             </DialogActions>
           </div>
         </DialogContent>

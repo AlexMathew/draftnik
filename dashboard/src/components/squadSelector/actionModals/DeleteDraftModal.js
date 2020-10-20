@@ -9,6 +9,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { connect } from "react-redux";
 import { deleteDraft, closeDeleteModal } from "../../../actions";
 
@@ -25,6 +26,18 @@ const styles = (theme) => ({
     margin: theme.spacing(1),
     width: theme.spacing(4),
     height: theme.spacing(4),
+  },
+  buttonWrapper: {
+    margin: theme.spacing(1),
+    position: "relative",
+  },
+  buttonProgress: {
+    color: "green",
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -12,
+    marginLeft: -12,
   },
 });
 
@@ -63,14 +76,20 @@ class DeleteDraftModal extends React.Component {
           <Button onClick={closeDeleteModal} color="primary" autoFocus>
             No
           </Button>
-          <Button
-            onClick={() => {
-              deleteDraft(draft);
-            }}
-            color="primary"
-          >
-            Yes
-          </Button>
+          <div className={classes.buttonWrapper}>
+            <Button
+              onClick={() => {
+                deleteDraft(draft);
+              }}
+              disabled={deleteState.requesting}
+              color="primary"
+            >
+              Yes
+            </Button>
+            {deleteState.requesting && (
+              <CircularProgress size={24} className={classes.buttonProgress} />
+            )}
+          </div>
         </DialogActions>
       </Dialog>
     );
