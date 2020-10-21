@@ -9,6 +9,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { getPlayers } from "../../utils/players";
 import draftnik from "../../api/draftnik";
 import { AUTH_TOKEN_FIELD, ACTIONS } from "../../constants";
@@ -29,6 +30,18 @@ const styles = (theme) => ({
     width: theme.spacing(4),
     height: theme.spacing(4),
   },
+  buttonWrapper: {
+    margin: theme.spacing(1),
+    position: "relative",
+  },
+  buttonProgress: {
+    color: "green",
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    marginTop: -12,
+    marginLeft: -12,
+  },
   "@global": {
     ".MuiInputLabel-root": {
       fontSize: "small",
@@ -42,6 +55,7 @@ const styles = (theme) => ({
 class DraftDialog extends React.Component {
   state = {
     name: "",
+    loading: false,
   };
 
   saveDraft = () => {
@@ -51,6 +65,7 @@ class DraftDialog extends React.Component {
       if (AUTH_TOKEN_FIELD in result) {
         const { auth_token } = result[[AUTH_TOKEN_FIELD]];
         if (auth_token !== undefined && auth_token !== null) {
+          this.setState({ loading: true });
           draftnik
             .post(
               "/draft/",
@@ -67,17 +82,18 @@ class DraftDialog extends React.Component {
                 chrome.storage.local.remove([AUTH_TOKEN_FIELD]);
                 chrome.runtime.sendMessage({ action: ACTIONS.OPEN_OPTIONS });
               }
+            })
+            .finally(() => {
+              this.setState({ loading: false });
+              this.props.handleClose();
             });
+        } else {
+          chrome.runtime.sendMessage({ action: ACTIONS.OPEN_OPTIONS });
         }
       } else {
         chrome.runtime.sendMessage({ action: ACTIONS.OPEN_OPTIONS });
       }
     });
-  };
-
-  handleSaveClick = () => {
-    this.props.handleClose();
-    this.saveDraft();
   };
 
   render() {
@@ -132,19 +148,26 @@ class DraftDialog extends React.Component {
             classes={{
               root: classes.smallSize,
             }}
+            disabled={this.state.loading}
           >
             Cancel
           </Button>
-          <Button
-            onClick={this.handleSaveClick}
-            color="primary"
-            variant="text"
-            classes={{
-              root: classes.smallSize,
-            }}
-          >
-            Save
-          </Button>
+          <div className={classes.buttonWrapper}>
+            <Button
+              onClick={this.saveDraft}
+              color="primary"
+              variant="text"
+              classes={{
+                root: classes.smallSize,
+              }}
+              disabled={this.state.loading}
+            >
+              Save
+            </Button>
+            {this.state.loading && (
+              <CircularProgress size={24} className={classes.buttonProgress} />
+            )}
+          </div>
         </DialogActions>
       </Dialog>
     );
