@@ -44,7 +44,7 @@ class DraftElementSerializer(serializers.Serializer):
 class DraftCreateSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source="user.username")
     squad = DraftElementSerializer(many=True, write_only=True)
-    name = serializers.CharField(max_length=100, required=False)
+    name = serializers.CharField(max_length=256, required=False)
 
     class Meta:
         model = Draft
@@ -91,7 +91,7 @@ class DraftCreateSerializer(serializers.ModelSerializer):
 
 class DraftUpdateSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source="user.username")
-    name = serializers.CharField(max_length=100, required=True)
+    name = serializers.CharField(max_length=256, required=True)
 
     class Meta:
         model = Draft

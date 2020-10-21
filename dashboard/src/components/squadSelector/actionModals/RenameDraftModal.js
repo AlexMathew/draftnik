@@ -82,7 +82,7 @@ class RenameDraftModal extends React.Component {
               defaultValue={draft.name}
               inputRef={this.nameRef}
               inputProps={{
-                maxLength: "100",
+                maxLength: "256",
               }}
             />
             <DialogActions>

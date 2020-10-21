@@ -138,6 +138,9 @@ class DraftDialog extends React.Component {
             onChange={(e) => {
               this.setState({ name: e.target.value });
             }}
+            inputProps={{
+              maxLength: "256",
+            }}
           />
         </DialogContent>
         <DialogActions>
