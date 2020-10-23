@@ -56,11 +56,16 @@ class DraftDialog extends React.Component {
   state = {
     name: "",
     loading: false,
+    error: {
+      name: "",
+    },
   };
 
   saveDraft = () => {
     const name = this.state.name;
     const squad = getPlayers();
+    const fields = ["name"];
+
     chrome.storage.local.get([AUTH_TOKEN_FIELD], (result) => {
       if (AUTH_TOKEN_FIELD in result) {
         const { auth_token } = result[[AUTH_TOKEN_FIELD]];
@@ -76,16 +81,24 @@ class DraftDialog extends React.Component {
                 },
               }
             )
-            .then(() => {})
+            .then(() => {
+              this.props.handleClose();
+            })
             .catch((err) => {
-              if (err.response.status === 401) {
+              if (err.response?.status === 401) {
                 chrome.storage.local.remove([AUTH_TOKEN_FIELD]);
                 chrome.runtime.sendMessage({ action: ACTIONS.OPEN_OPTIONS });
+                this.props.handleClose();
+              } else if (err.response?.status === 400) {
+                const error = {};
+                fields.forEach((field) => {
+                  error[[field]] = (data[[field]] || []).join(" ");
+                });
+                this.setState({ error });
               }
             })
             .finally(() => {
               this.setState({ loading: false });
-              this.props.handleClose();
             });
         } else {
           chrome.runtime.sendMessage({ action: ACTIONS.OPEN_OPTIONS });
@@ -98,6 +111,7 @@ class DraftDialog extends React.Component {
 
   render() {
     const { classes } = this.props;
+    const { loading, error } = this.state;
 
     return (
       <Dialog
@@ -141,6 +155,8 @@ class DraftDialog extends React.Component {
             inputProps={{
               maxLength: "256",
             }}
+            error={error.name !== undefined && error.name !== ""}
+            helperText={error.name}
           />
         </DialogContent>
         <DialogActions>
@@ -151,7 +167,7 @@ class DraftDialog extends React.Component {
             classes={{
               root: classes.smallSize,
             }}
-            disabled={this.state.loading}
+            disabled={loading}
           >
             Cancel
           </Button>
@@ -163,11 +179,11 @@ class DraftDialog extends React.Component {
               classes={{
                 root: classes.smallSize,
               }}
-              disabled={this.state.loading}
+              disabled={loading}
             >
               Save
             </Button>
-            {this.state.loading && (
+            {loading && (
               <CircularProgress size={24} className={classes.buttonProgress} />
             )}
           </div>
