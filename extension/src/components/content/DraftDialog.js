@@ -49,6 +49,9 @@ const styles = (theme) => ({
     ".MuiInput-root": {
       fontSize: "small",
     },
+    ".MuiFormHelperText-root": {
+      fontSize: "small",
+    },
   },
 });
 
@@ -91,6 +94,7 @@ class DraftDialog extends React.Component {
                 this.props.handleClose();
               } else if (err.response?.status === 400) {
                 const error = {};
+                const data = err.response.data;
                 fields.forEach((field) => {
                   error[[field]] = (data[[field]] || []).join(" ");
                 });
