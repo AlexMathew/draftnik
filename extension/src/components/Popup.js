@@ -1,9 +1,16 @@
 import React from "react";
+import { connect } from "react-redux";
 
 class Popup extends React.Component {
   render() {
-    return <div>Draftnik.</div>;
+    return <div>{this.props.count}</div>;
   }
 }
 
-export default Popup;
+const mapStateToProps = (state) => {
+  return {
+    count: state.test,
+  };
+};
+
+export default connect(mapStateToProps)(Popup);

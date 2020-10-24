@@ -1,4 +1,10 @@
-import { AUTH_TOKEN_FIELD, ACTIONS, DASHBOARD_URL } from "./constants";
+import { createStore } from "redux";
+import { wrapStore } from "webext-redux";
+import reducers from "./reducers";
+import { AUTH_TOKEN_FIELD, ACTIONS, STORE_PORT_NAME } from "./constants";
+
+const store = createStore(reducers, {});
+wrapStore(store, { portName: STORE_PORT_NAME });
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.local.get([AUTH_TOKEN_FIELD], (result) => {

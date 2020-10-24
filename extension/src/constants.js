@@ -10,3 +10,5 @@ export const DASHBOARD_URL =
   process.env.NODE_ENV === "development"
     ? "http://localhost:3000"
     : "https://app.draftnik.cc/";
+
+export const STORE_PORT_NAME = "draftnik-store";
