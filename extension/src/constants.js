@@ -12,3 +12,19 @@ export const DASHBOARD_URL =
     : "https://app.draftnik.cc/";
 
 export const STORE_PORT_NAME = "draftnik-store";
+
+export const ELEMENT_TYPES = {
+  GOALKEEPERS: 1,
+  DEFENDERS: 2,
+  MIDFIELDERS: 3,
+  FORWARDS: 4,
+};
+
+export const AVAILABILITY = {
+  AVAILABLE: "a",
+  DOUBTFUL: "d",
+  TRANSFERRED: "u",
+  INJURED: "i",
+  ON_LOAN: "n",
+  SUSPENDED: "s",
+};
