@@ -2,7 +2,6 @@ import React from "react";
 import DraftDialog from "./content/DraftDialog";
 import { connect } from "react-redux";
 import { getByXpath } from "../utils/xpath";
-import { countClick } from "../actions";
 
 MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
@@ -94,4 +93,4 @@ class ContentScript extends React.Component {
   }
 }
 
-export default connect(null, { countClick })(ContentScript);
+export default connect(null)(ContentScript);
