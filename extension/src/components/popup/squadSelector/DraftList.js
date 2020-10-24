@@ -18,6 +18,12 @@ const styles = () => ({
     display: "flex",
     flexGrow: 1,
   },
+  draftName: {
+    fontSize: "small",
+  },
+  noDrafts: {
+    fontSize: "small",
+  },
   menu: {
     alignSelf: "center",
   },
@@ -58,13 +64,18 @@ class DraftList extends React.Component {
                     }),
                   }}
                 >
-                  <ListItemText primary={draft.name} />
-                  <ChevronRightIcon />
+                  <ListItemText
+                    primary={draft.name}
+                    classes={{ primary: classes.draftName }}
+                  />
+                  <ChevronRightIcon fontSize="small" />
                 </ListItem>
               </div>
             ))
           ) : (
-            <ListItem>No saved drafts for this gameweek</ListItem>
+            <ListItem className={classes.noDrafts}>
+              No saved drafts for this gameweek
+            </ListItem>
           )}
         </List>
       </>

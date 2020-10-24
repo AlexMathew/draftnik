@@ -7,14 +7,8 @@ import GameweekPaginator from "./squadSelector/GameweekPaginator";
 import DraftList from "./squadSelector/DraftList";
 
 const styles = (theme) => ({
-  drawer: {
-    [theme.breakpoints.up("lg")]: {
-      width: theme.spacing(37.5),
-      flexShrink: 0,
-    },
-  },
   drawerPaper: {
-    width: theme.spacing(40),
+    width: theme.spacing(30),
   },
   toolbar: theme.mixins.toolbar,
 });
@@ -33,7 +27,7 @@ class SquadSelector extends React.Component {
     );
 
     return (
-      <nav className={classes.drawer}>
+      <nav>
         <Drawer
           classes={{
             paper: classes.drawerPaper,

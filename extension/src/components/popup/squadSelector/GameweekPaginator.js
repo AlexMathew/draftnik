@@ -27,6 +27,9 @@ const styles = () => ({
     alignSelf: "center",
     textAlign: "center",
   },
+  gameweekName: {
+    fontSize: "medium",
+  },
 });
 
 class GameweekPaginator extends React.Component {
@@ -37,8 +40,8 @@ class GameweekPaginator extends React.Component {
   updateGameweek = ({ up = false, down = false }) => {
     const selectedGameweek = parseInt(this.props.selectedGameweek);
     const change = up ? +1 : down ? -1 : 0;
-    this.props.selectGameweek(selectedGameweek + change);
     this.props.selectDraft(null);
+    this.props.selectGameweek(selectedGameweek + change);
   };
 
   isFirstGameweek = () => {
@@ -68,11 +71,11 @@ class GameweekPaginator extends React.Component {
                 this.updateGameweek({ down: true });
               }}
             >
-              <ArrowLeftIcon style={{ fontSize: 60 }} />
+              <ArrowLeftIcon style={{ fontSize: 40 }} />
             </IconButton>
           </Grid>
           <Grid item xs={6} className={classes.gameweek}>
-            <Typography variant="h6">
+            <Typography className={classes.gameweekName}>
               {selectedGameweek in gameweeks
                 ? gameweeks[selectedGameweek].name
                 : ""}
@@ -91,7 +94,7 @@ class GameweekPaginator extends React.Component {
                 this.updateGameweek({ up: true });
               }}
             >
-              <ArrowRightIcon style={{ fontSize: 60 }} />
+              <ArrowRightIcon style={{ fontSize: 40 }} />
             </IconButton>
           </Grid>
         </Grid>
