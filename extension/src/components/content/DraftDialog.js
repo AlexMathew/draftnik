@@ -59,9 +59,6 @@ class DraftDialog extends React.Component {
   state = {
     name: "",
     loading: false,
-    error: {
-      name: "",
-    },
   };
 
   saveDraft = () => {
@@ -98,7 +95,7 @@ class DraftDialog extends React.Component {
                 fields.forEach((field) => {
                   error[[field]] = (data[[field]] || []).join(" ");
                 });
-                this.setState({ error });
+                this.props.setDialogError(error);
               }
             })
             .finally(() => {
@@ -115,7 +112,8 @@ class DraftDialog extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { loading, error } = this.state;
+    const { error } = this.props.modalState;
+    const { loading } = this.state;
 
     return (
       <Dialog

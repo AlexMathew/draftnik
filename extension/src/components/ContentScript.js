@@ -7,14 +7,23 @@ MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 class ContentScript extends React.Component {
   state = {
     modalOpen: false,
+    modalState: {
+      error: {
+        name: "",
+      },
+    },
   };
 
   handleOpen = () => {
-    this.setState({ modalOpen: true });
+    this.setState({ modalOpen: true, modalState: { error: { name: "" } } });
   };
 
   handleClose = () => {
-    this.setState({ modalOpen: false });
+    this.setState({ modalOpen: false, modalState: { error: { name: "" } } });
+  };
+
+  setDialogError = (error) => {
+    this.setState({ modalState: { error } });
   };
 
   insertSaveButton = (transfersButton) => {
@@ -69,7 +78,12 @@ class ContentScript extends React.Component {
 
   render() {
     return (
-      <DraftDialog open={this.state.modalOpen} handleClose={this.handleClose} />
+      <DraftDialog
+        open={this.state.modalOpen}
+        modalState={this.state.modalState}
+        handleClose={this.handleClose}
+        setDialogError={this.setDialogError}
+      />
     );
   }
 }
