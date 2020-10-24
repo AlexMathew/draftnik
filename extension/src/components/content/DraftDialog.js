@@ -96,6 +96,11 @@ class DraftDialog extends React.Component {
                   error[[field]] = (data[[field]] || []).join(" ");
                 });
                 this.props.setDialogError(error);
+              } else {
+                this.props.setDialogError({
+                  name:
+                    "Sorry! We seem to have encountered an issue. Please try again later.",
+                });
               }
             })
             .finally(() => {
