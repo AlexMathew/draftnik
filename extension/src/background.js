@@ -21,7 +21,3 @@ chrome.runtime.onMessage.addListener((message) => {
     }
   }
 });
-
-chrome.browserAction.onClicked.addListener(() => {
-  chrome.tabs.create({ url: DASHBOARD_URL });
-});
