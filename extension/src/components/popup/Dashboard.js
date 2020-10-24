@@ -7,7 +7,6 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Header from "./Header";
 import SquadSelector from "./SquadSelector";
 import SquadView from "./SquadView";
-import FixturesView from "./FixturesView";
 import { connect } from "react-redux";
 import { fetchStaticData } from "../../actions";
 import { AUTH_TOKEN_FIELD } from "../../constants";
@@ -49,7 +48,6 @@ class Dashboard extends React.Component {
         <Header />
         <SquadSelector />
         <SquadView />
-        <FixturesView />
 
         <Backdrop className={classes.backdrop} open={this.props.staticLoading}>
           <CircularProgress color="inherit" />
