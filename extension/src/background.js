@@ -1,7 +1,12 @@
 import { createStore } from "redux";
 import { wrapStore } from "webext-redux";
 import reducers from "./reducers";
-import { AUTH_TOKEN_FIELD, ACTIONS, STORE_PORT_NAME } from "./constants";
+import {
+  AUTH_TOKEN_FIELD,
+  ACTIONS,
+  STORE_PORT_NAME,
+  DASHBOARD_URL,
+} from "./constants";
 
 const store = createStore(reducers, {});
 wrapStore(store, { portName: STORE_PORT_NAME });
@@ -22,8 +27,9 @@ chrome.runtime.onInstalled.addListener(() => {
 chrome.runtime.onMessage.addListener((message) => {
   const { action } = message;
   switch (action) {
-    case ACTIONS.OPEN_OPTIONS: {
+    case ACTIONS.OPEN_OPTIONS:
       chrome.runtime.openOptionsPage();
-    }
+    case ACTIONS.OPEN_DASHBOARD:
+      chrome.tabs.create({ url: DASHBOARD_URL });
   }
 });

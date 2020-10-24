@@ -5,8 +5,13 @@ import AppBar from "@material-ui/core/AppBar";
 import Avatar from "@material-ui/core/Avatar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
+import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
+import RefreshIcon from "@material-ui/icons/Refresh";
+import OpenInNewIcon from "@material-ui/icons/OpenInNew";
+import { connect } from "react-redux";
+import { fetchStaticData } from "../../actions";
+import { ACTIONS } from "../../constants";
 
 const styles = (theme) => ({
   appBar: {
@@ -27,7 +32,6 @@ const styles = (theme) => ({
   header: {
     display: "flex",
     alignItems: "center",
-    cursor: "pointer",
   },
   logo: {
     margin: theme.spacing(1),
@@ -49,7 +53,7 @@ class Header extends React.Component {
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <div className={classes.grow}>
-            <div className={classes.header} onClick={() => {}}>
+            <div className={classes.header}>
               <Avatar
                 src={chrome.extension.getURL("icons/logo128.png")}
                 className={classes.logo}
@@ -63,6 +67,26 @@ class Header extends React.Component {
               </Typography>
             </div>
           </div>
+          <Tooltip title="Refresh">
+            <IconButton
+              color="inherit"
+              onClick={() => {
+                this.props.fetchStaticData();
+              }}
+            >
+              <RefreshIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Go To Dashboard">
+            <IconButton
+              color="inherit"
+              onClick={() => {
+                chrome.runtime.sendMessage({ action: ACTIONS.OPEN_DASHBOARD });
+              }}
+            >
+              <OpenInNewIcon />
+            </IconButton>
+          </Tooltip>
         </Toolbar>
       </AppBar>
     );
@@ -73,4 +97,5 @@ Header.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Header);
+const wrappedHeader = connect(null, { fetchStaticData })(Header);
+export default withStyles(styles)(wrappedHeader);
