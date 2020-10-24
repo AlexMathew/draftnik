@@ -24,6 +24,7 @@ export const fetchStaticData = () => async (dispatch) => {
               Authorization: `Token ${auth_token}`,
             },
           });
+          console.log(response);
 
           dispatch({ type: LOAD_TEAM_DATA, payload: response.data });
           dispatch({ type: LOAD_PLAYER_DATA, payload: response.data });
@@ -37,8 +38,8 @@ export const fetchStaticData = () => async (dispatch) => {
         } catch (error) {
           console.error(error);
           if (error.response?.status === 401) {
-            localStorage.removeItem(AUTH_TOKEN_FIELD);
-            history.push("/signin");
+            chrome.storage.local.remove([AUTH_TOKEN_FIELD]);
+            chrome.runtime.sendMessage({ action: ACTIONS.OPEN_OPTIONS });
           }
         }
       } else {

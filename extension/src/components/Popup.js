@@ -1,21 +1,19 @@
 import React from "react";
-import { connect } from "react-redux";
-import { fetchStaticData } from "../actions";
+import { Switch, Route, HashRouter } from "react-router-dom";
+import Dashboard from "./popup/Dashboard";
+import NoAuth from "./popup/NoAuth";
 
 class Popup extends React.Component {
-  componentDidMount() {
-    this.props.fetchStaticData();
-  }
-
   render() {
-    return <div>{this.props.count}</div>;
+    return (
+      <HashRouter>
+        <Switch>
+          <Route exact path="/" component={Dashboard} />
+          <Route exact path="/noauth" component={NoAuth} />
+        </Switch>
+      </HashRouter>
+    );
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    count: state.test,
-  };
-};
-
-export default connect(mapStateToProps, { fetchStaticData })(Popup);
+export default Popup;
