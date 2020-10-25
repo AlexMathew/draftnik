@@ -6,6 +6,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import { connect } from "react-redux";
 import _ from "lodash";
+import PlayerInfo from "./PlayerInfo";
 
 const styles = (theme) => ({
   draft: {
@@ -33,7 +34,7 @@ class PlayerList extends React.Component {
 
             return (
               <ListItem key={player.id} className={classes.player} divider>
-                <ListItemText primary={player.web_name} />
+                <PlayerInfo player={player} />
               </ListItem>
             );
           })}

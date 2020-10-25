@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import InfoIcon from "@material-ui/icons/Info";
 import Tooltip from "@material-ui/core/Tooltip";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import Hidden from "@material-ui/core/Hidden";
 import { AVAILABILITY } from "../../../constants";
 
 const styles = (theme) => ({
@@ -14,15 +12,10 @@ const styles = (theme) => ({
     boxShadow: theme.shadows[1],
     fontSize: "small",
   },
-  mobileTooltip: {
-    padding: theme.spacing(1),
-    maxWidth: "none",
-  },
   info: {
     borderRadius: "50%",
-    [theme.breakpoints.down("sm")]: {
-      fontSize: "large",
-    },
+    fontSize: "large",
+    marginRight: theme.spacing(1),
   },
   available: {
     fill: "white",
@@ -64,12 +57,12 @@ class ElementInfo extends React.Component {
   };
 
   playerStatusClass = () => {
-    const { element } = this.props;
-    if (element.status === AVAILABILITY.AVAILABLE) return "available";
-    else if (element.status === AVAILABILITY.DOUBTFUL) {
-      if (element.news.includes(this.DOUBTFUL_25)) {
+    const { player } = this.props;
+    if (player.status === AVAILABILITY.AVAILABLE) return "available";
+    else if (player.status === AVAILABILITY.DOUBTFUL) {
+      if (player.news.includes(this.DOUBTFUL_25)) {
         return "doubtful25";
-      } else if (element.news.includes(this.DOUBTFUL_50)) {
+      } else if (player.news.includes(this.DOUBTFUL_50)) {
         return "doubtful50";
       } else {
         return "doubtful75";
@@ -80,53 +73,23 @@ class ElementInfo extends React.Component {
   };
 
   render() {
-    const { classes, element } = this.props;
-
-    if (element.status === AVAILABILITY.AVAILABLE) return null;
+    const { classes, player } = this.props;
 
     return (
-      <>
-        <Hidden smDown implementation="js">
-          <Tooltip
-            classes={{ tooltipArrow: classes.tooltip }}
-            title={element.news}
-            arrow
-            interactive
-            placement="top-start"
-          >
-            <InfoIcon
-              className={classes.info}
-              classes={{
-                root: classes[this.playerStatusClass()],
-              }}
-            />
-          </Tooltip>
-        </Hidden>
-        <Hidden mdUp implementation="js">
-          <ClickAwayListener onClickAway={this.handleTooltipClose}>
-            <Tooltip
-              onClose={this.handleTooltipClose}
-              open={this.state.tooltipOpen}
-              classes={{
-                tooltip: classes.mobileTooltip,
-                tooltipArrow: classes.tooltip,
-              }}
-              title={element.news}
-              arrow
-              interactive
-              placement="top-start"
-            >
-              <InfoIcon
-                className={classes.info}
-                classes={{
-                  root: classes[this.playerStatusClass()],
-                }}
-                onClick={this.handleTooltipOpen}
-              />
-            </Tooltip>
-          </ClickAwayListener>
-        </Hidden>
-      </>
+      <Tooltip
+        classes={{ tooltipArrow: classes.tooltip }}
+        title={player.news}
+        arrow
+        interactive
+        placement="top-start"
+      >
+        <InfoIcon
+          className={classes.info}
+          classes={{
+            root: classes[this.playerStatusClass()],
+          }}
+        />
+      </Tooltip>
     );
   }
 }
