@@ -9,6 +9,7 @@ import DraftList from "./squadSelector/DraftList";
 const styles = (theme) => ({
   drawerPaper: {
     width: theme.spacing(30),
+    overflowX: "hidden",
   },
   toolbar: theme.mixins.toolbar,
 });

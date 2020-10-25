@@ -15,7 +15,7 @@ const styles = (theme) => ({
   },
   content: {
     flexGrow: 1,
-    paddingTop: theme.spacing(3),
+    marginLeft: theme.spacing(30),
   },
   placeholder: {
     display: "grid",

@@ -13,13 +13,9 @@ import { AUTH_TOKEN_FIELD } from "../../constants";
 
 const styles = (theme) => ({
   root: {
-    [theme.breakpoints.up("sm")]: {
-      display: "flex",
-      flexGrow: 1,
-    },
     display: "grid",
-    width: theme.spacing(300),
-    height: theme.spacing(200),
+    width: theme.spacing(100),
+    height: theme.spacing(75),
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
