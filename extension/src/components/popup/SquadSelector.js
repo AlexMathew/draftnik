@@ -19,7 +19,6 @@ class SquadSelector extends React.Component {
     const drawer = (
       <div>
         <div className={classes.toolbar} />
-        <Divider />
         <GameweekPaginator />
         <Divider />
         <DraftList />

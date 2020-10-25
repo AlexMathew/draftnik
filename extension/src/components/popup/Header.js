@@ -51,7 +51,7 @@ class Header extends React.Component {
 
     return (
       <AppBar position="fixed" className={classes.appBar}>
-        <Toolbar>
+        <Toolbar variant="dense">
           <div className={classes.grow}>
             <div className={classes.header}>
               <Avatar
