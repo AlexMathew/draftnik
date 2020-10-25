@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
-import Pitch from "./squadView/Pitch";
+import PlayerList from "./squadView/PlayerList";
 
 const styles = (theme) => ({
   toolbar: {
@@ -48,13 +48,6 @@ const styles = (theme) => ({
       fontSize: "small",
     },
   },
-  userName: {
-    color: "grey",
-    marginLeft: theme.spacing(1),
-    [theme.breakpoints.down("md")]: {
-      fontSize: "small",
-    },
-  },
   createdAt: {
     color: "grey",
     fontSize: "small",
@@ -81,13 +74,7 @@ class SquadView extends React.Component {
   };
 
   render() {
-    const {
-      classes,
-      drafts,
-      selectedGameweek,
-      selectedDraft,
-      showUsername,
-    } = this.props;
+    const { classes, drafts, selectedGameweek, selectedDraft } = this.props;
 
     if (selectedDraft === null) {
       return this.placeholderText();
@@ -103,11 +90,6 @@ class SquadView extends React.Component {
             <Typography variant="h5" className={classes.draftName}>
               {draft.name}
             </Typography>
-            {showUsername ? (
-              <Typography variant="h6" className={classes.userName}>
-                {`(${draft.user})`}
-              </Typography>
-            ) : null}
           </div>
           <div className={classes.createdDate}>
             <Typography variant="h6" className={classes.createdAt}>
@@ -115,7 +97,7 @@ class SquadView extends React.Component {
             </Typography>
           </div>
         </div>
-        <Pitch />
+        <PlayerList draft={draft} />
       </main>
     );
   }
