@@ -10,7 +10,7 @@ import {
   STOP_LOADING_STATIC_DATA,
 } from "./types";
 import draftnik from "../api/draftnik";
-import { AUTH_TOKEN_FIELD, ACTIONS } from "../constants";
+import { AUTH_TOKEN_FIELD, ACTIONS, STATIC_DATA_FIELD } from "../constants";
 
 export const fetchStaticData = () => async (dispatch) => {
   chrome.storage.local.get([AUTH_TOKEN_FIELD], async (result) => {
@@ -24,7 +24,9 @@ export const fetchStaticData = () => async (dispatch) => {
               Authorization: `Token ${auth_token}`,
             },
           });
-          console.log(response);
+          chrome.storage.local.set({
+            [STATIC_DATA_FIELD]: { data: response.data },
+          });
 
           dispatch({ type: LOAD_TEAM_DATA, payload: response.data });
           dispatch({ type: LOAD_PLAYER_DATA, payload: response.data });
