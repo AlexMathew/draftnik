@@ -1,4 +1,5 @@
 import {
+  RESET_DATA,
   LOAD_DRAFTS,
   LOAD_GAMEWEEK_DATA,
   LOAD_PLAYER_DATA,
@@ -91,6 +92,11 @@ export const fetchStaticData = () => async (dispatch) => {
       chrome.runtime.sendMessage({ action: ACTIONS.OPEN_OPTIONS });
     }
   }
+};
+
+export const resetData = () => {
+  chrome.storage.local.remove([STATIC_DATA_FIELD]);
+  return { type: RESET_DATA };
 };
 
 export const selectDraft = (draft) => {

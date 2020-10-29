@@ -6,6 +6,8 @@ import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import { connect } from "react-redux";
+import { resetData } from "../../actions";
 import { AUTH_TOKEN_FIELD } from "../../constants";
 
 const styles = (theme) => ({
@@ -64,6 +66,7 @@ class LoggedIn extends React.Component {
   };
 
   logout = () => {
+    this.props.resetData();
     chrome.storage.local.remove([AUTH_TOKEN_FIELD]);
     this.setState({ username: "" });
     this.props.history.push("/signin");
@@ -97,4 +100,5 @@ LoggedIn.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(LoggedIn);
+const wrappedLoggedIn = connect(null, { resetData })(LoggedIn);
+export default withStyles(styles)(wrappedLoggedIn);

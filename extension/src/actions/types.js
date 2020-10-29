@@ -1,3 +1,4 @@
+export const RESET_DATA = "RESET_DATA";
 export const LOAD_TEAM_DATA = "LOAD_TEAM_DATA";
 export const LOAD_PLAYER_DATA = "LOAD_PLAYER_DATA";
 export const LOAD_GAMEWEEK_DATA = "LOAD_GAMEWEEK_DATA";
