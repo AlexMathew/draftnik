@@ -1,11 +1,11 @@
 import { SELECT_DRAFT, SELECT_GAMEWEEK } from "../actions/types";
 
-const initialState = {
+const INITIAL_STATE = {
   gameweek: "1",
   draft: null,
 };
 
-export default (state = initialState, action) => {
+export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case SELECT_GAMEWEEK:
       return { ...state, gameweek: action.payload.gameweek.toString() };

@@ -2,7 +2,7 @@ import _ from "lodash";
 import { LOAD_FIXTURES_DATA } from "../actions/types";
 import { getUSDateString } from "../utils/datetime";
 
-const initialState = {
+const INITIAL_STATE = {
   byTeam: {},
   byGameweek: {},
 };
@@ -18,7 +18,7 @@ const formatGwFixtures = (fixtures) => {
   return newFixtures;
 };
 
-export default (state = initialState, action) => {
+export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case LOAD_FIXTURES_DATA:
       return {
