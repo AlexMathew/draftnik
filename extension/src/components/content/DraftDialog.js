@@ -12,6 +12,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { getPlayers } from "../../utils/players";
 import draftnik from "../../api/draftnik";
+import { connect } from "react-redux";
+import { indicateRefresh } from "../../actions";
 import { AUTH_TOKEN_FIELD, ACTIONS } from "../../constants";
 
 const styles = (theme) => ({
@@ -83,6 +85,7 @@ class DraftDialog extends React.Component {
             )
             .then(() => {
               this.props.handleClose();
+              this.props.indicateRefresh();
             })
             .catch((err) => {
               if (err.response?.status === 401) {
@@ -204,4 +207,5 @@ DraftDialog.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(DraftDialog);
+const wrappedDraftDialog = connect(null, { indicateRefresh })(DraftDialog);
+export default withStyles(styles)(wrappedDraftDialog);

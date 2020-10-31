@@ -9,6 +9,8 @@ import {
   SELECT_GAMEWEEK,
   START_LOADING_STATIC_DATA,
   STOP_LOADING_STATIC_DATA,
+  INDICATE_REFRESH,
+  CLEAR_REFRESH,
 } from "./types";
 import draftnik from "../api/draftnik";
 import { AUTH_TOKEN_FIELD, ACTIONS, STATIC_DATA_FIELD } from "../constants";
@@ -113,4 +115,12 @@ export const startStaticLoading = () => {
 
 export const stopStaticLoading = () => {
   return { type: STOP_LOADING_STATIC_DATA };
+};
+
+export const indicateRefresh = () => {
+  return { type: INDICATE_REFRESH };
+};
+
+export const clearRefresh = () => {
+  return { type: CLEAR_REFRESH };
 };

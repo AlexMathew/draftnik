@@ -9,8 +9,9 @@ import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
+import Badge from "@material-ui/core/Badge";
 import { connect } from "react-redux";
-import { fetchStaticData } from "../../actions";
+import { fetchStaticData, clearRefresh } from "../../actions";
 import { ACTIONS } from "../../constants";
 
 const styles = (theme) => ({
@@ -72,9 +73,17 @@ class Header extends React.Component {
               color="inherit"
               onClick={() => {
                 this.props.fetchStaticData();
+                this.props.clearRefresh();
               }}
             >
-              <RefreshIcon />
+              <Badge
+                color="secondary"
+                overlap="circle"
+                variant="dot"
+                invisible={!this.props.refresh}
+              >
+                <RefreshIcon />
+              </Badge>
             </IconButton>
           </Tooltip>
           <Tooltip title="Go To Dashboard">
@@ -97,5 +106,14 @@ Header.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const wrappedHeader = connect(null, { fetchStaticData })(Header);
+const mapStateToProps = (state) => {
+  return {
+    refresh: state.transfers.saved,
+  };
+};
+
+const wrappedHeader = connect(mapStateToProps, {
+  fetchStaticData,
+  clearRefresh,
+})(Header);
 export default withStyles(styles)(wrappedHeader);

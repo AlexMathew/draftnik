@@ -6,6 +6,7 @@ import fixturesReducer from "./fixturesReducer";
 import draftsReducer from "./draftsReducer";
 import selectionsReducer from "./selectionsReducer";
 import loadingReducer from "./loadingReducer";
+import transfersReducer from "./transfersReducer";
 
 export default combineReducers({
   teams: teamsReducer,
@@ -15,4 +16,5 @@ export default combineReducers({
   drafts: draftsReducer,
   selected: selectionsReducer,
   loading: loadingReducer,
+  transfers: transfersReducer,
 });
