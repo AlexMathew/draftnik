@@ -75,10 +75,6 @@ class ContentScript extends React.Component {
       childList: true,
       subtree: true,
     });
-
-    document.addEventListener("click", () => {
-      this.props.countClick();
-    });
   }
 
   render() {
