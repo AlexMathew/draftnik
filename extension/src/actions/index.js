@@ -19,7 +19,6 @@ const getStaticDataFromStorage = async () => {
   const storage = new Promise((resolve, reject) => {
     chrome.storage.local.get([STATIC_DATA_FIELD], async (result) => {
       if (STATIC_DATA_FIELD in result) {
-        console.log("STORAGE");
         resolve(result[[STATIC_DATA_FIELD]]);
       } else {
         reject();
@@ -32,7 +31,6 @@ const getStaticDataFromStorage = async () => {
 
 const getStaticDataFromAPI = async () => {
   const draftnikApi = new Promise((resolve, reject) => {
-    console.log("API");
     chrome.storage.local.get([AUTH_TOKEN_FIELD], async (result) => {
       if (AUTH_TOKEN_FIELD in result) {
         const { auth_token } = result[[AUTH_TOKEN_FIELD]];
@@ -67,7 +65,6 @@ const getStaticDataFromAPI = async () => {
 };
 
 const getStaticDataFromStorageOrAPI = async (force = false) => {
-  console.log("FETCH");
   try {
     if (force) {
       return await getStaticDataFromAPI();
@@ -81,8 +78,9 @@ const getStaticDataFromStorageOrAPI = async (force = false) => {
 
 export const fetchStaticData = (force = false) => async (dispatch) => {
   try {
+    dispatch(startStaticLoading());
+
     const response = await getStaticDataFromStorageOrAPI(force);
-    console.log(response);
     dispatch({ type: LOAD_TEAM_DATA, payload: response.data });
     dispatch({ type: LOAD_PLAYER_DATA, payload: response.data });
     dispatch({ type: LOAD_GAMEWEEK_DATA, payload: response.data });
