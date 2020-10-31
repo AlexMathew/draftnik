@@ -66,18 +66,22 @@ const getStaticDataFromAPI = async () => {
   return await draftnikApi;
 };
 
-const getStaticDataFromStorageOrAPI = async () => {
+const getStaticDataFromStorageOrAPI = async (force = false) => {
   console.log("FETCH");
   try {
-    return await getStaticDataFromStorage();
+    if (force) {
+      return await getStaticDataFromAPI();
+    } else {
+      return await getStaticDataFromStorage();
+    }
   } catch (error) {
     return await getStaticDataFromAPI();
   }
 };
 
-export const fetchStaticData = () => async (dispatch) => {
+export const fetchStaticData = (force = false) => async (dispatch) => {
   try {
-    const response = await getStaticDataFromStorageOrAPI();
+    const response = await getStaticDataFromStorageOrAPI(force);
     console.log(response);
     dispatch({ type: LOAD_TEAM_DATA, payload: response.data });
     dispatch({ type: LOAD_PLAYER_DATA, payload: response.data });
@@ -88,6 +92,10 @@ export const fetchStaticData = () => async (dispatch) => {
     dispatch(selectDraft(null));
     dispatch(selectGameweek(response.data.static.current_gameweek));
     dispatch(stopStaticLoading());
+
+    if (force) {
+      dispatch(clearRefresh());
+    }
   } catch (err) {
     if (err === "UNAUTHORIZED") {
       chrome.storage.local.remove([AUTH_TOKEN_FIELD]);

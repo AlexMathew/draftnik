@@ -11,7 +11,7 @@ import RefreshIcon from "@material-ui/icons/Refresh";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
 import Badge from "@material-ui/core/Badge";
 import { connect } from "react-redux";
-import { fetchStaticData, clearRefresh } from "../../actions";
+import { fetchStaticData } from "../../actions";
 import { ACTIONS } from "../../constants";
 
 const styles = (theme) => ({
@@ -72,8 +72,7 @@ class Header extends React.Component {
             <IconButton
               color="inherit"
               onClick={() => {
-                this.props.fetchStaticData();
-                this.props.clearRefresh();
+                this.props.fetchStaticData(true);
               }}
             >
               <Badge
@@ -114,6 +113,5 @@ const mapStateToProps = (state) => {
 
 const wrappedHeader = connect(mapStateToProps, {
   fetchStaticData,
-  clearRefresh,
 })(Header);
 export default withStyles(styles)(wrappedHeader);
