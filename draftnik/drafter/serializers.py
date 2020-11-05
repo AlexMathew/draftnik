@@ -45,11 +45,11 @@ class DraftCreateSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source="user.username")
     squad = DraftElementSerializer(many=True, write_only=True)
     name = serializers.CharField(max_length=256, required=False)
+    gameweek = serializers.IntegerField(required=False)
 
     class Meta:
         model = Draft
         fields = ["user", "squad", "name", "gameweek"]
-        read_only_fields = ["gameweek"]
 
     def _get_player_id(self, player):
         return redis.get(PLAYER_ID_KEY(player.get("name"), player.get("team")))
@@ -72,6 +72,7 @@ class DraftCreateSerializer(serializers.ModelSerializer):
         user = validated_data.get("user")
         squad = validated_data.get("squad")
         name = validated_data.get("name")
+        gameweek = validated_data.get("gameweek")
 
         squad_entries = self._get_squad_entries(squad)
 
@@ -79,7 +80,7 @@ class DraftCreateSerializer(serializers.ModelSerializer):
             "user": user,
             "entries": squad_entries.get("entries") or [],
             "unavailable": squad_entries.get("unavailable") or None,
-            "gameweek": int(get_current_gameweek()),
+            "gameweek": int(gameweek) if gameweek else int(get_current_gameweek()),
         }
         if name:
             fields.update({"name": name})
