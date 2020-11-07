@@ -8,6 +8,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import EditIcon from "@material-ui/icons/Edit";
+import DateRangeIcon from "@material-ui/icons/DateRange";
 import ShareIcon from "@material-ui/icons/Share";
 import DeleteIcon from "@material-ui/icons/Delete";
 import RenameDraftModal from "./actionModals/RenameDraftModal";
@@ -76,6 +77,16 @@ class DraftActions extends React.Component {
               <EditIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText primary="Rename" />
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              this.handleMenuClose();
+            }}
+          >
+            <ListItemIcon>
+              <DateRangeIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primary="Change Gameweek" />
           </MenuItem>
           <MenuItem
             onClick={() => {
