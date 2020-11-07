@@ -12,11 +12,13 @@ import DateRangeIcon from "@material-ui/icons/DateRange";
 import ShareIcon from "@material-ui/icons/Share";
 import DeleteIcon from "@material-ui/icons/Delete";
 import RenameDraftModal from "./actionModals/RenameDraftModal";
+import MoveDraftModal from "./actionModals/MoveDraftModal";
 import ShareDraftModal from "./actionModals/ShareDraftModal";
 import DeleteDraftModal from "./actionModals/DeleteDraftModal";
 import { connect } from "react-redux";
 import {
   openDeleteModal,
+  openMoveModal,
   openRenameModal,
   openShareModal,
 } from "../../actions";
@@ -80,6 +82,7 @@ class DraftActions extends React.Component {
           </MenuItem>
           <MenuItem
             onClick={() => {
+              this.props.openMoveModal(draft);
               this.handleMenuClose();
             }}
           >
@@ -112,6 +115,7 @@ class DraftActions extends React.Component {
           </MenuItem>
         </Menu>
         <RenameDraftModal />
+        <MoveDraftModal />
         <ShareDraftModal />
         <DeleteDraftModal />
       </>
@@ -125,6 +129,7 @@ DraftActions.propTypes = {
 
 const wrappedDraftActions = connect(null, {
   openDeleteModal,
+  openMoveModal,
   openRenameModal,
   openShareModal,
 })(DraftActions);

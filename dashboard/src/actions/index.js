@@ -16,6 +16,10 @@ import {
   START_RENAME_REQUEST,
   STOP_RENAME_REQUEST,
   CLOSE_RENAME_MODAL,
+  OPEN_MOVE_MODAL,
+  START_MOVE_REQUEST,
+  STOP_MOVE_REQUEST,
+  CLOSE_MOVE_MODAL,
   OPEN_DELETE_MODAL,
   START_DELETE_REQUEST,
   STOP_DELETE_REQUEST,
@@ -159,6 +163,22 @@ export const stopRenameRequest = () => {
 
 export const closeRenameModal = () => {
   return { type: CLOSE_RENAME_MODAL };
+};
+
+export const openMoveModal = (draft) => {
+  return { type: OPEN_MOVE_MODAL, payload: { draft } };
+};
+
+export const startMoveRequest = () => {
+  return { type: START_MOVE_REQUEST };
+};
+
+export const stopMoveRequest = () => {
+  return { type: STOP_MOVE_REQUEST };
+};
+
+export const closeMoveModal = () => {
+  return { type: CLOSE_MOVE_MODAL };
 };
 
 export const openDeleteModal = (draft) => {

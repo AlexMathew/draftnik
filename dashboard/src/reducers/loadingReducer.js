@@ -5,6 +5,10 @@ import {
   START_RENAME_REQUEST,
   STOP_RENAME_REQUEST,
   CLOSE_RENAME_MODAL,
+  OPEN_MOVE_MODAL,
+  START_MOVE_REQUEST,
+  STOP_MOVE_REQUEST,
+  CLOSE_MOVE_MODAL,
   OPEN_DELETE_MODAL,
   START_DELETE_REQUEST,
   STOP_DELETE_REQUEST,
@@ -16,6 +20,11 @@ import {
 const INITIAL_STATE = {
   static: false,
   rename: {
+    modalOpen: false,
+    draft: {},
+    requesting: false,
+  },
+  move: {
     modalOpen: false,
     draft: {},
     requesting: false,
@@ -32,7 +41,7 @@ const INITIAL_STATE = {
 };
 
 export default (state = INITIAL_STATE, action) => {
-  let rename, xdelete;
+  let rename, move, xdelete;
 
   switch (action.type) {
     case START_LOADING_STATIC_DATA:
@@ -59,6 +68,26 @@ export default (state = INITIAL_STATE, action) => {
     case STOP_RENAME_REQUEST:
       rename = state.rename;
       return { ...state, rename: { ...rename, requesting: false } };
+    case OPEN_MOVE_MODAL:
+      return {
+        ...state,
+        move: {
+          modalOpen: true,
+          draft: action.payload.draft,
+          requesting: false,
+        },
+      };
+    case CLOSE_MOVE_MODAL:
+      return {
+        ...state,
+        move: { modalOpen: false, draft: {}, requesting: false },
+      };
+    case START_MOVE_REQUEST:
+      move = state.move;
+      return { ...state, move: { ...move, requesting: true } };
+    case STOP_MOVE_REQUEST:
+      move = state.move;
+      return { ...state, move: { ...move, requesting: false } };
     case OPEN_DELETE_MODAL:
       return {
         ...state,
