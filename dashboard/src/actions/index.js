@@ -10,6 +10,7 @@ import {
   SWITCH_MOBILE,
   DELETE_DRAFT,
   RENAME_DRAFT,
+  MOVE_DRAFT,
   START_LOADING_STATIC_DATA,
   STOP_LOADING_STATIC_DATA,
   OPEN_RENAME_MODAL,
@@ -132,6 +133,37 @@ export const renameDraft = (draft, name) => async (dispatch) => {
     dispatch({ type: RENAME_DRAFT, payload: { draft, name } });
     dispatch(stopRenameRequest());
     dispatch(closeRenameModal());
+  } catch (error) {
+    console.error(error);
+    if (error.response?.status === 401) {
+      localStorage.removeItem(AUTH_TOKEN_FIELD);
+      history.push("/signin");
+    }
+  }
+};
+
+export const moveDraft = (draft, originalGameweek, gameweek) => async (
+  dispatch
+) => {
+  const authToken = localStorage.getItem(AUTH_TOKEN_FIELD);
+  try {
+    dispatch(startMoveRequest());
+    const response = await draftnik.put(
+      `/draft/${draft.id}/`,
+      { gameweek: gameweek || null },
+      {
+        headers: {
+          Authorization: `Token ${authToken}`,
+        },
+      }
+    );
+
+    dispatch({
+      type: MOVE_DRAFT,
+      payload: { draft, originalGameweek, gameweek: response.data.gameweek },
+    });
+    dispatch(stopMoveRequest());
+    dispatch(closeMoveModal());
   } catch (error) {
     console.error(error);
     if (error.response?.status === 401) {

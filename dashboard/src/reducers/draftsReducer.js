@@ -4,6 +4,7 @@ import {
   LOAD_SINGLE_DRAFT,
   DELETE_DRAFT,
   RENAME_DRAFT,
+  MOVE_DRAFT,
 } from "../actions/types";
 
 export default (state = {}, action) => {
@@ -46,6 +47,27 @@ export default (state = {}, action) => {
             renamedDraft,
             ...renamedGameweekDrafts.slice(renameIndex + 1),
           ],
+        },
+      };
+    case MOVE_DRAFT:
+      const movedDraft = action.payload.draft;
+      const movedGameweek = action.payload.originalGameweek;
+      const movedGameweekDrafts = state[[movedGameweek]] || [];
+      const moveIndex = _.findIndex(
+        movedGameweekDrafts,
+        (draft) => draft.id === movedDraft.id
+      );
+      const newGameweek = action.payload.gameweek;
+      const newGameweekDrafts = state[[newGameweek]] || [];
+      movedDraft.gameweek = newGameweek;
+      return {
+        ...state,
+        ...{
+          [movedGameweek]: [
+            ...movedGameweekDrafts.slice(0, moveIndex),
+            ...movedGameweekDrafts.slice(moveIndex + 1),
+          ],
+          [newGameweek]: [movedDraft, ...newGameweekDrafts],
         },
       };
     default:

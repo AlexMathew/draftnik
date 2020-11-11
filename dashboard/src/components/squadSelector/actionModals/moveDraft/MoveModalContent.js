@@ -10,6 +10,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { connect } from "react-redux";
+import { moveDraft } from "../../../../actions";
 
 const styles = (theme) => ({
   draftName: {
@@ -48,7 +49,8 @@ class MoveModalContent extends React.Component {
   }
 
   render() {
-    const { classes, moveState, draft } = this.props;
+    const { classes, draft, moveState, moveDraft } = this.props;
+    const originalGw = draft.gameweek;
 
     return (
       <>
@@ -63,7 +65,7 @@ class MoveModalContent extends React.Component {
                 }}
                 displayEmpty
               >
-                <MenuItem value={""}>Current Gameweek</MenuItem>
+                <MenuItem value="">Current Gameweek</MenuItem>
                 {Object.keys(this.props.gameweeks).map((gwIndex) => {
                   const gw = this.props.gameweeks[gwIndex];
                   return (
@@ -78,7 +80,12 @@ class MoveModalContent extends React.Component {
         </DialogContent>
         <DialogActions>
           <div className={classes.buttonWrapper}>
-            <Button onClick={() => {}} disabled={moveState.requesting}>
+            <Button
+              onClick={() => {
+                moveDraft(draft, originalGw, this.state.gameweek);
+              }}
+              disabled={moveState.requesting}
+            >
               Move
             </Button>
             {moveState.requesting && (
@@ -103,6 +110,6 @@ const mapStateToProps = (state) => {
 };
 
 const wrappedMoveModalContent = connect(mapStateToProps, {
-  // renameDraft,
+  moveDraft,
 })(MoveModalContent);
 export default withStyles(styles)(wrappedMoveModalContent);
