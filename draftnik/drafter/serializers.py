@@ -93,12 +93,23 @@ class DraftCreateSerializer(serializers.ModelSerializer):
 class DraftUpdateSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source="user.username")
     name = serializers.CharField(max_length=256, required=False)
-    gameweek = serializers.CharField(required=False)
+    gameweek = serializers.IntegerField(required=False, allow_null=True)
 
     class Meta:
         model = Draft
         fields = ["user", "name", "gameweek"]
         read_only_fields = ["user"]
+
+    def update(self, instance, validated_data):
+        name = validated_data.get("name")
+        gameweek = validated_data.get("gameweek")
+
+        instance.name = name or instance.name
+
+        if gameweek:
+            instance.gameweek = gameweek or int(get_current_gameweek())
+
+        return instance
 
 
 class DraftCloneSerializer(serializers.ModelSerializer):
