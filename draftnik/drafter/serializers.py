@@ -106,9 +106,10 @@ class DraftUpdateSerializer(serializers.ModelSerializer):
 
         instance.name = name or instance.name
 
-        if gameweek:
+        if "gameweek" in validated_data:
             instance.gameweek = gameweek or int(get_current_gameweek())
 
+        instance.save()
         return instance
 
 
