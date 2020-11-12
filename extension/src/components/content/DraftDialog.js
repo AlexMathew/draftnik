@@ -172,7 +172,8 @@ class DraftDialog extends React.Component {
             }}
           >
             You can add a name to the draft that you're saving. If you don't add
-            a name, a placeholder name will be used.
+            a name, a placeholder name will be used. You can also associate your
+            draft with a particular gameweek.
           </DialogContentText>
           <div className={classes.draftFields}>
             <TextField
@@ -198,7 +199,7 @@ class DraftDialog extends React.Component {
                 }}
                 displayEmpty
               >
-                <MenuItem value="">Current Gameweek</MenuItem>
+                <MenuItem value="">Upcoming Gameweek</MenuItem>
                 <Divider />
                 {Object.keys(this.props.gameweeks).map((gwIndex) => {
                   const gw = this.props.gameweeks[gwIndex];

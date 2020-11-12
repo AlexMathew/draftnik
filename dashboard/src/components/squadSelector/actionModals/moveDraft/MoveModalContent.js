@@ -66,7 +66,7 @@ class MoveModalContent extends React.Component {
                 }}
                 displayEmpty
               >
-                <MenuItem value="">Current Gameweek</MenuItem>
+                <MenuItem value="">Upcoming Gameweek</MenuItem>
                 <Divider />
                 {Object.keys(this.props.gameweeks).map((gwIndex) => {
                   const gw = this.props.gameweeks[gwIndex];
