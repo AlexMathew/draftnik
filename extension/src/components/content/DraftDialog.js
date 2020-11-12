@@ -9,6 +9,9 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import FormControl from "@material-ui/core/FormControl";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { getPlayers } from "../../utils/players";
 import draftnik from "../../api/draftnik";
@@ -32,6 +35,15 @@ const styles = (theme) => ({
     width: theme.spacing(4),
     height: theme.spacing(4),
   },
+  draftFields: {
+    display: "flex",
+    alignItems: "center",
+  },
+  formControl: {
+    marginLeft: theme.spacing(1),
+    marginBottom: theme.spacing(2),
+    minWidth: 240,
+  },
   buttonWrapper: {
     margin: theme.spacing(1),
     position: "relative",
@@ -54,17 +66,25 @@ const styles = (theme) => ({
     ".MuiFormHelperText-root": {
       fontSize: "small",
     },
+    ".MuiSelect-root": {
+      fontSize: "small",
+    },
+    ".MuiMenuItem-root": {
+      fontSize: "small",
+    },
   },
 });
 
 class DraftDialog extends React.Component {
   state = {
     name: "",
+    gameweek: "",
     loading: false,
   };
 
   saveDraft = () => {
     const name = this.state.name;
+    const gameweek = this.state.gameweek || null;
     const squad = getPlayers();
     const fields = ["name"];
 
@@ -76,7 +96,7 @@ class DraftDialog extends React.Component {
           draftnik
             .post(
               "/draft/",
-              { squad, name },
+              { squad, name, gameweek },
               {
                 headers: {
                   Authorization: `Token ${auth_token}`,
@@ -119,7 +139,7 @@ class DraftDialog extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, gameweeks } = this.props;
     const { error } = this.props.modalState;
     const { loading } = this.state;
 
@@ -152,22 +172,43 @@ class DraftDialog extends React.Component {
             You can add a name to the draft that you're saving. If you don't add
             a name, a placeholder name will be used.
           </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Draft Name"
-            type="text"
-            fullWidth
-            onChange={(e) => {
-              this.setState({ name: e.target.value });
-            }}
-            inputProps={{
-              maxLength: "256",
-            }}
-            error={error.name !== undefined && error.name !== ""}
-            helperText={error.name}
-          />
+          <div className={classes.draftFields}>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="name"
+              label="Draft Name"
+              type="text"
+              fullWidth
+              onChange={(e) => {
+                this.setState({ name: e.target.value });
+              }}
+              inputProps={{
+                maxLength: "256",
+              }}
+              error={error.name !== undefined && error.name !== ""}
+              helperText={error.name}
+            />
+            <FormControl className={classes.formControl}>
+              <Select
+                value={this.state.gameweek}
+                onChange={(event) => {
+                  this.setState({ gameweek: event.target.value });
+                }}
+                displayEmpty
+              >
+                <MenuItem value="">Current Gameweek</MenuItem>
+                {Object.keys(this.props.gameweeks).map((gwIndex) => {
+                  const gw = this.props.gameweeks[gwIndex];
+                  return (
+                    <MenuItem key={gw.id} value={gw.id}>
+                      {gw.name}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+          </div>
         </DialogContent>
         <DialogActions>
           <Button
@@ -207,5 +248,14 @@ DraftDialog.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const wrappedDraftDialog = connect(null, { indicateRefresh })(DraftDialog);
+const mapStateToProps = (state) => {
+  console.log(state);
+  return {
+    gameweeks: state.gameweeks,
+  };
+};
+
+const wrappedDraftDialog = connect(mapStateToProps, { indicateRefresh })(
+  DraftDialog
+);
 export default withStyles(styles)(wrappedDraftDialog);

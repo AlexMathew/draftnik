@@ -45,7 +45,7 @@ class DraftCreateSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source="user.username")
     squad = DraftElementSerializer(many=True, write_only=True)
     name = serializers.CharField(max_length=256, required=False)
-    gameweek = serializers.IntegerField(required=False)
+    gameweek = serializers.IntegerField(required=False, allow_null=True)
 
     class Meta:
         model = Draft

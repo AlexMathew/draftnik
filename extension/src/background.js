@@ -24,6 +24,8 @@ chrome.runtime.onInstalled.addListener(() => {
       const { auth_token } = result[[AUTH_TOKEN_FIELD]];
       if (auth_token === undefined || auth_token === null) {
         chrome.runtime.openOptionsPage();
+      } else {
+        store.dispatch(fetchStaticData(true));
       }
     } else {
       chrome.runtime.openOptionsPage();
