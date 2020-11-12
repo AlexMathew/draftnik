@@ -8,6 +8,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
+import Divider from "@material-ui/core/Divider";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { connect } from "react-redux";
 import { moveDraft } from "../../../../actions";
@@ -66,6 +67,7 @@ class MoveModalContent extends React.Component {
                 displayEmpty
               >
                 <MenuItem value="">Current Gameweek</MenuItem>
+                <Divider />
                 {Object.keys(this.props.gameweeks).map((gwIndex) => {
                   const gw = this.props.gameweeks[gwIndex];
                   return (

@@ -12,6 +12,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import FormControl from "@material-ui/core/FormControl";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
+import Divider from "@material-ui/core/Divider";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { getPlayers } from "../../utils/players";
 import draftnik from "../../api/draftnik";
@@ -198,6 +199,7 @@ class DraftDialog extends React.Component {
                 displayEmpty
               >
                 <MenuItem value="">Current Gameweek</MenuItem>
+                <Divider />
                 {Object.keys(this.props.gameweeks).map((gwIndex) => {
                   const gw = this.props.gameweeks[gwIndex];
                   return (
