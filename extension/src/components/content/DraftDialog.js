@@ -105,6 +105,7 @@ class DraftDialog extends React.Component {
             )
             .then(() => {
               this.props.handleClose();
+              this.setState({ name: "", gameweek: "" });
               this.props.indicateRefresh();
             })
             .catch((err) => {
