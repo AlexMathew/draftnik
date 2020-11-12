@@ -162,6 +162,7 @@ export const moveDraft = (draft, originalGameweek, gameweek) => async (
       type: MOVE_DRAFT,
       payload: { draft, originalGameweek, gameweek: response.data.gameweek },
     });
+    dispatch(selectDraft(null));
     dispatch(stopMoveRequest());
     dispatch(closeMoveModal());
   } catch (error) {
