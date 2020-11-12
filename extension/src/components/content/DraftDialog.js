@@ -40,8 +40,8 @@ const styles = (theme) => ({
     alignItems: "center",
   },
   formControl: {
+    alignSelf: "flex-end",
     marginLeft: theme.spacing(1),
-    marginBottom: theme.spacing(2),
     minWidth: 240,
   },
   buttonWrapper: {
@@ -175,7 +175,6 @@ class DraftDialog extends React.Component {
           <div className={classes.draftFields}>
             <TextField
               autoFocus
-              margin="dense"
               id="name"
               label="Draft Name"
               type="text"
