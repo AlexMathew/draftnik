@@ -1,4 +1,5 @@
 import React from "react";
+import _ from "lodash";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -141,7 +142,8 @@ class DraftDialog extends React.Component {
   };
 
   getGameweeks() {
-    return this.props.gameweeks || GAMEWEEK_DATA;
+    const { gameweeks } = this.props;
+    return _.isEmpty(gameweeks) ? GAMEWEEK_DATA : gameweeks;
   }
 
   render() {
@@ -257,7 +259,6 @@ DraftDialog.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  console.log(state);
   return {
     gameweeks: state.gameweeks,
   };
