@@ -18,7 +18,7 @@ import { getPlayers } from "../../utils/players";
 import draftnik from "../../api/draftnik";
 import { connect } from "react-redux";
 import { indicateRefresh } from "../../actions";
-import { AUTH_TOKEN_FIELD, ACTIONS } from "../../constants";
+import { AUTH_TOKEN_FIELD, ACTIONS, GAMEWEEK_DATA } from "../../constants";
 
 const styles = (theme) => ({
   title: {
@@ -140,10 +140,15 @@ class DraftDialog extends React.Component {
     });
   };
 
+  getGameweeks() {
+    return this.props.gameweeks || GAMEWEEK_DATA;
+  }
+
   render() {
-    const { classes, gameweeks } = this.props;
+    const { classes } = this.props;
     const { error } = this.props.modalState;
     const { loading } = this.state;
+    const gameweeks = this.getGameweeks();
 
     return (
       <Dialog
@@ -201,8 +206,8 @@ class DraftDialog extends React.Component {
               >
                 <MenuItem value="">Upcoming Gameweek</MenuItem>
                 <Divider />
-                {Object.keys(this.props.gameweeks).map((gwIndex) => {
-                  const gw = this.props.gameweeks[gwIndex];
+                {Object.keys(gameweeks).map((gwIndex) => {
+                  const gw = gameweeks[gwIndex];
                   return (
                     <MenuItem key={gw.id} value={gw.id}>
                       {gw.name}
