@@ -40,7 +40,7 @@ class SharedDraftPage extends React.Component {
             <meta name="description" content={draft.description} />
             <meta property="og:title" content={draft.title} />
             <meta property="og:description" content={draft.description} />
-            <meta property="og:image" content={draft.preview} />
+            {/* <meta property="og:image" content={draft.preview} /> */}
             <meta property="og:url" content={draft.url} />
           </Helmet>
         ) : null}

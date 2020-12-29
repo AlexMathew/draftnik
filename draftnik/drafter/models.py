@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db import models
 from django.utils.functional import cached_property
 
-from jobs.preview import take_screenshot
+# from jobs.preview import take_screenshot
 from utils.jwt import encode_payload
 
 
@@ -31,14 +31,14 @@ class Draft(models.Model):
     def __str__(self):
         return f"#{self.gameweek}- {self.name} ({self.user})"
 
-    def save(self, *args, **kwargs):
-        is_new = self._state.adding
-        super().save(*args, **kwargs)
-        if is_new:
-            take_screenshot.delay(
-                shareable_url=self.shareable_url,
-                preview_filename=self.preview_filename,
-            )
+    # def save(self, *args, **kwargs):
+    #     is_new = self._state.adding
+    #     super().save(*args, **kwargs)
+    #     if is_new:
+    #         take_screenshot.delay(
+    #             shareable_url=self.shareable_url,
+    #             preview_filename=self.preview_filename,
+    #         )
 
     @cached_property
     def encoded(self):
