@@ -5,7 +5,7 @@ from .models import Draft, Gameweek
 
 @admin.register(Draft)
 class DraftAdmin(admin.ModelAdmin):
-    list_display = ("id", "user", "gameweek", "name", "created_at")
+    list_display = ("id", "user", "gameweek", "name", "cloned", "created_at")
 
 
 @admin.register(Gameweek)

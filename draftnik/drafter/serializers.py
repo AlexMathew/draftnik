@@ -49,7 +49,7 @@ class DraftCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Draft
-        fields = ["user", "squad", "name", "gameweek"]
+        fields = ["user", "squad", "name", "gameweek", "cloned"]
 
     def _get_player_id(self, player):
         return redis.get(PLAYER_ID_KEY(player.get("name"), player.get("team")))
@@ -119,8 +119,8 @@ class DraftCloneSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Draft
-        fields = ["user", "draft_code", "name", "gameweek"]
-        read_only_fields = ["name", "gameweek"]
+        fields = ["user", "draft_code", "name", "gameweek", "cloned"]
+        read_only_fields = ["name", "gameweek", "cloned"]
 
     def create(self, validated_data):
         user = validated_data.get("user")
@@ -137,6 +137,7 @@ class DraftCloneSerializer(serializers.ModelSerializer):
             "entries": draft.entries,
             "gameweek": int(get_current_gameweek()),
             "name": f"{draft.name} (cloned from {draft.user.username})",
+            "cloned": True,
         }
         new_draft = Draft.objects.create(**fields)
 

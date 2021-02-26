@@ -18,6 +18,7 @@ class Draft(models.Model):
     )
     name = models.CharField(max_length=256, default=get_random_draft_name)
     gameweek = models.IntegerField(blank=False, null=False)
+    cloned = models.BooleanField(default=False)
     entries = models.JSONField(default=list)
     unavailable = models.JSONField(default=None, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
