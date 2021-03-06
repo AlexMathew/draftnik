@@ -8,6 +8,7 @@ from rest_framework.response import Response
 
 from utils.jwt import decode_payload
 
+from .exceptions import EditClonedDraftError
 from .models import Draft
 from .serializers import (
     DraftCloneSerializer,
@@ -46,6 +47,26 @@ class DraftView(
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop("partial", False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        try:
+            self.perform_update(serializer)
+        except EditClonedDraftError:
+            return Response(
+                data={"errors": {"name": "Cannot rename cloned draft."}},
+                status=status.HTTP_405_METHOD_NOT_ALLOWED,
+            )
+
+        if getattr(instance, "_prefetched_objects_cache", None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
 
     @action(detail=False)
     def static(self, request):

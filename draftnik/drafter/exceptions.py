@@ -1,0 +1,2 @@
+class EditClonedDraftError(Exception):
+    pass

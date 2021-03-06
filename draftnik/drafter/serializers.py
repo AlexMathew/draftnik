@@ -17,6 +17,7 @@ from utils.static import (
     get_team_fixtures_data,
 )
 
+from .exceptions import EditClonedDraftError
 from .models import Draft
 
 
@@ -103,6 +104,9 @@ class DraftUpdateSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         name = validated_data.get("name")
         gameweek = validated_data.get("gameweek")
+
+        if name and instance.cloned:
+            raise EditClonedDraftError
 
         instance.name = name or instance.name
 
