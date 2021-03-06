@@ -4,6 +4,7 @@ import {
   OPEN_RENAME_MODAL,
   START_RENAME_REQUEST,
   STOP_RENAME_REQUEST,
+  SET_RENAME_REQUEST_ERROR,
   CLOSE_RENAME_MODAL,
   OPEN_MOVE_MODAL,
   START_MOVE_REQUEST,
@@ -23,6 +24,7 @@ const INITIAL_STATE = {
     modalOpen: false,
     draft: {},
     requesting: false,
+    error: { name: "" },
   },
   move: {
     modalOpen: false,
@@ -55,12 +57,18 @@ export default (state = INITIAL_STATE, action) => {
           modalOpen: true,
           draft: action.payload.draft,
           requesting: false,
+          error: { name: "" },
         },
       };
     case CLOSE_RENAME_MODAL:
       return {
         ...state,
-        rename: { modalOpen: false, draft: {}, requesting: false },
+        rename: {
+          modalOpen: false,
+          draft: {},
+          requesting: false,
+          error: { name: "" },
+        },
       };
     case START_RENAME_REQUEST:
       rename = state.rename;
@@ -68,6 +76,10 @@ export default (state = INITIAL_STATE, action) => {
     case STOP_RENAME_REQUEST:
       rename = state.rename;
       return { ...state, rename: { ...rename, requesting: false } };
+    case SET_RENAME_REQUEST_ERROR:
+      rename = state.rename;
+      const error = action.payload.error;
+      return { ...state, rename: { ...rename, ...error } };
     case OPEN_MOVE_MODAL:
       return {
         ...state,

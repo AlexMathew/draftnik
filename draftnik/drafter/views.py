@@ -57,7 +57,7 @@ class DraftView(
             self.perform_update(serializer)
         except EditClonedDraftError:
             return Response(
-                data={"errors": {"name": "Cannot rename cloned draft."}},
+                data={"error": {"name": "Cannot rename cloned draft."}},
                 status=status.HTTP_405_METHOD_NOT_ALLOWED,
             )
 

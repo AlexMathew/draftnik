@@ -16,6 +16,7 @@ import {
   OPEN_RENAME_MODAL,
   START_RENAME_REQUEST,
   STOP_RENAME_REQUEST,
+  SET_RENAME_REQUEST_ERROR,
   CLOSE_RENAME_MODAL,
   OPEN_MOVE_MODAL,
   START_MOVE_REQUEST,
@@ -131,14 +132,17 @@ export const renameDraft = (draft, name) => async (dispatch) => {
     );
 
     dispatch({ type: RENAME_DRAFT, payload: { draft, name } });
-    dispatch(stopRenameRequest());
     dispatch(closeRenameModal());
   } catch (error) {
     console.error(error);
     if (error.response?.status === 401) {
       localStorage.removeItem(AUTH_TOKEN_FIELD);
       history.push("/signin");
+    } else {
+      dispatch(setRenameRequestError(error.response?.data));
     }
+  } finally {
+    dispatch(stopRenameRequest());
   }
 };
 
@@ -192,6 +196,10 @@ export const startRenameRequest = () => {
 
 export const stopRenameRequest = () => {
   return { type: STOP_RENAME_REQUEST };
+};
+
+export const setRenameRequestError = (error) => {
+  return { type: SET_RENAME_REQUEST_ERROR, payload: { error } };
 };
 
 export const closeRenameModal = () => {

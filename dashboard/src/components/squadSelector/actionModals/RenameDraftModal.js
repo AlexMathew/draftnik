@@ -84,6 +84,11 @@ class RenameDraftModal extends React.Component {
               inputProps={{
                 maxLength: "256",
               }}
+              error={
+                renameState.error?.name !== undefined &&
+                renameState.error?.name !== ""
+              }
+              helperText={renameState.error?.name}
             />
             <DialogActions>
               <div className={classes.buttonWrapper}>
