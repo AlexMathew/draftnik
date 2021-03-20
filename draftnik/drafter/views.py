@@ -9,8 +9,9 @@ from rest_framework.response import Response
 from utils.jwt import decode_payload
 
 from .exceptions import EditClonedDraftError
-from .models import Draft
+from .models import Collection, Draft
 from .serializers import (
+    CollectionSerializer,
     DraftCloneSerializer,
     DraftCreateSerializer,
     DraftDetailResponseSerializer,
@@ -102,3 +103,24 @@ class DraftDetailView(View):
         serializer = DraftDetailResponseSerializer({"static": True, "draft": draft})
 
         return JsonResponse(serializer.data)
+
+
+class CollectionView(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.DestroyModelMixin,
+    viewsets.GenericViewSet,
+):
+    def get_serializer_class(self):
+        serializers = {}
+
+        return serializers.get(self.action) or CollectionSerializer
+
+    def get_queryset(self):
+        return Collection.objects.filter(user=self.request.user)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

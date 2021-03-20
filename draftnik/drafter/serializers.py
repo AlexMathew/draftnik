@@ -18,7 +18,7 @@ from utils.static import (
 )
 
 from .exceptions import EditClonedDraftError
-from .models import Draft
+from .models import Collection, Draft
 
 
 class DraftSerializer(serializers.ModelSerializer):
@@ -172,3 +172,26 @@ class DraftUrlSerializer(serializers.Serializer):
 class DraftDetailResponseSerializer(serializers.Serializer):
     static = DraftStaticDataSerializer(read_only=True)
     draft = DraftSerializer(read_only=True)
+
+
+class CollectionSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source="user.username")
+    drafts = DraftSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Collection
+        fields = "__all__"
+        read_only_fields = ["created_at"]
+
+    def create(self, validated_data):
+        user = validated_data.get("user")
+        name = validated_data.get("name")
+
+        fields = {
+            "user": user,
+            "name": name,
+        }
+
+        instance = Collection.objects.create(**fields)
+
+        return instance

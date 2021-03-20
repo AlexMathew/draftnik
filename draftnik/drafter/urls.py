@@ -1,7 +1,7 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from .views import DraftDetailView, DraftView
+from .views import CollectionView, DraftDetailView, DraftView
 
 urlpatterns = [
     path("auth/", include("djoser.urls")),
@@ -11,6 +11,7 @@ urlpatterns = [
 
 router = DefaultRouter()
 router.register(r"draft", DraftView, basename="draft")
+router.register(r"collection", CollectionView, basename="collection")
 
 urlpatterns += [
     path("", include(router.urls)),
