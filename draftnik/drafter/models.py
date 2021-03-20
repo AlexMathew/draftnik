@@ -66,3 +66,12 @@ class Gameweek(models.Model):
 
     def __str__(self):
         return f"{self.gw_id}: {self.name} ({self.active})"
+
+
+class Collection(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name="collections", on_delete=models.CASCADE
+    )
+    name = models.CharField(max_length=256)
+    drafts = models.ManyToManyField(Draft, related_name="collections")
+    created_at = models.DateTimeField(auto_now_add=True)
