@@ -17,3 +17,4 @@ class GameweekAdmin(admin.ModelAdmin):
 @admin.register(Collection)
 class CollectionAdmin(admin.ModelAdmin):
     list_display = ("id", "user", "name", "created_at")
+    filter_horizontal = ("drafts",)
