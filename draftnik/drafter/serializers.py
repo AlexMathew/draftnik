@@ -17,7 +17,7 @@ from utils.static import (
     get_team_fixtures_data,
 )
 
-from .exceptions import EditClonedDraftError
+from .exceptions import DifferentUserDraftInCollectionError, EditClonedDraftError
 from .models import Collection, Draft
 
 
@@ -195,3 +195,30 @@ class CollectionSerializer(serializers.ModelSerializer):
         instance = Collection.objects.create(**fields)
 
         return instance
+
+
+class CollectionAssignSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source="user.username")
+    draft_id = serializers.CharField(write_only=True)
+    drafts = DraftSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Collection
+        fields = ["user", "draft_id", "name", "drafts"]
+        read_only_fields = ["name"]
+
+    def update(self, obj, validated_data):
+        user = validated_data.get("user")
+        draft_id = validated_data.get("draft_id")
+
+        try:
+            draft = Draft.objects.get(id=draft_id)
+            if draft.user != user:
+                raise DifferentUserDraftInCollectionError
+        except ObjectDoesNotExist:
+            raise Exception("Invalid draft id.")
+
+        obj.drafts.add(draft)
+        obj.save()
+
+        return obj

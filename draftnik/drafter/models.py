@@ -30,7 +30,7 @@ class Draft(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self):
-        return f"#{self.gameweek}- {self.name}"
+        return f"[{self.id}] GW{self.gameweek}: {self.name}"
 
     # def save(self, *args, **kwargs):
     #     is_new = self._state.adding

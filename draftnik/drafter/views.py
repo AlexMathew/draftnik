@@ -8,9 +8,10 @@ from rest_framework.response import Response
 
 from utils.jwt import decode_payload
 
-from .exceptions import EditClonedDraftError
+from .exceptions import DifferentUserDraftInCollectionError, EditClonedDraftError
 from .models import Collection, Draft
 from .serializers import (
+    CollectionAssignSerializer,
     CollectionSerializer,
     DraftCloneSerializer,
     DraftCreateSerializer,
@@ -112,7 +113,9 @@ class CollectionView(
     viewsets.GenericViewSet,
 ):
     def get_serializer_class(self):
-        serializers = {}
+        serializers = {
+            "add": CollectionAssignSerializer,
+        }
 
         return serializers.get(self.action) or CollectionSerializer
 
@@ -124,3 +127,23 @@ class CollectionView(
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    @action(detail=True, methods=["post"])
+    def add(self, request, pk=None):
+        collection = self.get_object()
+
+        try:
+            serializer = self.get_serializer(collection, data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save(user=self.request.user)
+        except DifferentUserDraftInCollectionError:
+            return Response(
+                data={
+                    "error": {
+                        "name": "Cannot add draft of a different user to a collection."
+                    }
+                },
+                status=status.HTTP_405_METHOD_NOT_ALLOWED,
+            )
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
