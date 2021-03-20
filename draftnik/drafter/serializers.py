@@ -1,4 +1,5 @@
 from urllib.parse import urljoin
+from drafter.taxonomies import CollectionAssignmentOperations
 
 import jwt
 from django.conf import settings
@@ -210,6 +211,7 @@ class CollectionAssignSerializer(serializers.ModelSerializer):
     def update(self, obj, validated_data):
         user = validated_data.get("user")
         draft_id = validated_data.get("draft_id")
+        operation = validated_data.get("operation")
 
         try:
             draft = Draft.objects.get(id=draft_id)
@@ -218,7 +220,9 @@ class CollectionAssignSerializer(serializers.ModelSerializer):
         except ObjectDoesNotExist:
             raise Exception("Invalid draft id.")
 
-        obj.drafts.add(draft)
-        obj.save()
+        if operation == CollectionAssignmentOperations.ADD:
+            obj.drafts.add(draft)
+        elif operation == CollectionAssignmentOperations.REMOVE:
+            obj.drafts.remove(draft)
 
         return obj

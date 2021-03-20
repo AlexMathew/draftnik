@@ -1,3 +1,4 @@
+from drafter.taxonomies import CollectionAssignmentOperations
 import jwt
 from django.core.exceptions import ObjectDoesNotExist
 from django.http.response import HttpResponse, JsonResponse
@@ -115,6 +116,7 @@ class CollectionView(
     def get_serializer_class(self):
         serializers = {
             "add": CollectionAssignSerializer,
+            "remove": CollectionAssignSerializer,
         }
 
         return serializers.get(self.action) or CollectionSerializer
@@ -128,22 +130,33 @@ class CollectionView(
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-    @action(detail=True, methods=["post"])
-    def add(self, request, pk=None):
-        collection = self.get_object()
-
+    def draft_assignment(self, request, collection, operation):
         try:
             serializer = self.get_serializer(collection, data=request.data)
             serializer.is_valid(raise_exception=True)
-            serializer.save(user=self.request.user)
+            serializer.save(user=self.request.user, operation=operation)
         except DifferentUserDraftInCollectionError:
             return Response(
                 data={
                     "error": {
-                        "name": "Cannot add draft of a different user to a collection."
+                        "name": "Cannot operate on draft of a different user in a collection."
                     }
                 },
                 status=status.HTTP_405_METHOD_NOT_ALLOWED,
             )
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    @action(detail=True, methods=["post"])
+    def add(self, request, pk=None):
+        collection = self.get_object()
+        return self.draft_assignment(
+            request, collection, operation=CollectionAssignmentOperations.ADD
+        )
+
+    @action(detail=True, methods=["post"])
+    def remove(self, request, pk=None):
+        collection = self.get_object()
+        return self.draft_assignment(
+            request, collection, operation=CollectionAssignmentOperations.REMOVE
+        )
