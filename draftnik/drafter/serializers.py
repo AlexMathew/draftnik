@@ -1,3 +1,4 @@
+import collections
 from urllib.parse import urljoin
 from drafter.taxonomies import CollectionAssignmentOperations
 
@@ -36,6 +37,12 @@ class DraftSerializer(serializers.ModelSerializer):
 
     def get_preview_url(self, obj):
         return urljoin(settings.PREVIEW_HOST, f"{obj.preview_filename}.png")
+
+
+class DraftMinimalSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Draft
+        fields = ["id", "name", "gameweek"]
 
 
 class DraftElementSerializer(serializers.Serializer):
@@ -149,18 +156,13 @@ class DraftCloneSerializer(serializers.ModelSerializer):
         return new_draft
 
 
-class DraftStaticDataSerializer(serializers.Serializer):
+class StaticDataSerializer(serializers.Serializer):
     players = serializers.ReadOnlyField(default=get_player_data)
     teams = serializers.ReadOnlyField(default=get_team_data)
     gameweeks = serializers.ReadOnlyField(default=get_gameweek_data)
     team_fixtures = serializers.ReadOnlyField(default=get_team_fixtures_data)
     gameweek_fixtures = serializers.ReadOnlyField(default=get_gameweek_fixtures_data)
     current_gameweek = serializers.ReadOnlyField(default=get_current_gameweek)
-
-
-class DraftResponseSerializer(serializers.Serializer):
-    static = DraftStaticDataSerializer(read_only=True)
-    drafts = DraftSerializer(many=True, read_only=True)
 
 
 class DraftUrlSerializer(serializers.Serializer):
@@ -171,7 +173,7 @@ class DraftUrlSerializer(serializers.Serializer):
 
 
 class DraftDetailResponseSerializer(serializers.Serializer):
-    static = DraftStaticDataSerializer(read_only=True)
+    static = StaticDataSerializer(read_only=True)
     draft = DraftSerializer(read_only=True)
 
 
@@ -196,6 +198,15 @@ class CollectionSerializer(serializers.ModelSerializer):
         instance = Collection.objects.create(**fields)
 
         return instance
+
+
+class CollectionMinimalSerializer(serializers.ModelSerializer):
+    user = serializers.ReadOnlyField(source="user.username")
+    drafts = DraftMinimalSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Collection
+        fields = ["user", "name", "drafts"]
 
 
 class CollectionAssignSerializer(serializers.ModelSerializer):
@@ -226,3 +237,9 @@ class CollectionAssignSerializer(serializers.ModelSerializer):
             obj.drafts.remove(draft)
 
         return obj
+
+
+class StaticResponseSerializer(serializers.Serializer):
+    static = StaticDataSerializer(read_only=True)
+    drafts = DraftSerializer(many=True, read_only=True)
+    collections = CollectionMinimalSerializer(many=True, read_only=True)

@@ -17,10 +17,10 @@ from .serializers import (
     DraftCloneSerializer,
     DraftCreateSerializer,
     DraftDetailResponseSerializer,
-    DraftResponseSerializer,
     DraftSerializer,
     DraftUpdateSerializer,
     DraftUrlSerializer,
+    StaticResponseSerializer,
 )
 
 
@@ -35,7 +35,7 @@ class DraftView(
         serializers = {
             "create": DraftCreateSerializer,
             "update": DraftUpdateSerializer,
-            "static": DraftResponseSerializer,
+            "static": StaticResponseSerializer,
             "url": DraftUrlSerializer,
             "clone": DraftCloneSerializer,
         }
@@ -74,8 +74,11 @@ class DraftView(
     @action(detail=False)
     def static(self, request):
         drafts = self.get_queryset()
+        collections = self.request.user.collections
 
-        serializer = self.get_serializer({"static": True, "drafts": drafts})
+        serializer = self.get_serializer(
+            {"static": True, "drafts": drafts, "collections": collections}
+        )
         return Response(serializer.data)
 
     @action(detail=True, methods=["get"])
