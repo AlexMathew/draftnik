@@ -4,8 +4,10 @@ import { withStyles } from "@material-ui/core/styles";
 import Hidden from "@material-ui/core/Hidden";
 import Drawer from "@material-ui/core/Drawer";
 import Divider from "@material-ui/core/Divider";
+import Button from "@material-ui/core/Button";
 import GameweekPaginator from "./squadSelector/GameweekPaginator";
 import DraftList from "./squadSelector/DraftList";
+import CollectionList from "./collectionView/CollectionList";
 import { connect } from "react-redux";
 import { switchMobile } from "../actions";
 
@@ -20,18 +22,44 @@ const styles = (theme) => ({
     width: theme.spacing(40),
   },
   toolbar: theme.mixins.toolbar,
+  switcherButton: {
+    display: "block",
+    textAlign: "center",
+  },
 });
 
 class SquadSelector extends React.Component {
+  state = {
+    gameweekView: true,
+  };
+
+  switcherClick = () => {
+    const presentState = this.state.gameweekView;
+    this.setState({ gameweekView: !presentState });
+  };
+
   render() {
     const { classes } = this.props;
+    const gameweekView = (
+      <>
+        <GameweekPaginator />
+        <Divider />
+        <DraftList />
+      </>
+    );
+    const collectionView = <CollectionList />;
+
     const drawer = (
       <div>
         <div className={classes.toolbar} />
         <Divider />
-        <GameweekPaginator />
+        <div className={classes.switcherButton}>
+          <Button onClick={this.switcherClick}>{`Switch to ${
+            this.state.gameweekView ? "collection" : "gameweek"
+          } view`}</Button>
+        </div>
         <Divider />
-        <DraftList />
+        {this.state.gameweekView ? gameweekView : collectionView}
       </div>
     );
 
