@@ -1,15 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
+import List from "@material-ui/core/List";
 import { connect } from "react-redux";
+import CollectionItem from "./CollectionItem";
 
 const styles = () => ({});
 
 class CollectionList extends React.Component {
   render() {
-    const { classes } = this.props;
+    const { classes, collections } = this.props;
 
-    return <div>Collection list.</div>;
+    return (
+      <List>
+        {Object.keys(collections).map((id) => (
+          <CollectionItem key={id} collection={collections[id]} />
+        ))}
+      </List>
+    );
   }
 }
 
@@ -18,7 +26,9 @@ CollectionList.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return {};
+  return {
+    collections: state.collections,
+  };
 };
 
 const wrappedCollectionList = connect(mapStateToProps, {})(CollectionList);
