@@ -206,7 +206,7 @@ class CollectionMinimalSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Collection
-        fields = ["user", "name", "drafts"]
+        fields = ["id", "user", "name", "drafts"]
 
 
 class CollectionAssignSerializer(serializers.ModelSerializer):

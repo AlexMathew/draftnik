@@ -1,6 +1,7 @@
 import {
   LOAD_DRAFTS,
   LOAD_SINGLE_DRAFT,
+  LOAD_COLLECTIONS,
   LOAD_GAMEWEEK_DATA,
   LOAD_PLAYER_DATA,
   LOAD_TEAM_DATA,
@@ -52,6 +53,7 @@ export const fetchStaticData = () => async (dispatch) => {
     dispatch({ type: LOAD_GAMEWEEK_DATA, payload: response.data });
     dispatch({ type: LOAD_FIXTURES_DATA, payload: response.data });
     dispatch({ type: LOAD_DRAFTS, payload: response.data });
+    dispatch({ type: LOAD_COLLECTIONS, payload: response.data });
 
     dispatch(selectDraft(null));
     dispatch(selectGameweek(response.data.static.current_gameweek));
