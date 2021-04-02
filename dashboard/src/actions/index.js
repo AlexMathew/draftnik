@@ -1,3 +1,4 @@
+import _ from "lodash";
 import {
   LOAD_DRAFTS,
   LOAD_SINGLE_DRAFT,
@@ -88,12 +89,22 @@ export const fetchSharedDraftDetails = (draftCode) => async (dispatch) => {
   }
 };
 
+export const selectGameweek = (gameweek) => {
+  return { type: SELECT_GAMEWEEK, payload: { gameweek } };
+};
+
 export const selectDraft = (draft) => {
   return { type: SELECT_DRAFT, payload: { draft } };
 };
 
-export const selectGameweek = (gameweek) => {
-  return { type: SELECT_GAMEWEEK, payload: { gameweek } };
+export const selectDraftById = (draftId) => {
+  return (dispatch, getState) => {
+    const selectedGameweek = getState().selected.gameweek;
+    const drafts = getState().drafts[selectedGameweek];
+    const draftIndex = _.findIndex(drafts, (draft) => draft.id === draftId);
+
+    dispatch(selectDraft(draftIndex));
+  };
 };
 
 export const deleteDraft = (draft) => async (dispatch) => {

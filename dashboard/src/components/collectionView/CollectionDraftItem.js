@@ -5,7 +5,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import { connect } from "react-redux";
-import { selectDraft, selectGameweek, switchMobile } from "../../actions";
+import { selectDraftById, selectGameweek, switchMobile } from "../../actions";
 
 const styles = (theme) => ({
   nested: {
@@ -17,6 +17,7 @@ class CollectionDraftItem extends React.Component {
   selectDraft = () => {
     const { draft } = this.props;
     this.props.selectGameweek(draft.gameweek);
+    this.props.selectDraftById(draft.id);
     const vw = Math.max(
       document.documentElement.clientWidth || 0,
       window.innerWidth || 0
@@ -47,7 +48,7 @@ const mapStateToProps = (state) => {
 };
 
 const wrappedCollectionDraftItem = connect(mapStateToProps, {
-  selectDraft,
+  selectDraftById,
   selectGameweek,
   switchMobile,
 })(CollectionDraftItem);
