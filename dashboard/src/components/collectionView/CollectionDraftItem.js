@@ -8,8 +8,9 @@ import { connect } from "react-redux";
 import { selectDraftById, selectGameweek, switchMobile } from "../../actions";
 
 const styles = (theme) => ({
-  nested: {
-    paddingLeft: theme.spacing(4),
+  selected: {
+    background: "whitesmoke",
+    color: "blue",
   },
 });
 
@@ -18,6 +19,7 @@ class CollectionDraftItem extends React.Component {
     const { draft } = this.props;
     this.props.selectGameweek(draft.gameweek);
     this.props.selectDraftById(draft.id);
+    this.props.selectCollection();
     const vw = Math.max(
       document.documentElement.clientWidth || 0,
       window.innerWidth || 0

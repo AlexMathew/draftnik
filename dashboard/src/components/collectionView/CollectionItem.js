@@ -11,11 +11,17 @@ import FolderOpenIcon from "@material-ui/icons/FolderOpen";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import CollectionDraftItem from "./CollectionDraftItem";
+import clsx from "clsx";
 import { connect } from "react-redux";
+import { selectCollection } from "../../actions";
 
 const styles = (theme) => ({
   nested: {
     paddingLeft: theme.spacing(4),
+  },
+  selected: {
+    background: "whitesmoke",
+    color: "blue",
   },
 });
 
@@ -28,12 +34,28 @@ class CollectionItem extends React.Component {
     this.setState({ open: !this.state.open });
   };
 
+  isSelectedCollection = (collectionId) => {
+    return collectionId === this.props.selectedCollection;
+  };
+
+  selectCollection = () => {
+    this.props.selectCollection(this.props.collection.id);
+  };
+
   render() {
     const { classes, collection } = this.props;
 
     return (
       <>
-        <ListItem button onClick={this.handleClick}>
+        <ListItem
+          button
+          onClick={this.handleClick}
+          classes={{
+            root: clsx({
+              [classes.selected]: this.isSelectedCollection(collection.id),
+            }),
+          }}
+        >
           <ListItemIcon>
             {this.state.open ? <FolderOpenIcon /> : <FolderIcon />}
           </ListItemIcon>
@@ -44,7 +66,10 @@ class CollectionItem extends React.Component {
           <List component="div" disablePadding>
             {collection.drafts.map((draft) => (
               <ListItem key={draft.id} button className={classes.nested}>
-                <CollectionDraftItem draft={draft} />
+                <CollectionDraftItem
+                  draft={draft}
+                  selectCollection={this.selectCollection}
+                />
               </ListItem>
             ))}
           </List>
@@ -59,8 +84,12 @@ CollectionItem.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  return {};
+  return {
+    selectedCollection: state.selected.collectionId,
+  };
 };
 
-const wrappedCollectionItem = connect(mapStateToProps, {})(CollectionItem);
+const wrappedCollectionItem = connect(mapStateToProps, { selectCollection })(
+  CollectionItem
+);
 export default withStyles(styles)(wrappedCollectionItem);

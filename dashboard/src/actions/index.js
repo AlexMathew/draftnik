@@ -9,6 +9,8 @@ import {
   LOAD_FIXTURES_DATA,
   SELECT_DRAFT,
   SELECT_GAMEWEEK,
+  SELECT_COLLECTION,
+  SELECT_COLLECTION_DRAFT,
   SWITCH_MOBILE,
   DELETE_DRAFT,
   RENAME_DRAFT,
@@ -105,6 +107,14 @@ export const selectDraftById = (draftId) => {
 
     dispatch(selectDraft(draftIndex));
   };
+};
+
+export const selectCollection = (collectionId) => {
+  return { type: SELECT_COLLECTION, payload: { collectionId } };
+};
+
+export const selectCollectionDraft = () => {
+  return { type: SELECT_COLLECTION_DRAFT, payload: {} };
 };
 
 export const deleteDraft = (draft) => async (dispatch) => {
