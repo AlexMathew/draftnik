@@ -34,8 +34,8 @@ class CollectionItem extends React.Component {
     this.setState({ open: !this.state.open });
   };
 
-  isSelectedCollection = (collectionId) => {
-    return collectionId === this.props.selectedCollection;
+  isSelectedCollection = () => {
+    return this.props.collection.id === this.props.selectedCollection;
   };
 
   selectCollection = () => {
@@ -52,7 +52,7 @@ class CollectionItem extends React.Component {
           onClick={this.handleClick}
           classes={{
             root: clsx({
-              [classes.selected]: this.isSelectedCollection(collection.id),
+              [classes.selected]: this.isSelectedCollection(),
             }),
           }}
         >
@@ -64,14 +64,18 @@ class CollectionItem extends React.Component {
         </ListItem>
         <Collapse in={this.state.open} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            {collection.drafts.map((draft) => (
-              <ListItem key={draft.id} button className={classes.nested}>
-                <CollectionDraftItem
-                  draft={draft}
-                  selectCollection={this.selectCollection}
-                />
-              </ListItem>
-            ))}
+            {collection.drafts.map((draft) => {
+              const key = `${collection.id}_${draft.id}`;
+              return (
+                <ListItem key={key} button className={classes.nested}>
+                  <CollectionDraftItem
+                    draftKey={key}
+                    draft={draft}
+                    selectCollection={this.selectCollection}
+                  />
+                </ListItem>
+              );
+            })}
           </List>
         </Collapse>
       </>

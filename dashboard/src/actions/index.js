@@ -113,8 +113,11 @@ export const selectCollection = (collectionId) => {
   return { type: SELECT_COLLECTION, payload: { collectionId } };
 };
 
-export const selectCollectionDraft = () => {
-  return { type: SELECT_COLLECTION_DRAFT, payload: {} };
+export const selectCollectionDraft = (draftKey) => {
+  return {
+    type: SELECT_COLLECTION_DRAFT,
+    payload: { collectionDraftKey: draftKey },
+  };
 };
 
 export const deleteDraft = (draft) => async (dispatch) => {
