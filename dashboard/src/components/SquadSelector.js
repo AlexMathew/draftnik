@@ -9,7 +9,11 @@ import GameweekPaginator from "./squadSelector/GameweekPaginator";
 import DraftList from "./squadSelector/DraftList";
 import CollectionList from "./collectionView/CollectionList";
 import { connect } from "react-redux";
-import { switchMobile } from "../actions";
+import {
+  switchMobile,
+  selectCollection,
+  selectCollectionDraft,
+} from "../actions";
 
 const styles = (theme) => ({
   drawer: {
@@ -36,6 +40,8 @@ class SquadSelector extends React.Component {
   switcherClick = () => {
     const presentState = this.state.gameweekView;
     this.setState({ gameweekView: !presentState });
+    this.props.selectCollection(null);
+    this.props.selectCollectionDraft(null);
   };
 
   render() {
@@ -106,7 +112,9 @@ const mapStateToProps = (state) => {
   };
 };
 
-const wrappedSquadSelector = connect(mapStateToProps, { switchMobile })(
-  SquadSelector
-);
+const wrappedSquadSelector = connect(mapStateToProps, {
+  switchMobile,
+  selectCollection,
+  selectCollectionDraft,
+})(SquadSelector);
 export default withStyles(styles)(wrappedSquadSelector);
