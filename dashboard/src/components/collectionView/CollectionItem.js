@@ -17,7 +17,7 @@ import { selectCollection } from "../../actions";
 
 const styles = (theme) => ({
   nested: {
-    paddingLeft: theme.spacing(4),
+    paddingLeft: theme.spacing(2),
   },
   selected: {
     background: "whitesmoke",
