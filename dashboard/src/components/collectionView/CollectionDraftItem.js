@@ -37,7 +37,7 @@ class CollectionDraftItem extends React.Component {
   };
 
   isSelectedDraft = () => {
-    return this.props.draftKey == this.props.selectedCollectionDraft;
+    return this.props.draftKey === this.props.selectedCollectionDraft;
   };
 
   render() {

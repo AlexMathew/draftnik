@@ -9,7 +9,7 @@ const styles = () => ({});
 
 class CollectionList extends React.Component {
   render() {
-    const { classes, collections } = this.props;
+    const { collections } = this.props;
 
     return (
       <List>
