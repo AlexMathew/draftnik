@@ -6,9 +6,14 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowLeftIcon from "@material-ui/icons/ArrowLeft";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
+import HomeIcon from "@material-ui/icons/Home";
 import { connect } from "react-redux";
 import clsx from "clsx";
-import { selectDraft, selectGameweek } from "../../actions";
+import {
+  selectDraft,
+  selectGameweek,
+  resetDraftSelection,
+} from "../../actions";
 
 const styles = () => ({
   paginator: {
@@ -22,6 +27,9 @@ const styles = () => ({
   },
   paginatorButtonDisabled: {
     color: "lightgray",
+  },
+  homeButton: {
+    color: "black",
   },
   gameweek: {
     alignSelf: "center",
@@ -94,6 +102,16 @@ class GameweekPaginator extends React.Component {
               <ArrowRightIcon style={{ fontSize: 60 }} />
             </IconButton>
           </Grid>
+          <Grid>
+            <IconButton
+              className={classes.homeButton}
+              onClick={() => {
+                this.props.resetDraftSelection();
+              }}
+            >
+              <HomeIcon style={{ fontSize: 40 }} />
+            </IconButton>
+          </Grid>
         </Grid>
       </div>
     );
@@ -114,5 +132,6 @@ const mapStateToProps = (state) => {
 const wrappedGameweekPaginator = connect(mapStateToProps, {
   selectDraft,
   selectGameweek,
+  resetDraftSelection,
 })(GameweekPaginator);
 export default withStyles(styles)(wrappedGameweekPaginator);
