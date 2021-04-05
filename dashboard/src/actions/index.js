@@ -60,8 +60,7 @@ export const fetchStaticData = () => async (dispatch) => {
     dispatch({ type: LOAD_COLLECTIONS, payload: response.data });
 
     dispatch(setCurrentGameweek(response.data.static.current_gameweek));
-    dispatch(selectDraft(null));
-    dispatch(selectGameweek(response.data.static.current_gameweek));
+    dispatch(resetDraftSelection());
     dispatch(stopStaticLoading());
   } catch (error) {
     console.error(error);
@@ -113,6 +112,15 @@ export const selectDraftById = (draftId) => {
     const draftIndex = _.findIndex(drafts, (draft) => draft.id === draftId);
 
     dispatch(selectDraft(draftIndex));
+  };
+};
+
+export const resetDraftSelection = () => {
+  return (dispatch, getState) => {
+    const currentGameweek = getState().selected.currentGameweek;
+
+    dispatch(selectDraft(null));
+    dispatch(selectGameweek(currentGameweek));
   };
 };
 
