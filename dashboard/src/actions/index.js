@@ -32,6 +32,7 @@ import {
   CLOSE_DELETE_MODAL,
   OPEN_SHARE_MODAL,
   CLOSE_SHARE_MODAL,
+  SET_CURRENT_GAMEWEEK,
 } from "./types";
 import draftnik from "../api/draftnik";
 import history from "../history";
@@ -58,6 +59,7 @@ export const fetchStaticData = () => async (dispatch) => {
     dispatch({ type: LOAD_DRAFTS, payload: response.data });
     dispatch({ type: LOAD_COLLECTIONS, payload: response.data });
 
+    dispatch(setCurrentGameweek(response.data.static.current_gameweek));
     dispatch(selectDraft(null));
     dispatch(selectGameweek(response.data.static.current_gameweek));
     dispatch(stopStaticLoading());
@@ -80,6 +82,7 @@ export const fetchSharedDraftDetails = (draftCode) => async (dispatch) => {
     dispatch({ type: LOAD_FIXTURES_DATA, payload: response.data });
     dispatch({ type: LOAD_SINGLE_DRAFT, payload: response.data });
 
+    dispatch(setCurrentGameweek(response.data.static.current_gameweek));
     const gameweek = response.data.draft.gameweek;
     dispatch(selectGameweek(gameweek));
     dispatch(selectDraft(0));
@@ -89,6 +92,10 @@ export const fetchSharedDraftDetails = (draftCode) => async (dispatch) => {
       history.push("/draft/not-found");
     }
   }
+};
+
+export const setCurrentGameweek = (currentGameweek) => {
+  return { type: SET_CURRENT_GAMEWEEK, payload: { currentGameweek } };
 };
 
 export const selectGameweek = (gameweek) => {

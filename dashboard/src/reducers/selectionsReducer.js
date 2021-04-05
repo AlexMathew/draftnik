@@ -1,4 +1,5 @@
 import {
+  SET_CURRENT_GAMEWEEK,
   SELECT_DRAFT,
   SELECT_GAMEWEEK,
   SELECT_COLLECTION,
@@ -7,6 +8,7 @@ import {
 
 const initialState = {
   gameweek: "1",
+  currentGameweek: "1",
   draft: null,
   collectionId: null,
   collectionDraftKey: null,
@@ -14,6 +16,11 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case SET_CURRENT_GAMEWEEK:
+      return {
+        ...state,
+        currentGameweek: action.payload.currentGameweek.toString(),
+      };
     case SELECT_GAMEWEEK:
       return { ...state, gameweek: action.payload.gameweek.toString() };
     case SELECT_DRAFT:
