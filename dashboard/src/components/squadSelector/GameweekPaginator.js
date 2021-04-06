@@ -15,21 +15,23 @@ import {
   resetDraftSelection,
 } from "../../actions";
 
-const styles = () => ({
+const styles = (theme) => ({
   paginator: {
     display: "flex",
     flexGrow: 1,
     alignItems: "center",
     alignSelf: "center",
   },
-  paginatorButton: {
+  iconButton: {
+    padding: `${theme.spacing(1)}px 0px`,
+    borderRadius: 0,
     color: "black",
   },
   paginatorButtonDisabled: {
     color: "lightgray",
   },
-  homeButton: {
-    color: "black",
+  homeButtonGrid: {
+    display: "flex",
   },
   gameweek: {
     alignSelf: "center",
@@ -65,7 +67,7 @@ class GameweekPaginator extends React.Component {
         <Grid container spacing={3}>
           <Grid>
             <IconButton
-              className={classes.paginatorButton}
+              className={classes.iconButton}
               disabled={this.isFirstGameweek()}
               classes={{
                 root: clsx({
@@ -88,7 +90,7 @@ class GameweekPaginator extends React.Component {
           </Grid>
           <Grid>
             <IconButton
-              className={classes.paginatorButton}
+              className={classes.iconButton}
               disabled={this.isLastGameweek()}
               classes={{
                 root: clsx({
@@ -102,9 +104,9 @@ class GameweekPaginator extends React.Component {
               <ArrowRightIcon style={{ fontSize: 60 }} />
             </IconButton>
           </Grid>
-          <Grid>
+          <Grid className={classes.homeButtonGrid}>
             <IconButton
-              className={classes.homeButton}
+              className={classes.iconButton}
               onClick={() => {
                 this.props.resetDraftSelection();
               }}
