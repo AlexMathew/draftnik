@@ -67,13 +67,13 @@ class CollectionItem extends React.Component {
             {collection.drafts.map((draft) => {
               const key = `${collection.id}_${draft.id}`;
               return (
-                <ListItem key={key} button className={classes.nested}>
+                <div key={key} className={classes.nested}>
                   <CollectionDraftItem
                     draftKey={key}
                     draft={draft}
                     selectCollection={this.selectCollection}
                   />
-                </ListItem>
+                </div>
               );
             })}
           </List>
