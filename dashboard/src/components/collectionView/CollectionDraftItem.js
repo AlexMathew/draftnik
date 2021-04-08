@@ -6,6 +6,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import clsx from "clsx";
 import { connect } from "react-redux";
+import DraftActions from "../squadSelector/DraftActions";
 import {
   selectDraftById,
   selectGameweek,
@@ -14,9 +15,17 @@ import {
 } from "../../actions";
 
 const styles = (theme) => ({
+  draft: {
+    paddingLeft: theme.spacing(2),
+    display: "flex",
+    flexGrow: 1,
+  },
   selected: {
     background: "whitesmoke",
     color: "blue",
+  },
+  menu: {
+    alignSelf: "center",
   },
 });
 
@@ -44,18 +53,21 @@ class CollectionDraftItem extends React.Component {
     const { classes, draft } = this.props;
 
     return (
-      <ListItem
-        button
-        onClick={this.selectDraft}
-        classes={{
-          root: clsx({
-            [classes.selected]: this.isSelectedDraft(),
-          }),
-        }}
-      >
-        <ListItemText primary={draft.name} />
-        <ChevronRightIcon />
-      </ListItem>
+      <div className={classes.draft}>
+        <ListItem
+          button
+          onClick={this.selectDraft}
+          classes={{
+            root: clsx({
+              [classes.selected]: this.isSelectedDraft(),
+            }),
+          }}
+        >
+          <ListItemText primary={draft.name} />
+          <ChevronRightIcon />
+        </ListItem>
+        <DraftActions className={classes.menu} draft={draft} />
+      </div>
     );
   }
 }

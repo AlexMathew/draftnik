@@ -16,9 +16,6 @@ import { connect } from "react-redux";
 import { selectCollection } from "../../actions";
 
 const styles = (theme) => ({
-  nested: {
-    paddingLeft: theme.spacing(2),
-  },
   selected: {
     background: "whitesmoke",
     color: "blue",
@@ -67,13 +64,12 @@ class CollectionItem extends React.Component {
             {collection.drafts.map((draft) => {
               const key = `${collection.id}_${draft.id}`;
               return (
-                <div key={key} className={classes.nested}>
-                  <CollectionDraftItem
-                    draftKey={key}
-                    draft={draft}
-                    selectCollection={this.selectCollection}
-                  />
-                </div>
+                <CollectionDraftItem
+                  key={key}
+                  draftKey={key}
+                  draft={draft}
+                  selectCollection={this.selectCollection}
+                />
               );
             })}
           </List>
