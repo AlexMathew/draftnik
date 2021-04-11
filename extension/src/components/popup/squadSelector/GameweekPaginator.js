@@ -6,22 +6,32 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowLeftIcon from "@material-ui/icons/ArrowLeft";
 import ArrowRightIcon from "@material-ui/icons/ArrowRight";
+import HomeIcon from "@material-ui/icons/Home";
 import { connect } from "react-redux";
 import clsx from "clsx";
-import { selectDraft, selectGameweek } from "../../../actions";
+import {
+  selectDraft,
+  selectGameweek,
+  resetDraftSelection,
+} from "../../../actions";
 
-const styles = () => ({
+const styles = (theme) => ({
   paginator: {
     display: "flex",
     flexGrow: 1,
     alignItems: "center",
     alignSelf: "center",
   },
-  paginatorButton: {
+  iconButton: {
+    padding: `${theme.spacing(1)}px ${theme.spacing(0.25)}px`,
+    borderRadius: 0,
     color: "black",
   },
   paginatorButtonDisabled: {
     color: "lightgray",
+  },
+  homeButtonGrid: {
+    display: "flex",
   },
   gameweek: {
     alignSelf: "center",
@@ -60,7 +70,7 @@ class GameweekPaginator extends React.Component {
         <Grid container spacing={3}>
           <Grid>
             <IconButton
-              className={classes.paginatorButton}
+              className={classes.iconButton}
               disabled={this.isFirstGameweek()}
               classes={{
                 root: clsx({
@@ -83,7 +93,7 @@ class GameweekPaginator extends React.Component {
           </Grid>
           <Grid>
             <IconButton
-              className={classes.paginatorButton}
+              className={classes.iconButton}
               disabled={this.isLastGameweek()}
               classes={{
                 root: clsx({
@@ -95,6 +105,16 @@ class GameweekPaginator extends React.Component {
               }}
             >
               <ArrowRightIcon style={{ fontSize: 40 }} />
+            </IconButton>
+          </Grid>
+          <Grid className={classes.homeButtonGrid}>
+            <IconButton
+              className={classes.iconButton}
+              onClick={() => {
+                this.props.resetDraftSelection();
+              }}
+            >
+              <HomeIcon style={{ fontSize: 25 }} />
             </IconButton>
           </Grid>
         </Grid>
@@ -117,5 +137,6 @@ const mapStateToProps = (state) => {
 const wrappedGameweekPaginator = connect(mapStateToProps, {
   selectDraft,
   selectGameweek,
+  resetDraftSelection,
 })(GameweekPaginator);
 export default withStyles(styles)(wrappedGameweekPaginator);
