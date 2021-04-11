@@ -7,6 +7,7 @@ import {
   LOAD_FIXTURES_DATA,
   SELECT_DRAFT,
   SELECT_GAMEWEEK,
+  SET_CURRENT_GAMEWEEK,
   START_LOADING_STATIC_DATA,
   STOP_LOADING_STATIC_DATA,
   INDICATE_REFRESH,
@@ -87,8 +88,8 @@ export const fetchStaticData = (force = false) => async (dispatch) => {
     dispatch({ type: LOAD_FIXTURES_DATA, payload: response.data });
     dispatch({ type: LOAD_DRAFTS, payload: response.data });
 
-    dispatch(selectDraft(null));
-    dispatch(selectGameweek(response.data.static.current_gameweek));
+    dispatch(setCurrentGameweek(response.data.static.current_gameweek));
+    dispatch(resetDraftSelection());
     dispatch(stopStaticLoading());
 
     if (force) {
@@ -113,6 +114,20 @@ export const selectDraft = (draft) => {
 
 export const selectGameweek = (gameweek) => {
   return { type: SELECT_GAMEWEEK, payload: { gameweek } };
+};
+
+export const setCurrentGameweek = (currentGameweek) => {
+  return { type: SET_CURRENT_GAMEWEEK, payload: { currentGameweek } };
+};
+
+export const resetDraftSelection = () => {
+  return (dispatch, getState) => {
+    const currentGameweek = getState().selected.currentGameweek;
+    console.log(currentGameweek);
+
+    dispatch(selectDraft(null));
+    dispatch(selectGameweek(currentGameweek));
+  };
 };
 
 export const startStaticLoading = () => {
