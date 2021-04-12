@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.0.10
+
+- Add home button in gameweek paginator to jump to current gameweek. ([Card](https://trello.com/c/se2kwLhK/62-home-button-in-gw-paginator-to-jump-to-current-gw))
+
 ## 1.0.9
 
 - Use gameweek data from a constant if not available in redux store. ([Card](https://trello.com/c/8ud9jTCV/57-make-gameweek-options-in-extension-independent-of-redux-store))

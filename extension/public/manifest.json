@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Draftnik for FPL",
   "short_name": "Draftnik",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Save team drafts you create on Fantasy Premier League.",
   "icons": {
     "16": "icons/logo16.png",
@@ -12,14 +12,14 @@
   "web_accessible_resources": [
     "icons/logo48.png"
   ],
-  "content_scripts": [{
-    "matches": ["https://fantasy.premierleague.com/*"],
-    "js": ["content.bundle.js"],
+  "content_scripts": [ {
+    "matches": [ "https://fantasy.premierleague.com/*" ],
+    "js": [ "content.bundle.js" ],
     "run_at": "document_end"
-  }],
+  } ],
   "options_page": "options.html",
   "background": {
-    "scripts": ["background.bundle.js"],
+    "scripts": [ "background.bundle.js" ],
     "persistent": true
   },
   "browser_action": {
