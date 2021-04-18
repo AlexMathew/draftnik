@@ -5,9 +5,14 @@ import {
   DELETE_DRAFT,
   RENAME_DRAFT,
   MOVE_DRAFT,
+  LOAD_DRAFTS_BY_ID,
 } from "../actions/types";
 
-export default (state = {}, action) => {
+const initialState = {
+  byId: {},
+};
+
+export default (state = initialState, action) => {
   switch (action.type) {
     case LOAD_DRAFTS:
       const drafts = _.groupBy(action.payload.drafts, "gameweek");
@@ -15,6 +20,9 @@ export default (state = {}, action) => {
     case LOAD_SINGLE_DRAFT:
       const singleDraft = _.groupBy([action.payload.draft], "gameweek");
       return { ...state, ...singleDraft };
+    case LOAD_DRAFTS_BY_ID:
+      const draftsById = _.keyBy(action.payload.drafts, "id");
+      return { ...state, byId: draftsById };
     case DELETE_DRAFT:
       const deletedDraft = action.payload;
       const deletedGameweekDrafts = state[[deletedDraft.gameweek]];

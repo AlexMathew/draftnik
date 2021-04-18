@@ -1,6 +1,7 @@
 import _ from "lodash";
 import {
   LOAD_DRAFTS,
+  LOAD_DRAFTS_BY_ID,
   LOAD_SINGLE_DRAFT,
   LOAD_COLLECTIONS,
   LOAD_GAMEWEEK_DATA,
@@ -57,6 +58,7 @@ export const fetchStaticData = () => async (dispatch) => {
     dispatch({ type: LOAD_GAMEWEEK_DATA, payload: response.data });
     dispatch({ type: LOAD_FIXTURES_DATA, payload: response.data });
     dispatch({ type: LOAD_DRAFTS, payload: response.data });
+    dispatch({ type: LOAD_DRAFTS_BY_ID, payload: response.data });
     dispatch({ type: LOAD_COLLECTIONS, payload: response.data });
 
     dispatch(setCurrentGameweek(response.data.static.current_gameweek));
