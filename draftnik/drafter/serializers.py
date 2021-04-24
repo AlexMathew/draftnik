@@ -42,7 +42,7 @@ class DraftSerializer(serializers.ModelSerializer):
 class DraftMinimalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Draft
-        fields = ["id", "name", "gameweek"]
+        fields = ["id", "name"]
 
 
 class DraftElementSerializer(serializers.Serializer):

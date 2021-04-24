@@ -109,10 +109,12 @@ export const selectDraft = (draft) => {
 
 export const selectDraftById = (draftId) => {
   return (dispatch, getState) => {
-    const selectedGameweek = getState().selected.gameweek;
-    const drafts = getState().drafts[selectedGameweek];
-    const draftIndex = _.findIndex(drafts, (draft) => draft.id === draftId);
+    const selectedDraft = getState().drafts.byId?.[draftId];
+    const draftGameweek = selectedDraft?.gameweek;
+    dispatch(selectGameweek(draftGameweek));
 
+    const drafts = getState().drafts[draftGameweek];
+    const draftIndex = _.findIndex(drafts, (draft) => draft.id === draftId);
     dispatch(selectDraft(draftIndex));
   };
 };

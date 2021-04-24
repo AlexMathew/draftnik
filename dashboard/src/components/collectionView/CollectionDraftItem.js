@@ -9,7 +9,6 @@ import { connect } from "react-redux";
 import DraftActions from "../squadSelector/DraftActions";
 import {
   selectDraftById,
-  selectGameweek,
   selectCollectionDraft,
   switchMobile,
 } from "../../actions";
@@ -32,7 +31,6 @@ const styles = (theme) => ({
 class CollectionDraftItem extends React.Component {
   selectDraft = () => {
     const { draft, draftKey } = this.props;
-    this.props.selectGameweek(draft.gameweek);
     this.props.selectDraftById(draft.id);
     this.props.selectCollection();
     this.props.selectCollectionDraft(draftKey);
@@ -82,7 +80,6 @@ const mapStateToProps = (state) => {
 
 const wrappedCollectionDraftItem = connect(mapStateToProps, {
   selectDraftById,
-  selectGameweek,
   selectCollectionDraft,
   switchMobile,
 })(CollectionDraftItem);
