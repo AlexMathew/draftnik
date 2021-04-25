@@ -68,6 +68,8 @@ export default (state = initialState, action) => {
       const newGameweek = action.payload.gameweek;
       const newGameweekDrafts = state[[newGameweek]] || [];
       movedDraft.gameweek = newGameweek;
+      const movedDraftById = state.byId[[movedDraft.id]];
+      movedDraftById.gameweek = newGameweek;
       return {
         ...state,
         ...{
@@ -76,6 +78,7 @@ export default (state = initialState, action) => {
             ...movedGameweekDrafts.slice(moveIndex + 1),
           ],
           [newGameweek]: [movedDraft, ...newGameweekDrafts],
+          byId: { ...state.byId, [movedDraftById.id]: movedDraftById },
         },
       };
     default:

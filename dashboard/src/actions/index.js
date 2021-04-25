@@ -207,11 +207,11 @@ export const moveDraft = (draft, originalGameweek, gameweek) => async (
       }
     );
 
+    dispatch(selectDraft(null));
     dispatch({
       type: MOVE_DRAFT,
       payload: { draft, originalGameweek, gameweek: response.data.gameweek },
     });
-    dispatch(selectDraft(null));
     dispatch(stopMoveRequest());
     dispatch(closeMoveModal());
   } catch (error) {
