@@ -48,7 +48,7 @@ class CollectionDraftItem extends React.Component {
   };
 
   render() {
-    const { classes, draft } = this.props;
+    const { classes, draftById } = this.props;
 
     return (
       <div className={classes.draft}>
@@ -61,7 +61,7 @@ class CollectionDraftItem extends React.Component {
             }),
           }}
         >
-          <ListItemText primary={draft.name} />
+          <ListItemText primary={draftById.name} />
           <ChevronRightIcon />
         </ListItem>
         {/* <DraftActions className={classes.menu} draft={draft} /> */}
@@ -74,8 +74,11 @@ CollectionDraftItem.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => {
-  return { selectedCollectionDraft: state.selected.collectionDraftKey };
+const mapStateToProps = (state, ownProps) => {
+  return {
+    selectedCollectionDraft: state.selected.collectionDraftKey,
+    draftById: state.drafts.byId?.[ownProps.draft.id],
+  };
 };
 
 const wrappedCollectionDraftItem = connect(mapStateToProps, {
