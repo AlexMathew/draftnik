@@ -47,6 +47,8 @@ export default (state = initialState, action) => {
         (draft) => draft.id === renamedDraft.id
       );
       renamedDraft.name = action.payload.name;
+      const renamedDraftById = state.byId[[renamedDraft.id]];
+      renamedDraftById.name = action.payload.name;
       return {
         ...state,
         ...{
@@ -55,6 +57,7 @@ export default (state = initialState, action) => {
             renamedDraft,
             ...renamedGameweekDrafts.slice(renameIndex + 1),
           ],
+          byId: { ...state.byId, [renamedDraftById.id]: renamedDraftById },
         },
       };
     case MOVE_DRAFT:
