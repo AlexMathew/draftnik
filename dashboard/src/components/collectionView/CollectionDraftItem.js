@@ -64,7 +64,7 @@ class CollectionDraftItem extends React.Component {
           <ListItemText primary={draftById.name} />
           <ChevronRightIcon />
         </ListItem>
-        {/* <DraftActions className={classes.menu} draft={draft} /> */}
+        <DraftActions className={classes.menu} draft={draftById} />
       </div>
     );
   }

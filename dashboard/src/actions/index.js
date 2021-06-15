@@ -14,6 +14,7 @@ import {
   SELECT_COLLECTION_DRAFT,
   SWITCH_MOBILE,
   DELETE_DRAFT,
+  DELETE_COLLECTION_DRAFT,
   RENAME_DRAFT,
   MOVE_DRAFT,
   START_LOADING_STATIC_DATA,
@@ -143,13 +144,14 @@ export const deleteDraft = (draft) => async (dispatch) => {
   const authToken = localStorage.getItem(AUTH_TOKEN_FIELD);
   try {
     dispatch(startDeleteRequest());
-    await draftnik.delete(`/draft/${draft.id}/`, {
-      headers: {
-        Authorization: `Token ${authToken}`,
-      },
-    });
+    // await draftnik.delete(`/draft/${draft.id}/`, {
+    //   headers: {
+    //     Authorization: `Token ${authToken}`,
+    //   },
+    // });
 
     dispatch({ type: DELETE_DRAFT, payload: draft });
+    dispatch({ type: DELETE_COLLECTION_DRAFT, payload: { draftId: draft.id } });
     dispatch(selectDraft(null));
     dispatch(stopDeleteRequest());
     dispatch(closeDeleteModal());
@@ -191,37 +193,36 @@ export const renameDraft = (draft, name) => async (dispatch) => {
   }
 };
 
-export const moveDraft = (draft, originalGameweek, gameweek) => async (
-  dispatch
-) => {
-  const authToken = localStorage.getItem(AUTH_TOKEN_FIELD);
-  try {
-    dispatch(startMoveRequest());
-    const response = await draftnik.put(
-      `/draft/${draft.id}/`,
-      { gameweek: gameweek || null },
-      {
-        headers: {
-          Authorization: `Token ${authToken}`,
-        },
-      }
-    );
+export const moveDraft =
+  (draft, originalGameweek, gameweek) => async (dispatch) => {
+    const authToken = localStorage.getItem(AUTH_TOKEN_FIELD);
+    try {
+      dispatch(startMoveRequest());
+      const response = await draftnik.put(
+        `/draft/${draft.id}/`,
+        { gameweek: gameweek || null },
+        {
+          headers: {
+            Authorization: `Token ${authToken}`,
+          },
+        }
+      );
 
-    dispatch(selectDraft(null));
-    dispatch({
-      type: MOVE_DRAFT,
-      payload: { draft, originalGameweek, gameweek: response.data.gameweek },
-    });
-    dispatch(stopMoveRequest());
-    dispatch(closeMoveModal());
-  } catch (error) {
-    console.error(error);
-    if (error.response?.status === 401) {
-      localStorage.removeItem(AUTH_TOKEN_FIELD);
-      history.push("/signin");
+      dispatch(selectDraft(null));
+      dispatch({
+        type: MOVE_DRAFT,
+        payload: { draft, originalGameweek, gameweek: response.data.gameweek },
+      });
+      dispatch(stopMoveRequest());
+      dispatch(closeMoveModal());
+    } catch (error) {
+      console.error(error);
+      if (error.response?.status === 401) {
+        localStorage.removeItem(AUTH_TOKEN_FIELD);
+        history.push("/signin");
+      }
     }
-  }
-};
+  };
 
 export const startStaticLoading = () => {
   return { type: START_LOADING_STATIC_DATA };

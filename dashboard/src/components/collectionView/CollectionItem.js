@@ -85,6 +85,7 @@ CollectionItem.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
+    collections: state.collections,
     selectedCollection: state.selected.collectionId,
   };
 };
