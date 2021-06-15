@@ -19,15 +19,15 @@ app.conf.update(
     CELERY_TIMEZONE=settings.TIME_ZONE,
     CELERY_IMPORTS=("jobs.fpl_static", "jobs.squad_entries"),
     CELERYBEAT_SCHEDULE={
-        "fetch-static-data": {
-            "task": "draftnik.fetch_static_data",
-            "schedule": crontab(minute=0, hour="2,14"),
-        },
-        "fetch-next-fixtures": {
-            "task": "draftnik.fetch_next_fixtures",
-            "schedule": crontab(minute=0, hour=0, day_of_week="sunday"),
-            "kwargs": {"count": 5,},
-        },
+        # "fetch-static-data": {
+        #     "task": "draftnik.fetch_static_data",
+        #     "schedule": crontab(minute=0, hour="2,14"),
+        # },
+        # "fetch-next-fixtures": {
+        #     "task": "draftnik.fetch_next_fixtures",
+        #     "schedule": crontab(minute=0, hour=0, day_of_week="sunday"),
+        #     "kwargs": {"count": 5,},
+        # },
         # "fetch-fixtures": {
         #     "task": "draftnik.fetch_fixtures",
         #     "schedule": crontab(minute=0, hour=0, day_of_month="1"),
