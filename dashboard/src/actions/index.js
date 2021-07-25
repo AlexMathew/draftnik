@@ -144,11 +144,11 @@ export const deleteDraft = (draft) => async (dispatch) => {
   const authToken = localStorage.getItem(AUTH_TOKEN_FIELD);
   try {
     dispatch(startDeleteRequest());
-    // await draftnik.delete(`/draft/${draft.id}/`, {
-    //   headers: {
-    //     Authorization: `Token ${authToken}`,
-    //   },
-    // });
+    await draftnik.delete(`/draft/${draft.id}/`, {
+      headers: {
+        Authorization: `Token ${authToken}`,
+      },
+    });
 
     dispatch({ type: DELETE_DRAFT, payload: draft });
     dispatch({ type: DELETE_COLLECTION_DRAFT, payload: { draftId: draft.id } });
