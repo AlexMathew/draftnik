@@ -51,8 +51,10 @@ const styles = (theme) => ({
 
 class PitchElement extends React.Component {
   jerseyUrl = (element) => {
+    const { teams } = this.props;
+    const team = teams[element.team];
     const isGk = element.element_type === ELEMENT_TYPES.GOALKEEPERS;
-    return `/jerseys/${isGk ? "gk" : "out"}/${element.team}.png`;
+    return `/jerseys/${isGk ? "gk" : "out"}/${team.short_name}.png`;
   };
 
   playerCost = (element) => {

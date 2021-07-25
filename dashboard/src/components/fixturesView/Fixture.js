@@ -41,7 +41,7 @@ class Fixture extends React.Component {
     return {
       name: team.name,
       shortName: team.short_name,
-      badge: `/badges/${teamCode}.png`,
+      badge: `/badges/${team.short_name}.png`,
     };
   };
 
