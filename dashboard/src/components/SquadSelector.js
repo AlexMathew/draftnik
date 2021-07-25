@@ -58,12 +58,12 @@ class SquadSelector extends React.Component {
     const drawer = (
       <div>
         <div className={classes.toolbar} />
-        <Divider />
+        {/* <Divider />
         <div className={classes.switcherButton}>
           <Button onClick={this.switcherClick}>{`Switch to ${
             this.state.gameweekView ? "collection" : "gameweek"
           } view`}</Button>
-        </div>
+        </div> */}
         <Divider />
         {this.state.gameweekView ? gameweekView : collectionView}
       </div>
