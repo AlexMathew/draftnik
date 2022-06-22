@@ -13,3 +13,20 @@
 [Badge](https://fantasy.premierleague.com/dist/img/badges/badge_1_80.png)
 
 [Player image](https://resources.premierleague.com/premierleague/photos/players/110x140/p176297.png)
+
+## Draft preview on transfers page
+
+```javascript
+document.querySelectorAll('.Pitch__PitchUnit-sc-1mctasb-3').forEach(elem => elem.style.opacity = 0.2)
+```
+
+```javascript
+document.querySelectorAll( '.Pitch__PitchUnit-sc-1mctasb-3' ).forEach( elem => {
+    const newElem = elem.cloneNode( true );
+    newElem.classList.add( "draftnik-preview" );
+    newElem.style.marginTop = "-50%";
+    newElem.style.marginLeft = "25%";
+    elem.append( newElem )
+} )
+document.querySelectorAll( '.Pitch__PitchUnit-sc-1mctasb-3:not(.draftnik-preview) > .Pitch__PitchElementWrap-sc-1mctasb-4' ).forEach( elem => elem.style.opacity = 0.2 )
+```
