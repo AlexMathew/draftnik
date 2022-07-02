@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.0.0
+
+- Upgrade extension to Manifest v3
+
 ## 1.0.10
 
 - Add home button in gameweek paginator to jump to current gameweek. ([Card](https://trello.com/c/se2kwLhK/62-home-button-in-gw-paginator-to-jump-to-current-gw))
