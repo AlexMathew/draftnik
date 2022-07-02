@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.0.1
+
+- Fix issues and get the save button to work after the move to v3
+
 ## 2.0.0
 
 - Upgrade extension to Manifest v3

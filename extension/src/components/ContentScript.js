@@ -1,6 +1,6 @@
 import React from "react";
 import DraftDialog from "./content/DraftDialog";
-import { connect } from "react-redux";
+// import { connect } from "react-redux";
 import { getByXpath } from "../utils/xpath";
 
 MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
@@ -89,4 +89,5 @@ class ContentScript extends React.Component {
   }
 }
 
-export default connect(null)(ContentScript);
+// export default connect(null)(ContentScript);
+export default ContentScript;

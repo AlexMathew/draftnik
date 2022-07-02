@@ -17,8 +17,8 @@ import Divider from "@material-ui/core/Divider";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { getPlayers } from "../../utils/players";
 import draftnik from "../../api/draftnik";
-import { connect } from "react-redux";
-import { indicateRefresh } from "../../actions";
+// import { connect } from "react-redux";
+// import { indicateRefresh } from "../../actions";
 import { AUTH_TOKEN_FIELD, ACTIONS, GAMEWEEK_DATA } from "../../constants";
 
 const styles = (theme) => ({
@@ -108,7 +108,7 @@ class DraftDialog extends React.Component {
             .then(() => {
               this.props.handleClose();
               this.setState({ name: "", gameweek: "" });
-              this.props.indicateRefresh();
+              // this.props.indicateRefresh();
             })
             .catch((err) => {
               if (err.response?.status === 401) {
@@ -124,8 +124,7 @@ class DraftDialog extends React.Component {
                 this.props.setDialogError(error);
               } else {
                 this.props.setDialogError({
-                  name:
-                    "Sorry! We seem to have encountered an issue. Please try again later.",
+                  name: "Sorry! We seem to have encountered an issue. Please try again later.",
                 });
               }
             })
@@ -167,7 +166,7 @@ class DraftDialog extends React.Component {
           }}
         >
           <Avatar
-            src={chrome.extension.getURL("icons/logo48.png")}
+            src={chrome.runtime.getURL("icons/logo48.png")}
             className={classes.avatar}
           />
           Save Draft
@@ -258,13 +257,14 @@ DraftDialog.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => {
-  return {
-    gameweeks: state.gameweeks,
-  };
-};
-
-const wrappedDraftDialog = connect(mapStateToProps, { indicateRefresh })(
-  DraftDialog
-);
-export default withStyles(styles)(wrappedDraftDialog);
+// const mapStateToProps = (state) => {
+//   return {
+//     gameweeks: state.gameweeks,
+//   };
+// };
+//
+// const wrappedDraftDialog = connect(mapStateToProps, { indicateRefresh })(
+//   DraftDialog
+// );
+// export default withStyles(styles)(wrappedDraftDialog);
+export default withStyles(styles)(DraftDialog);
