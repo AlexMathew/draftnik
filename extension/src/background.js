@@ -42,9 +42,9 @@ chrome.runtime.onMessage.addListener((message) => {
     case ACTIONS.OPEN_OPTIONS:
       chrome.runtime.openOptionsPage();
       break;
-    case ACTIONS.OPEN_DASHBOARD:
-      chrome.tabs.create({ url: DASHBOARD_URL });
-      break;
+    // case ACTIONS.OPEN_DASHBOARD:
+    //   chrome.tabs.create({ url: DASHBOARD_URL });
+    //   break;
   }
 });
 
