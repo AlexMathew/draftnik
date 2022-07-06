@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.0.2
+
+- Fix issues and get the options page to work
+
 ## 2.0.1
 
 - Fix issues and get the save button to work after the move to v3
