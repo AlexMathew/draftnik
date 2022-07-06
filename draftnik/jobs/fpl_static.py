@@ -1,7 +1,6 @@
 import json
 import logging
-from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timezone
 from operator import itemgetter
 
 import requests
@@ -168,9 +167,8 @@ def configure_gameweek_updates(gameweek_data):
                 name=gameweek.get("name", ""),
                 deadline=gameweek.get("deadline_time", None),
             )
+            eta = datetime.strptime(gameweek.get("deadline_time"), "%Y-%m-%dT%H:%M:%SZ")
+            eta = eta.astimezone(timezone.utc)
             update_gameweek.apply_async(
-                (gameweek.get("id", 0) + 1,),
-                eta=datetime.strptime(
-                    gameweek.get("deadline_time"), "%Y-%m-%dT%H:%M:%S%z"
-                ),
+                (gameweek.get("id", 0) + 1,), eta=eta,
             )
