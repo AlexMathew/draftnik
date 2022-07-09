@@ -60,7 +60,7 @@ class Previewer extends React.Component {
     });
 
     const pitchUnitPriceBlocks = document.querySelectorAll(
-      ".Pitch__PitchUnit-sc-1mctasb-3.draftnik-preview .PitchElementData__ElementName-sc-1u4y6pr-2"
+      ".Pitch__PitchUnit-sc-1mctasb-3.draftnik-preview .PitchElementData__ElementValue-sc-1u4y6pr-2"
     );
     pitchUnitPriceBlocks.forEach((priceBlock) => {
       priceBlock.innerText = "";
