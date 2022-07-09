@@ -16,6 +16,8 @@
 
 ## Draft preview on transfers page
 
+### Main pitch view
+
 ```javascript
 document.querySelectorAll('.Pitch__PitchUnit-sc-1mctasb-3').forEach(elem => elem.style.opacity = 0.2)
 ```
@@ -56,6 +58,8 @@ document.querySelectorAll( '.Pitch__PitchUnit-sc-1mctasb-3:not(.draftnik-preview
 document.querySelectorAll( '.Pitch__PitchUnit-sc-1mctasb-3.draftnik-preview').forEach( elem => elem.remove() )
 ```
 
+### Transfers button
+
 Disable "Make Transfers" button when viewing draft preview.
 
 Colours:
@@ -92,4 +96,11 @@ const transfersButton = getByXpath(`//button[contains(text(),'Make Transfers')]`
 transfersButton.disabled = true;
 transfersButton.style.background = "rgb(237, 241, 249)";
 transfersButton.style.color = "rgb(122, 122, 122)";
+```
+
+### Pitch/List Tabs
+
+```js
+document.querySelectorAll('.Tabs__TabList-sc-1e6ubpf-0').forEach(elem => elem.style.display = "none")
+document.querySelectorAll('.Tabs__TabList-sc-1e6ubpf-0').forEach(elem => elem.style.display = "flex")
 ```
