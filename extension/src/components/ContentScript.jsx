@@ -1,7 +1,9 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import DraftDialog from "./content/DraftDialog";
 // import { connect } from "react-redux";
 import { getByXpath } from "../utils/xpath";
+import Previewer from "./content/Previewer";
 
 MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
@@ -57,6 +59,33 @@ class ContentScript extends React.Component {
     }
   };
 
+  insertPreviewer = () => {
+    const existingPreviewerDiv = getByXpath(
+      `//div[@class="draftnik-previewer"]`
+    );
+    const pitchDiv = document.querySelector(
+      `div.Pitch__StyledPitch-sc-1mctasb-0`
+    );
+    if (!existingPreviewerDiv) {
+      if (pitchDiv) {
+        const baseDiv = pitchDiv.parentElement;
+        const previewerDiv = document.createElement("div");
+        previewerDiv.classList = "draftnik-previewer";
+        previewerDiv.style.display = "flex";
+        previewerDiv.style.justifyContent = "center";
+        previewerDiv.style.padding = "5px";
+        baseDiv.insertBefore(previewerDiv, baseDiv.firstChild);
+        ReactDOM.render(<Previewer />, previewerDiv);
+      }
+    } else {
+      if (pitchDiv) {
+        existingPreviewerDiv.style.display = "flex";
+      } else {
+        existingPreviewerDiv.style.display = "none";
+      }
+    }
+  };
+
   componentDidMount() {
     console.log("Draftnik");
 
@@ -70,6 +99,7 @@ class ContentScript extends React.Component {
       if (initialButton || transfersButton) {
         this.insertSaveButton(initialButton || transfersButton);
       }
+      this.insertPreviewer();
     });
     observer.observe(document, {
       childList: true,
