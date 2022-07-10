@@ -1,5 +1,11 @@
 import React from "react";
-import { DRAFT_ENTRIES, PLAYER_DATA } from "../../placeholderConstants";
+import { ELEMENT_TYPES } from "../../constants";
+import {
+  DRAFT_ENTRIES,
+  PLAYER_DATA,
+  TEAM_DATA,
+} from "../../placeholderConstants";
+import { getByXpath } from "../../utils/xpath";
 
 class Previewer extends React.Component {
   state = {
@@ -50,21 +56,48 @@ class Previewer extends React.Component {
   };
 
   setDraftPreview = () => {
-    const pitchUnitNameBlocks = document.querySelectorAll(
-      ".Pitch__PitchUnit-sc-1mctasb-3.draftnik-preview .PitchElementData__ElementName-sc-1u4y6pr-1"
-    );
-    pitchUnitNameBlocks.forEach((nameBlock, index) => {
+    const pitchUnits = [
+      ...document.querySelectorAll(
+        ".Pitch__PitchUnit-sc-1mctasb-3.draftnik-preview"
+      ),
+    ].filter((pitchUnit) => pitchUnit.innerHTML.trim() != "");
+    pitchUnits.forEach((pitchUnit, index) => {
       const playerId = parseInt(DRAFT_ENTRIES[index]);
       const player = PLAYER_DATA[playerId];
-      nameBlock.innerText = player.web_name;
-    });
 
-    const pitchUnitPriceBlocks = document.querySelectorAll(
-      ".Pitch__PitchUnit-sc-1mctasb-3.draftnik-preview .PitchElementData__ElementValue-sc-1u4y6pr-2"
-    );
-    pitchUnitPriceBlocks.forEach((priceBlock) => {
+      const nameBlock = pitchUnit.querySelector(
+        ".PitchElementData__ElementName-sc-1u4y6pr-1"
+      );
+      nameBlock.innerText = player.web_name;
+
+      const priceBlock = pitchUnit.querySelector(
+        ".PitchElementData__ElementValue-sc-1u4y6pr-2"
+      );
       priceBlock.innerText = "";
+
+      const pictureSource = pitchUnit.querySelector("picture > source");
+      pictureSource.srcset = this.getPictureSourceSrcset(
+        player.team,
+        player.element_type
+      );
     });
+  };
+
+  getPictureSourceSrcset = (teamId, playerElementType) => {
+    const team = TEAM_DATA[teamId];
+    const teamCode = team.code;
+
+    return `
+      /dist/img/shirts/standard/shirt_${teamCode}${
+      playerElementType == ELEMENT_TYPES.GOALKEEPERS ? "_1" : ""
+    }-66.webp 66w,
+      /dist/img/shirts/standard/shirt_${teamCode}${
+      playerElementType == ELEMENT_TYPES.GOALKEEPERS ? "_1" : ""
+    }-110.webp 110w,
+      /dist/img/shirts/standard/shirt_${teamCode}${
+      playerElementType == ELEMENT_TYPES.GOALKEEPERS ? "_1" : ""
+    }-220.webp 220w
+    `;
   };
 
   togglePreview = () => {
