@@ -1,10 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import DraftDialog from "./content/DraftDialog";
-// import { connect } from "react-redux";
 import { getByXpath } from "../utils/xpath";
 import Previewer from "./content/Previewer";
-import { DASHBOARD_URL } from "../constants";
+import { DASHBOARD_URL, AUTH_TOKEN_FIELD } from "../constants";
+import { formatGwFixtures } from "../utils/fixtures";
+import draftnik from "../api/draftnik";
+import _ from "lodash";
 
 MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
@@ -15,6 +17,17 @@ class ContentScript extends React.Component {
       error: {
         name: "",
       },
+    },
+    teams: {},
+    players: {},
+    gameweeks: {},
+    fixtures: {
+      byTeam: {},
+      byGameweek: {},
+    },
+    drafts: [],
+    loading: {
+      static: false,
     },
   };
 
@@ -97,6 +110,60 @@ class ContentScript extends React.Component {
     }
   };
 
+  loadStaticData = () => {
+    chrome.storage.local.get([AUTH_TOKEN_FIELD], async (result) => {
+      if (AUTH_TOKEN_FIELD in result) {
+        const { auth_token } = result[[AUTH_TOKEN_FIELD]];
+        if (auth_token !== undefined && auth_token !== null) {
+          try {
+            this.setState({ loading: { static: true } });
+            const response = await draftnik.get("/draft/static/", {
+              headers: {
+                Authorization: `Token ${auth_token}`,
+              },
+            });
+            this.setState({
+              teams: { ...this.state.teams, ...response.data.static.teams },
+            });
+            this.setState({
+              players: {
+                ...this.state.players,
+                ...response.data.static.players,
+              },
+            });
+            this.setState({
+              gameweeks: {
+                ...this.state.gameweeks,
+                ...response.data.static.gameweeks,
+              },
+            });
+            this.setState({
+              fixtures: {
+                ...this.state.fixtures,
+                byTeam: response.data.static.team_fixtures,
+                byGameweek: formatGwFixtures(
+                  response.data.static.gameweek_fixtures
+                ),
+              },
+            });
+            const drafts = _.orderBy(response.data.drafts, "gameweek");
+            this.setState({
+              drafts: [...this.state.drafts, ...drafts],
+            });
+            console.log(this.state);
+          } catch (error) {
+            console.error(error);
+            if (error.response?.status === 401) {
+              console.log("Draftnik:: Unauthenticated");
+            }
+          } finally {
+            this.setState({ loading: { static: false } });
+          }
+        }
+      }
+    });
+  };
+
   componentDidMount() {
     console.log("Draftnik");
 
@@ -116,6 +183,8 @@ class ContentScript extends React.Component {
       childList: true,
       subtree: true,
     });
+
+    this.loadStaticData();
   }
 
   render() {
@@ -130,5 +199,4 @@ class ContentScript extends React.Component {
   }
 }
 
-// export default connect(null)(ContentScript);
 export default ContentScript;
