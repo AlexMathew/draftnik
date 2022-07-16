@@ -1,11 +1,5 @@
 import React from "react";
 import { ELEMENT_TYPES } from "../../constants";
-import {
-  DRAFT_ENTRIES,
-  PLAYER_DATA,
-  TEAM_DATA,
-} from "../../placeholderConstants";
-import { getByXpath } from "../../utils/xpath";
 
 class Previewer extends React.Component {
   state = {
@@ -56,14 +50,17 @@ class Previewer extends React.Component {
   };
 
   setDraftPreview = () => {
+    const drafts = this.props.getDrafts();
+    const players = this.props.getPlayers();
+    const teams = this.props.getTeams();
     const pitchUnits = [
       ...document.querySelectorAll(
         ".Pitch__PitchUnit-sc-1mctasb-3.draftnik-preview"
       ),
     ].filter((pitchUnit) => pitchUnit.innerHTML.trim() != "");
     pitchUnits.forEach((pitchUnit, index) => {
-      const playerId = parseInt(DRAFT_ENTRIES[index]);
-      const player = PLAYER_DATA[playerId];
+      const playerId = parseInt(drafts[3].entries[index]);
+      const player = players[playerId];
 
       const nameBlock = pitchUnit.querySelector(
         ".PitchElementData__ElementName-sc-1u4y6pr-1"
@@ -76,15 +73,15 @@ class Previewer extends React.Component {
       priceBlock.innerText = "";
 
       const pictureSource = pitchUnit.querySelector("picture > source");
+      const team = teams[player.team];
       pictureSource.srcset = this.getPictureSourceSrcset(
-        player.team,
+        team,
         player.element_type
       );
     });
   };
 
-  getPictureSourceSrcset = (teamId, playerElementType) => {
-    const team = TEAM_DATA[teamId];
+  getPictureSourceSrcset = (team, playerElementType) => {
     const teamCode = team.code;
 
     return `

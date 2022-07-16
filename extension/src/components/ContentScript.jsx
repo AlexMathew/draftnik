@@ -83,6 +83,18 @@ class ContentScript extends React.Component {
     }
   };
 
+  getDrafts = () => {
+    return this.state.drafts;
+  };
+
+  getPlayers = () => {
+    return this.state.players;
+  };
+
+  getTeams = () => {
+    return this.state.teams;
+  };
+
   insertPreviewer = () => {
     const existingPreviewerDiv = getByXpath(
       `//div[@class="draftnik-previewer"]`
@@ -99,7 +111,14 @@ class ContentScript extends React.Component {
         previewerDiv.style.justifyContent = "center";
         previewerDiv.style.padding = "5px";
         baseDiv.insertBefore(previewerDiv, baseDiv.firstChild);
-        ReactDOM.render(<Previewer />, previewerDiv);
+        ReactDOM.render(
+          <Previewer
+            getDrafts={this.getDrafts}
+            getPlayers={this.getPlayers}
+            getTeams={this.getTeams}
+          />,
+          previewerDiv
+        );
       }
     } else {
       if (pitchDiv) {
@@ -150,7 +169,6 @@ class ContentScript extends React.Component {
             this.setState({
               drafts: [...this.state.drafts, ...drafts],
             });
-            console.log(this.state);
           } catch (error) {
             console.error(error);
             if (error.response?.status === 401) {
