@@ -2,6 +2,7 @@ import React from "react";
 import DraftDialog from "./content/DraftDialog";
 // import { connect } from "react-redux";
 import { getByXpath } from "../utils/xpath";
+import { DASHBOARD_URL } from "../constants";
 
 MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
@@ -33,14 +34,24 @@ class ContentScript extends React.Component {
       const transfersDiv = transfersButton.parentElement;
       const saveDiv = document.createElement("div");
       saveDiv.classList = "draftnik";
-      saveDiv.style = "margin-top: 10px";
+      saveDiv.style =
+        "margin-top: 10px; display: flex; flex-direction: column; align-items: center; gap: 16px;";
       const saveButton = document.createElement("button");
       saveButton.disabled = transfersButton.disabled;
       saveButton.classList = transfersButton.classList;
       saveButton.onclick = this.handleOpen;
       const saveText = document.createTextNode("Save Draft");
       saveButton.appendChild(saveText);
+
+      const goToDashboard = document.createElement("a");
+      goToDashboard.href = DASHBOARD_URL;
+      goToDashboard.target = "_blank";
+      goToDashboard.style = "font-weight: bold";
+      const goToDashboardText = document.createTextNode("View saved drafts ↗");
+      goToDashboard.appendChild(goToDashboardText);
+
       saveDiv.appendChild(saveButton);
+      saveDiv.appendChild(goToDashboard);
       transfersDiv.appendChild(saveDiv);
 
       var observer = new MutationObserver(function (mutations) {
