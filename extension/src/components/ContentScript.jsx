@@ -75,7 +75,7 @@ class ContentScript extends React.Component {
       `//div[@class="draftnik-previewer"]`
     );
     const pitchDiv = document.querySelector(
-      `div.Pitch__StyledPitch-sc-1mctasb-0`
+      `div.SquadBase__Pusher-sc-16cuskw-1 div.Pitch__StyledPitch-sc-1mctasb-0`
     );
     if (!existingPreviewerDiv) {
       if (pitchDiv) {
