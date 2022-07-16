@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.0.3
+
+- Add link to dashboard along with the save draft button
+
 ## 2.0.2
 
 - Fix issues and get the options page to work
