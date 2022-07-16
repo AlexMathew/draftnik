@@ -1,9 +1,12 @@
 import React from "react";
 import { ELEMENT_TYPES } from "../../constants";
+import DraftSelection from "./DraftSelection";
+import _ from "lodash";
 
 class Previewer extends React.Component {
   state = {
     preview: false,
+    selectedDraft: 0,
   };
 
   resetPreview = () => {
@@ -53,13 +56,14 @@ class Previewer extends React.Component {
     const drafts = this.props.getDrafts();
     const players = this.props.getPlayers();
     const teams = this.props.getTeams();
+    const draft = _.find(drafts, (d) => d.id === this.state.selectedDraft);
     const pitchUnits = [
       ...document.querySelectorAll(
         ".Pitch__PitchUnit-sc-1mctasb-3.draftnik-preview"
       ),
     ].filter((pitchUnit) => pitchUnit.innerHTML.trim() != "");
     pitchUnits.forEach((pitchUnit, index) => {
-      const playerId = parseInt(drafts[3].entries[index]);
+      const playerId = draft.entries[index];
       const player = players[playerId];
 
       const nameBlock = pitchUnit.querySelector(
@@ -107,14 +111,43 @@ class Previewer extends React.Component {
     }
   };
 
+  handleDraftSelection = (event) => {
+    const draftId = event.target.value;
+    this.setState({ selectedDraft: draftId });
+  };
+
   render() {
-    return (
+    const drafts = this.props.getDrafts();
+
+    return this.state.preview ? (
       <div
-        style={{ cursor: "pointer", border: "1px solid black", padding: "5px" }}
+        style={{
+          cursor: "pointer",
+          border: "1px solid black",
+          padding: "5px",
+        }}
         onClick={this.togglePreview}
       >
         {this.state.preview ? "Close preview" : "Preview"}
       </div>
+    ) : (
+      <>
+        <DraftSelection
+          drafts={drafts}
+          selectedDraft={this.state.selectedDraft}
+          handleDraftSelection={this.handleDraftSelection}
+        />
+        <div
+          style={{
+            cursor: "pointer",
+            border: "1px solid black",
+            padding: "5px",
+          }}
+          onClick={this.togglePreview}
+        >
+          {this.state.preview ? "Close preview" : "Preview"}
+        </div>
+      </>
     );
   }
 }

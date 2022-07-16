@@ -29,6 +29,9 @@ class ContentScript extends React.Component {
     loading: {
       static: false,
     },
+    loaded: {
+      static: false,
+    },
   };
 
   handleOpen = () => {
@@ -102,6 +105,9 @@ class ContentScript extends React.Component {
     const pitchDiv = document.querySelector(
       `div.SquadBase__Pusher-sc-16cuskw-1 div.Pitch__StyledPitch-sc-1mctasb-0`
     );
+    if (!this.state.loaded.static) {
+      return;
+    }
     if (!existingPreviewerDiv) {
       if (pitchDiv) {
         const baseDiv = pitchDiv.parentElement;
@@ -169,6 +175,8 @@ class ContentScript extends React.Component {
             this.setState({
               drafts: [...this.state.drafts, ...drafts],
             });
+            this.setState({ loaded: { static: true } });
+            this.insertPreviewer();
           } catch (error) {
             console.error(error);
             if (error.response?.status === 401) {
@@ -184,6 +192,7 @@ class ContentScript extends React.Component {
 
   componentDidMount() {
     console.log("Draftnik");
+    this.loadStaticData();
 
     var observer = new MutationObserver(() => {
       const initialButton = getByXpath(
@@ -201,8 +210,6 @@ class ContentScript extends React.Component {
       childList: true,
       subtree: true,
     });
-
-    this.loadStaticData();
   }
 
   render() {
