@@ -6,7 +6,6 @@ import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import { connect } from "react-redux";
 // import { resetData } from "../../actions";
 import { AUTH_TOKEN_FIELD } from "../../constants";
 
@@ -100,6 +99,4 @@ LoggedIn.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-// const wrappedLoggedIn = connect(null, { resetData })(LoggedIn);
-// export default withStyles(styles)(wrappedLoggedIn);
 export default withStyles(styles)(LoggedIn);

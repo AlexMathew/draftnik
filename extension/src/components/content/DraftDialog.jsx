@@ -17,7 +17,6 @@ import Divider from "@material-ui/core/Divider";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { getPlayers } from "../../utils/players";
 import draftnik from "../../api/draftnik";
-// import { connect } from "react-redux";
 // import { indicateRefresh } from "../../actions";
 import { AUTH_TOKEN_FIELD, ACTIONS, GAMEWEEK_DATA } from "../../constants";
 
@@ -257,14 +256,4 @@ DraftDialog.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-// const mapStateToProps = (state) => {
-//   return {
-//     gameweeks: state.gameweeks,
-//   };
-// };
-//
-// const wrappedDraftDialog = connect(mapStateToProps, { indicateRefresh })(
-//   DraftDialog
-// );
-// export default withStyles(styles)(wrappedDraftDialog);
 export default withStyles(styles)(DraftDialog);
