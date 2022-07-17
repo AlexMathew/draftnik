@@ -1,8 +1,6 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
-import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
-import ListSubheader from "@material-ui/core/ListSubheader";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import { Typography } from "@material-ui/core";
@@ -18,8 +16,7 @@ const styles = (theme) => ({
 class DraftSelection extends React.Component {
   render() {
     const { classes, drafts, selectedDraft, handleDraftSelection } = this.props;
-    // const draftsByGameweek = _.groupBy(drafts, "gameweek");
-    // console.log(draftsByGameweek);
+    const orderedDrafts = _.orderBy(drafts, "gameweek");
 
     return (
       <FormControl className={classes.formControl}>
@@ -30,21 +27,11 @@ class DraftSelection extends React.Component {
           onChange={handleDraftSelection}
         >
           <MenuItem value={0}></MenuItem>
-          {drafts.map((draft) => (
+          {orderedDrafts.map((draft) => (
             <MenuItem key={draft.id} value={draft.id}>
-              {draft.name}
+              [GW{draft.gameweek}] {draft.name}
             </MenuItem>
           ))}
-          {/* {Object.keys(draftsByGameweek).map((gameweek) => (
-            <div key={gameweek}>
-              <ListSubheader>Gameweek {gameweek}</ListSubheader>
-              {draftsByGameweek[[gameweek]].map((draft) => (
-                <MenuItem key={draft.id} value={draft.id.toString()}>
-                  {draft.name}
-                </MenuItem>
-              ))}
-            </div>
-          ))} */}
         </Select>
       </FormControl>
     );
