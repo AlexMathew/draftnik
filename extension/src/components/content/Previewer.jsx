@@ -1,7 +1,17 @@
 import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import Button from "@material-ui/core/Button";
 import { ELEMENT_TYPES } from "../../constants";
 import DraftSelection from "./DraftSelection";
 import _ from "lodash";
+
+const styles = (theme) => ({
+  "@global": {
+    ".MuiButton-root": {
+      fontSize: "small",
+    },
+  },
+});
 
 class Previewer extends React.Component {
   state = {
@@ -120,36 +130,36 @@ class Previewer extends React.Component {
     const drafts = this.props.getDrafts();
 
     return this.state.preview ? (
-      <div
-        style={{
-          cursor: "pointer",
-          border: "1px solid black",
-          padding: "5px",
-        }}
+      <Button
+        variant="outlined"
+        color="primary"
+        disabled={this.state.selectedDraft == 0}
         onClick={this.togglePreview}
       >
         {this.state.preview ? "Close preview" : "Preview"}
-      </div>
+      </Button>
     ) : (
-      <>
-        <DraftSelection
-          drafts={drafts}
-          selectedDraft={this.state.selectedDraft}
-          handleDraftSelection={this.handleDraftSelection}
-        />
-        <div
-          style={{
-            cursor: "pointer",
-            border: "1px solid black",
-            padding: "5px",
-          }}
-          onClick={this.togglePreview}
-        >
-          {this.state.preview ? "Close preview" : "Preview"}
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <div>
+          <DraftSelection
+            drafts={drafts}
+            selectedDraft={this.state.selectedDraft}
+            handleDraftSelection={this.handleDraftSelection}
+          />
         </div>
-      </>
+        <div>
+          <Button
+            variant="outlined"
+            color="primary"
+            disabled={this.state.selectedDraft == 0}
+            onClick={this.togglePreview}
+          >
+            {this.state.preview ? "Close preview" : "Preview"}
+          </Button>
+        </div>
+      </div>
     );
   }
 }
 
-export default Previewer;
+export default withStyles(styles)(Previewer);
