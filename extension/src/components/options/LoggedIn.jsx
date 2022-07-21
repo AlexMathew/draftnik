@@ -6,16 +6,15 @@ import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import { ACTIONS } from "../../constants";
+// import { resetData } from "../../actions";
+import { AUTH_TOKEN_FIELD } from "../../constants";
 
 const styles = (theme) => ({
   main: {
-    width: theme.spacing(40),
-    height: theme.spacing(30),
+    width: "auto",
     display: "block",
     marginLeft: theme.spacing(3),
     marginRight: theme.spacing(3),
-    marginTop: theme.spacing(-3),
     [theme.breakpoints.up(400 + theme.spacing(6))]: {
       width: 500,
       marginLeft: "auto",
@@ -36,18 +35,40 @@ const styles = (theme) => ({
     width: theme.spacing(7),
     height: theme.spacing(7),
   },
-  text: {
-    fontSize: "large",
-  },
-  button: {
-    marginTop: theme.spacing(2),
-    fontSize: "medium",
+  logout: {
+    margin: theme.spacing(3, 0, 2),
   },
 });
 
-class NoAuth extends React.Component {
-  triggerSignIn = () => {
-    chrome.runtime.sendMessage({ action: ACTIONS.OPEN_OPTIONS });
+class LoggedIn extends React.Component {
+  state = {
+    username: "",
+  };
+
+  componentDidMount() {
+    chrome.storage.local.get([AUTH_TOKEN_FIELD], (result) => {
+      const token = result[[AUTH_TOKEN_FIELD]];
+      if (token !== undefined && token.auth_token !== null) {
+        this.setState({ username: token.username });
+      } else {
+        this.props.history.push("/signin");
+      }
+    });
+  }
+
+  login = ({ auth_token, username }) => {
+    chrome.storage.local.set({
+      [AUTH_TOKEN_FIELD]: { auth_token, username },
+    });
+    this.setState({ authenticated: true, username: username });
+    fetchMoments();
+  };
+
+  logout = () => {
+    // this.props.resetData();
+    chrome.storage.local.remove([AUTH_TOKEN_FIELD]);
+    this.setState({ username: "" });
+    this.props.history.push("/signin");
   };
 
   render() {
@@ -58,15 +79,15 @@ class NoAuth extends React.Component {
         <CssBaseline />
         <Paper className={classes.paper}>
           <Avatar src="/icons/logo128.png" className={classes.avatar} />
-          <Typography className={classes.text}>
-            You are not signed in.
+          <Typography component="h4" variant="h4">
+            Logged in as {this.state.username}.
           </Typography>
           <Button
-            className={classes.button}
+            className={classes.logout}
             variant="outlined"
-            onClick={this.triggerSignIn}
+            onClick={this.logout}
           >
-            Sign In
+            Log out
           </Button>
         </Paper>
       </main>
@@ -74,8 +95,8 @@ class NoAuth extends React.Component {
   }
 }
 
-NoAuth.propTypes = {
+LoggedIn.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(NoAuth);
+export default withStyles(styles)(LoggedIn);
