@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.1.0
+
+- Add draft previewer on transfers page
+
 ## 2.0.3
 
 - Add link to dashboard along with the save draft button
